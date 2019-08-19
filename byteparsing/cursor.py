@@ -1,0 +1,46 @@
+from dataclasses import dataclass
+
+
+@dataclass
+class Cursor:
+    """Encapsulates a byte string and two offsets to reference the input
+    data."""
+    data: bytes
+    begin: int
+    end: int
+
+    def __bool__(self):
+        """`False` if the cursor refererences the end of input, `True`
+        otherwise."""
+        return self.end < len(self.data)
+
+    def __len__(self):
+        """Length of current selection."""
+        return self.end - self.begin
+
+    @staticmethod
+    def from_bytes(data):
+        """Constructs a `Cursor` object from a byte string. Initialises `begin`
+        and `end` fields at 0."""
+        return Cursor(data, 0, 0)
+
+    @property
+    def content(self):
+        """Byte content of current selection."""
+        return self.data[self.begin:self.end]
+
+    @property
+    def at(self):
+        """Next byte (at end location)."""
+        return self.data[self.end]
+
+    def look_ahead(self, n: int = 1):
+        return self.data[self.end:self.end+n]
+
+    def increment(self, n: int = 1):
+        """Creates new cursor where end is incremented by `n`."""
+        return Cursor(self.data, self.begin, self.end+n)
+
+    def flush(self):
+        """Creates new cursor where begin is flushed to end location."""
+        return Cursor(self.data, self.end, self.end)

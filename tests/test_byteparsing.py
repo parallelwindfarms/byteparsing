@@ -5,7 +5,7 @@
 """
 import pytest
 
-from byteparsing import byteparsing
+# from byteparsing import byteparsing
 
 
 def test_something():

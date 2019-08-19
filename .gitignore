@@ -11,6 +11,7 @@ __pycache__
 htmlcov
 .coverage
 coverage.xml
+cov.xml
 .pytest_cache
 
 docs/_build
@@ -23,3 +24,6 @@ docs/apidocs
 
 # Mac
 .DS_Store
+
+# mypy
+.mypy_cache

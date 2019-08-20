@@ -50,3 +50,6 @@ class Cursor:
     def flush(self):
         """Creates new cursor where begin is flushed to end location."""
         return Cursor(self.data, self.end, self.end)
+
+    def find(self, x: bytes):
+        return Cursor(self.data, self.begin, self.data.find(x, self.end))

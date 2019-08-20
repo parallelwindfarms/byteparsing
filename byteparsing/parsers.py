@@ -1,5 +1,5 @@
 import logging
-from typing import Any, Union, List, Optional
+from typing import Any, Union, List, Optional, Callable
 
 from .cursor import Cursor
 from .failure import Failure, EndOfInput, Expected, MultipleFailures
@@ -29,6 +29,17 @@ def sequence(first: Parser, *rest: Parser) -> Parser:
         return first >> (lambda _: sequence(*rest))
     else:
         return first
+
+
+def named_sequence(**kwargs: Parser) -> Parser:
+    @parser
+    def g(c: Cursor, a: Any):
+        result = {}
+        for k, v in kwargs.items():
+            x, c, a = v(c, a).invoke()
+            result[k] = x
+        return result, c, a
+    return g
 
 
 @parser
@@ -105,6 +116,13 @@ def flush(transfer=lambda x: x):
     return g
 
 
+def flush_decode():
+    @parser
+    def g(c: Cursor, a: Any):
+        return c.content_str, c.flush(), a
+    return g
+
+
 def many(p: Parser, init: Optional[List[Any]] = None) -> Parser:
     @parser
     def g(c: Cursor, a: Any):
@@ -137,12 +155,32 @@ def many_char(p: Parser, transfer=lambda x: x) -> Parser:
     return sequence(flush(), many_char_0(p), flush(transfer))
 
 
+def text_end_by(x: str) -> Parser:
+    @parser
+    def g(c: Cursor, a: Any):
+        y = x.encode(c.encoding)
+        new_cursor = c.find(y)
+        result = new_cursor.content_str
+        return result, new_cursor.increment(len(y)).flush(), a
+    return g
+
+
 def some_char_0(p: Parser) -> Parser:
     return sequence(p, many_char_0(p))
 
 
 def some_char(p: Parser, transfer=lambda x: x) -> Parser:
     return sequence(flush(), some_char_0(p), flush(transfer))
+
+
+def char_pred(pred: Callable[[int], bool]) -> Parser:
+    def f(x):
+        if pred(x):
+            return value(x)
+        else:
+            raise Failure("Character fails predicate.")
+
+    return item >> f
 
 
 def char(c: Union[str, int]) -> Parser:

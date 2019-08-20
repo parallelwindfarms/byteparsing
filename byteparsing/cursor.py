@@ -8,6 +8,7 @@ class Cursor:
     data: bytes
     begin: int
     end: int
+    encoding: str = "utf-8"
 
     def __bool__(self):
         """`False` if the cursor refererences the end of input, `True`
@@ -33,6 +34,11 @@ class Cursor:
     def at(self):
         """Next byte (at end location)."""
         return self.data[self.end]
+
+    @property
+    def content_str(self):
+        """Decoded string content of current selection."""
+        return self.content.decode(self.encoding)
 
     def look_ahead(self, n: int = 1):
         return self.data[self.end:self.end+n]

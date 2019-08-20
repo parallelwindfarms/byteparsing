@@ -30,3 +30,4 @@ def test_cursor():
     assert not d
     assert len(d) == len(data)
     assert d.content == data
+    assert d.content_str == "Hello, World!"

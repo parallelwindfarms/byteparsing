@@ -2,7 +2,7 @@ import pytest
 from byteparsing.failure import Failure, EndOfInput
 from byteparsing.parsers import (
     value, parse_bytes, item, fail, char, many_char, flush, sequence,
-    literal
+    literal, text_literal, ignore, tokenize, integer, many, some
 )
 
 data = b"Hello, World!"
@@ -43,3 +43,14 @@ def test_literal():
     assert parse_bytes(literal(data), data) == data
     with pytest.raises(Failure):
         parse_bytes(literal(b"Hello, Universe!"), data)
+
+
+def test_text_literal():
+    assert parse_bytes(text_literal("Hello"), data) == b"Hello"
+    assert parse_bytes(ignore(text_literal("Hello")), data) is None
+    with pytest.raises(Failure):
+        parse_bytes(text_literal("Hi"), data)
+
+
+def test_tokenize():
+    assert parse_bytes(some(tokenize(integer)), b"3 42 -67") == [3, 42, -67]

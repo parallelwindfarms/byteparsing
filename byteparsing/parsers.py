@@ -1,5 +1,5 @@
 import logging
-from typing import Any, Union, List
+from typing import Any, Union, List, Optional
 
 from .cursor import Cursor
 from .failure import Failure, EndOfInput, Expected, MultipleFailures
@@ -20,7 +20,7 @@ def value(x) -> Parser:
 def parse_bytes(p: Parser, data: bytes):
     """Call parser `p` on `data` and returns result."""
     cursor = Cursor.from_bytes(data)
-    result, _, _ = p(cursor, None).invoke()
+    result, _, _ = p(cursor, []).invoke()
     return result
 
 
@@ -95,7 +95,7 @@ def get_aux():
 
 
 def ignore(p: Parser):
-    return get_aux() >> (lambda a: p >> set_aux(a))
+    return get_aux() >> (lambda a: sequence(p, set_aux(a)))
 
 
 def flush(transfer=lambda x: x):
@@ -105,17 +105,21 @@ def flush(transfer=lambda x: x):
     return g
 
 
-def many(p: Parser) -> Parser:
+def many(p: Parser, init: Optional[List[Any]] = None) -> Parser:
     @parser
     def g(c: Cursor, a: Any):
         try:
-            result = []
+            result = init or []
             while True:
                 x, c, a = p(c, a).invoke()
                 result.append(x)
         except Failure:
             return result, c, a
     return g
+
+
+def some(p: Parser) -> Parser:
+    return p >> (lambda x: many(p, [x]))
 
 
 def many_char_0(p: Parser) -> Parser:
@@ -133,6 +137,14 @@ def many_char(p: Parser, transfer=lambda x: x) -> Parser:
     return sequence(flush(), many_char_0(p), flush(transfer))
 
 
+def some_char_0(p: Parser) -> Parser:
+    return sequence(p, many_char_0(p))
+
+
+def some_char(p: Parser, transfer=lambda x: x) -> Parser:
+    return sequence(flush(), some_char_0(p), flush(transfer))
+
+
 def char(c: Union[str, int]) -> Parser:
     if isinstance(c, str):
         c = ord(c)
@@ -146,7 +158,8 @@ def char(c: Union[str, int]) -> Parser:
     return item >> f
 
 
-def literal(x: bytes):
+def literal(x: bytes) -> Parser:
+    """Parses the exact sequence of bytes given in `x`."""
     @parser
     def g(c: Cursor, a: Any):
         if c.look_ahead(len(x)) == x:
@@ -154,3 +167,37 @@ def literal(x: bytes):
         else:
             raise Expected(x)
     return g
+
+
+def text_literal(x: str) -> Parser:
+    """Parses the contents of `x` encoded by the encoding given in the
+    cursor."""
+    @parser
+    def g(c: Cursor, a: Any):
+        return literal(x.encode(c.encoding))(c, a)
+    return g
+
+
+def text_one_of(x: str) -> Parser:
+    """Parses any of the characters in `x`."""
+    @parser
+    def g(c: Cursor, a: Any):
+        options = [literal(ch.encode(c.encoding)) for ch in x]
+        return choice(*options)(c, a)
+    return g
+
+
+whitespace = some_char(text_one_of(" \t\n"))
+integer = sequence(
+    flush(),
+    optional(text_literal("-")),
+    text_one_of("123456789"),
+    many_char_0(text_one_of("0123456789")),
+    flush(int))
+
+
+def tokenize(p: Parser) -> Parser:
+    """Parses `p`, clearing surrounding whitespace."""
+    return sequence(
+        optional(whitespace), p >> push,
+        optional(whitespace), pop())

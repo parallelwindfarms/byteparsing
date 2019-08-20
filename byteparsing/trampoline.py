@@ -47,7 +47,6 @@ def bind(p: Parser, f: Callable[[Any], Parser]) -> Parser:
     @parser
     def g(cursor, aux):
         result, cursor, aux = p(cursor, aux).invoke()
-        print(cursor, aux, result, f(result))
         return f(result)(cursor, aux)
 
     return g
@@ -56,10 +55,10 @@ def bind(p: Parser, f: Callable[[Any], Parser]) -> Parser:
 @dataclass
 class Parser:
     """Wrapper for parser functions."""
-    f: ParserFunction
+    func: ParserFunction
 
     def __call__(self, cursor: Cursor, aux: Any) -> Call:
-        return Call(self.f, cursor, aux)
+        return Call(self.func, cursor, aux)
 
     def __rshift__(self, g: Callable[[Any], Parser]) -> Parser:
         return bind(self, g)

@@ -2,8 +2,9 @@ import pytest
 from byteparsing.failure import Failure, EndOfInput
 from byteparsing.parsers import (
     value, parse_bytes, item, fail, char, many_char, flush, sequence,
-    literal, text_literal, ignore, tokenize, integer, some, scientific_number
+    literal, text_literal, ignore, tokenize, integer, some, scientific_number, email
 )
+
 
 data = b"Hello, World!"
 
@@ -19,6 +20,12 @@ def test_item():
 
 def test_value():
     assert parse_bytes(value(42), b"") == 42
+
+
+def test_email():
+    assert parse_bytes(email, b"pab@rod.es")['user'] == b"pab"
+    assert parse_bytes(email, b"pab@rod.es")['server'] == b"rod"
+    assert parse_bytes(email, b"pab@rod.es")['country'] == b"es"
 
 
 def test_end_of_input():

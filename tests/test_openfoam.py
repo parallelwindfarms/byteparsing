@@ -5,13 +5,15 @@ from byteparsing.failure import (
 )
 
 from byteparsing.parsers import (
-    parse_bytes
+    parse_bytes,
+    scientific_number
 )
 
 from byteparsing.openfoam import (
     block_comment,
     identifier,
-    key_value_pair
+    key_value_pair,
+    vector,
 )
 
 
@@ -36,3 +38,8 @@ def test_identifier():
 def test_key_value_pair():
     assert parse_bytes(key_value_pair, b"alpha 1;") == {
         "key": "alpha", "value": "1"}
+
+
+def test_vector():
+    assert parse_bytes(vector(scientific_number), b"(3.4 10 5e10)") \
+        == [3.4, 10, 5e10]

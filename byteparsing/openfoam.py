@@ -2,7 +2,7 @@ from .parsers import (
     tokenize, text_literal, text_end_by,
     choice, sequence, named_sequence, flush, flush_decode,
     many, push, pop,
-    char, char_pred
+    char, char_pred, Parser
 )
 
 ascii_alpha = char_pred(lambda c: 64 < c < 91 or 96 < c < 123)
@@ -40,3 +40,11 @@ dictionary = named_sequence(
         tokenize(text_literal("}")),
         pop())
 )
+
+
+def vector(p: Parser) -> Parser:
+    return sequence(
+        tokenize(text_literal("(")),
+        many(tokenize(p)) >> push,
+        tokenize(text_literal(")")),
+        pop())

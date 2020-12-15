@@ -2,7 +2,7 @@ import pytest
 from byteparsing.failure import Failure, EndOfInput
 from byteparsing.parsers import (
     value, parse_bytes, item, fail, char, many_char, flush, sequence,
-    literal, text_literal, ignore, tokenize, integer, some
+    literal, text_literal, ignore, tokenize, integer, some, scientific_number
 )
 
 data = b"Hello, World!"
@@ -54,3 +54,11 @@ def test_text_literal():
 
 def test_tokenize():
     assert parse_bytes(some(tokenize(integer)), b"3 42 -67") == [3, 42, -67]
+
+
+def test_scientific():
+    assert parse_bytes(scientific_number, b"3.1415") == pytest.approx(3.1415)
+    with pytest.raises(Failure):
+        parse_bytes(scientific_number, b".890")
+    with pytest.raises(Failure):
+        parse_bytes(scientific_number, b"8.78e78.2")

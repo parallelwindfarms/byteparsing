@@ -1,5 +1,6 @@
 import logging
 from typing import Any, Union, List, Optional, Callable
+import string
 
 from .cursor import Cursor
 from .failure import Failure, EndOfInput, Expected, MultipleFailures
@@ -80,7 +81,10 @@ def optional(p: Parser, default=None):
 def pop(transfer=lambda x: x):
     @parser
     def g(c: Cursor, a: List[Any]):
-        return transfer(a[-1]), c, a[:-1]
+        try:
+            return transfer(a[-1]), c, a[:-1]
+        except ValueError as e:
+            raise Failure(str(e))
     return g
 
 
@@ -112,7 +116,10 @@ def ignore(p: Parser):
 def flush(transfer=lambda x: x):
     @parser
     def g(c: Cursor, a: Any):
-        return transfer(c.content), c.flush(), a
+        try:
+            return transfer(c.content), c.flush(), a
+        except ValueError as e:
+            raise Failure(str(e))
     return g
 
 
@@ -178,7 +185,7 @@ def char_pred(pred: Callable[[int], bool]) -> Parser:
         if pred(x):
             return value(x)
         else:
-            raise Failure("Character fails predicate.")
+            raise Failure(f"Character fails predicate `{pred.__name__}`")
 
     return item >> f
 
@@ -226,6 +233,7 @@ def text_one_of(x: str) -> Parser:
 
 
 whitespace = some_char(text_one_of(" \t\n"))
+
 integer = sequence(
     flush(),
     optional(text_literal("-")),
@@ -233,6 +241,12 @@ integer = sequence(
     many_char_0(text_one_of("0123456789")),
     flush(int))
 
+scientific_number = sequence(
+    flush(),
+    optional(text_literal("-")),
+    char_pred(lambda n: chr(n).isdigit()),
+    many_char_0(text_one_of("0123456789.e-")),
+    flush(float))
 
 def tokenize(p: Parser) -> Parser:
     """Parses `p`, clearing surrounding whitespace."""

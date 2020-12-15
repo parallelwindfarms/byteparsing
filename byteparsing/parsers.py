@@ -83,7 +83,7 @@ def pop(transfer=lambda x: x):
     def g(c: Cursor, a: List[Any]):
         try:
             return transfer(a[-1]), c, a[:-1]
-        except ValueError as e:
+        except Exception as e:
             raise Failure(str(e))
     return g
 
@@ -172,15 +172,29 @@ def text_end_by(x: str) -> Parser:
     return g
 
 
+def quoted_string(quote='"'):
+    return sequence(
+        char(quote),
+        sep_by(many_char_0(char_pred(lambda x: x != ord(quote))),
+               text_literal("\\"+quote)),
+        flush() >> push,
+        char(quote),
+        pop())
+
+
 def some_char_0(p: Parser) -> Parser:
+    """Parses one or more characters; doesn't return a value, just
+    moves the cursor for later flushing."""
     return sequence(p, many_char_0(p))
 
 
 def some_char(p: Parser, transfer=lambda x: x) -> Parser:
+    """Parses `p` one or more times."""
     return sequence(flush(), some_char_0(p), flush(transfer))
 
 
 def char_pred(pred: Callable[[int], bool]) -> Parser:
+    """Parses a single character passing `pred`."""
     def f(x):
         if pred(x):
             return value(x)
@@ -191,6 +205,7 @@ def char_pred(pred: Callable[[int], bool]) -> Parser:
 
 
 def char(c: Union[str, int]) -> Parser:
+    """Parses a single character maching `c`."""
     if isinstance(c, str):
         c = ord(c)
 
@@ -233,6 +248,10 @@ def text_one_of(x: str) -> Parser:
 
 
 whitespace = some_char(text_one_of(" \t\n"))
+ascii_alpha = char_pred(lambda c: 64 < c < 91 or 96 < c < 123)
+ascii_num = char_pred(lambda c: 48 <= c < 58)
+ascii_alpha_num = choice(ascii_alpha, ascii_num)
+ascii_underscore = char(95)
 
 integer = sequence(
     flush(),
@@ -244,14 +263,9 @@ integer = sequence(
 scientific_number = sequence(
     flush(),
     optional(text_literal("-")),
-    char_pred(lambda n: chr(n).isdigit()),
-    many_char_0(text_one_of("0123456789.e-")),
+    ascii_num,
+    many_char_0(choice(ascii_num, text_one_of(".e-"))),
     flush(float))
-
-ascii_alpha = char_pred(lambda c: 64 < c < 91 or 96 < c < 123)
-ascii_num = char_pred(lambda c: 48 <= c < 58)
-ascii_alpha_num = choice(ascii_alpha, ascii_num)
-ascii_underscore = char(95)
 
 
 def tokenize(p: Parser) -> Parser:

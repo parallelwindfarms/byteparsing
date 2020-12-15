@@ -2,7 +2,7 @@ from .parsers import (
     tokenize, text_literal, text_end_by,
     choice, sequence, named_sequence, flush, flush_decode,
     many, push, pop,
-    char, char_pred, Parser
+    char, char_pred, Parser, integer
 )
 
 ascii_alpha = char_pred(lambda c: 64 < c < 91 or 96 < c < 123)
@@ -40,6 +40,38 @@ dictionary = named_sequence(
         tokenize(text_literal("}")),
         pop())
 )
+
+
+def uniform_value(p: Parser) -> Parser:
+    return sequence(tokenize(text_literal("uniform")), p)
+
+
+list_type = sequence(
+    text_literal("List<"),
+    choice(text_literal("scalar"),
+           text_literal("vector")) >> push,
+    text_literal(">"),
+    pop())
+
+
+def foam_list(p: Parser) -> Parser:
+    entries = sequence(
+        tokenize(char('(')),
+        many(p) >> push,
+        tokenize(char(')')), tokenize(char(';')),
+        pop())
+    simple_list = named_sequence(
+        name=tokenize(identifier), data=entries)
+    numbered_list = named_sequence(
+        name=tokenize(identifier), size=tokenize(integer), data=entries)
+    full_list = named_sequence(
+        name=tokenize(identifier), dtype=tokenize(list_type),
+        size=tokenize(integer), data=entries)
+    return choice(simple_list, numbered_list, full_list)
+
+
+def nonuniform_value(p: Parser) -> Parser:
+    return sequence(tokenize(text_literal("nonuniform")), foam_list(p))
 
 
 def vector(p: Parser) -> Parser:

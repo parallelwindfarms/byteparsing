@@ -3,7 +3,8 @@ from byteparsing.failure import Failure, EndOfInput
 from byteparsing.parsers import (
     value, parse_bytes, item, fail, char, many_char, flush, sequence,
     literal, text_literal, ignore, tokenize, integer, some, scientific_number,
-    choice, ascii_alpha_num, ascii_underscore, named_sequence, some_char
+    choice, ascii_alpha_num, ascii_underscore, named_sequence, some_char,
+    push, pop
 )
 
 
@@ -76,3 +77,9 @@ def test_scientific():
         parse_bytes(scientific_number, b".890")
     with pytest.raises(Failure):
         parse_bytes(scientific_number, b"8.78e78.2")
+
+
+def test_pop():
+    p = sequence(push(0), pop(lambda x: 1/x))
+    with pytest.raises(Failure):
+        parse_bytes(p, b"")

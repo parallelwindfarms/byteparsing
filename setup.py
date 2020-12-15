@@ -14,6 +14,14 @@ with open(os.path.join(here, 'byteparsing', '__version__.py')) as f:
 with open('README.rst') as readme_file:
     readme = readme_file.read()
 
+test_deps = [
+    'pytest',
+    'mypy',
+    'pytest-cov',
+    'pytest-flake8',
+    'pycodestyle',
+    'pytest-mypy' ]
+
 setup(
     name='byteparsing',
     version=version['__version__'],
@@ -49,15 +57,9 @@ setup(
         'sphinx_rtd_theme',
         'recommonmark'
     ],
-    tests_require=[
-        'pytest',
-        'mypy',
-        'pytest-cov',
-        'pytest-flake8',
-        'pycodestyle',
-        'pytest-mypy'
-    ],
+    tests_require=test_deps,
     extras_require={
         'dev':  ['prospector[with_pyroma]', 'yapf', 'isort'],
+        "test": test_deps
     }
 )

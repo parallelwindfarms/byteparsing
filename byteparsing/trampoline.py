@@ -7,7 +7,6 @@ from .cursor import Cursor
 from .decorator import decorator
 
 
-@dataclass
 class Trampoline:
     def __call__(self):
         raise NotImplementedError()
@@ -24,15 +23,19 @@ ParserFunction = Callable[
     [Cursor, Any],
     Union[Tuple[Any, Cursor, Any], Trampoline]]
 
+# Due to an issue in MyPy (#708) I have to use this workaround.
+ParserFunctionIssue708 = Callable[
+    ..., Union[Tuple[Any, Cursor, Any], Trampoline]]
+
 
 @dataclass
 class Call(Trampoline):
     """Stores a delayed call to a parser. Part of the parser trampoline."""
-    p: ParserFunction
+    p: ParserFunctionIssue708
     cursor: Cursor
     aux: Any
 
-    def __call__(self):
+    def __call__(self) -> Union[Tuple[Any, Cursor, Any], Trampoline]:
         return self.p(self.cursor, self.aux)
 
 
@@ -55,7 +58,7 @@ def bind(p: Parser, f: Callable[[Any], Parser]) -> Parser:
 @dataclass
 class Parser:
     """Wrapper for parser functions."""
-    func: ParserFunction
+    func: ParserFunctionIssue708
 
     def __call__(self, cursor: Cursor, aux: Any) -> Call:
         return Call(self.func, cursor, aux)

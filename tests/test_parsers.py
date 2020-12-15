@@ -2,7 +2,7 @@ import pytest
 from byteparsing.failure import Failure, EndOfInput
 from byteparsing.parsers import (
     value, parse_bytes, item, fail, char, many_char, flush, sequence,
-    literal, text_literal, ignore, tokenize, integer, many, some
+    literal, text_literal, ignore, tokenize, integer, some
 )
 
 data = b"Hello, World!"

@@ -53,6 +53,7 @@ setup(
         'pytest',
         'mypy',
         'pytest-cov',
+        'pytest-flake8',
         'pycodestyle',
         'pytest-mypy'
     ],

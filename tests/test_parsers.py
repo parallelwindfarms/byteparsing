@@ -2,7 +2,8 @@ import pytest
 from byteparsing.failure import Failure, EndOfInput
 from byteparsing.parsers import (
     value, parse_bytes, item, fail, char, many_char, flush, sequence,
-    literal, text_literal, ignore, tokenize, integer, some, scientific_number, email
+    literal, text_literal, ignore, tokenize, integer, some, scientific_number,
+    choice, ascii_alpha_num, ascii_underscore, named_sequence, some_char
 )
 
 
@@ -23,6 +24,12 @@ def test_value():
 
 
 def test_email():
+    email_char = choice(ascii_alpha_num, ascii_underscore)
+    email = named_sequence(
+        user=some_char(email_char),
+        server=sequence(text_literal("@"), flush(), some_char(email_char)),
+        country=sequence(text_literal("."), flush(), some_char(email_char))
+    )
     assert parse_bytes(email, b"pab@rod.es")['user'] == b"pab"
     assert parse_bytes(email, b"pab@rod.es")['server'] == b"rod"
     assert parse_bytes(email, b"pab@rod.es")['country'] == b"es"

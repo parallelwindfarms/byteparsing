@@ -252,12 +252,6 @@ ascii_alpha = char_pred(lambda c: 64 < c < 91 or 96 < c < 123)
 ascii_num = char_pred(lambda c: 48 <= c < 58)
 ascii_alpha_num = choice(ascii_alpha, ascii_num)
 ascii_underscore = char(95)
-email_char = choice(ascii_alpha_num, ascii_underscore)
-email = named_sequence(
-    user=some_char(email_char),
-    server=sequence(text_literal("@"), flush(), some_char(email_char)),
-    country=sequence(text_literal("."), flush(), some_char(email_char))
-)
 
 
 def tokenize(p: Parser) -> Parser:

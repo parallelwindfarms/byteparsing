@@ -237,5 +237,5 @@ integer = sequence(
 def tokenize(p: Parser) -> Parser:
     """Parses `p`, clearing surrounding whitespace."""
     return sequence(
-        optional(whitespace), p >> push,
+        p >> push,
         optional(whitespace), pop())

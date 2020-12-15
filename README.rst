@@ -1,6 +1,8 @@
 ################################################################################
 byteparsing
 ################################################################################
+.. image:: https://github.com/parallelwindfarms/byteparsing/workflows/Python%20package/badge.svg
+  :alt: Python package
 
 Parser for mixed ASCII/binary data
 

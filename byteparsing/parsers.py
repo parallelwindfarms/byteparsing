@@ -174,12 +174,8 @@ def text_end_by(x: str) -> Parser:
 
 def quoted_string(quote='"'):
     return sequence(
-        char(quote),
-        sep_by(many_char_0(char_pred(lambda x: x != ord(quote))),
-               text_literal("\\"+quote)),
-        flush() >> push,
-        char(quote),
-        pop())
+        char(quote), flush(),
+        text_end_by(quote))
 
 
 def some_char_0(p: Parser) -> Parser:
@@ -199,7 +195,7 @@ def char_pred(pred: Callable[[int], bool]) -> Parser:
         if pred(x):
             return value(x)
         else:
-            raise Failure(f"Character fails predicate `{pred.__name__}`")
+            raise Failure(f"Character '{chr(x)}' fails predicate `{pred.__name__}`")
 
     return item >> f
 
@@ -213,7 +209,7 @@ def char(c: Union[str, int]) -> Parser:
         if x == c:
             return value(c)
         else:
-            raise Expected(c)
+            raise Expected(c, x)
 
     return item >> f
 
@@ -256,16 +252,22 @@ ascii_underscore = char(95)
 integer = sequence(
     flush(),
     optional(text_literal("-")),
-    text_one_of("123456789"),
-    many_char_0(text_one_of("0123456789")),
+    some_char_0(text_one_of("0123456789")),
     flush(int))
+
+
+def to_number(s: str) -> Union[int, float]:
+    try:
+        return int(s)
+    except ValueError:
+        return float(s)
 
 scientific_number = sequence(
     flush(),
     optional(text_literal("-")),
     ascii_num,
     many_char_0(choice(ascii_num, text_one_of(".e-"))),
-    flush(float))
+    flush(to_number))
 
 
 def tokenize(p: Parser) -> Parser:

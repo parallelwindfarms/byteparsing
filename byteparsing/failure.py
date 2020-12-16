@@ -16,11 +16,12 @@ class EndOfInput(Failure):
 
 
 class Expected(Failure):
-    def __init__(self, *x):
+    def __init__(self, x, *irritants):
         self.expectation = x
+        self.irritants = irritants
 
     def __str__(self):
-        return f"Expected one of: {self.expectation}"
+        return f"Expected one of: {self.expectation}, got: {self.irritants}"
 
     def __add__(self, other: Expected):
         return Expected(self.expectation + other.expectation)

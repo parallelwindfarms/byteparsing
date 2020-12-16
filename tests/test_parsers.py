@@ -4,7 +4,7 @@ from byteparsing.parsers import (
     value, parse_bytes, item, fail, char, many_char, flush, sequence,
     literal, text_literal, ignore, tokenize, integer, some, scientific_number,
     choice, ascii_alpha_num, ascii_underscore, named_sequence, some_char,
-    push, pop
+    push, pop, quoted_string
 )
 
 
@@ -83,3 +83,7 @@ def test_pop():
     p = sequence(push(0), pop(lambda x: 1/x))
     with pytest.raises(Failure):
         parse_bytes(p, b"")
+
+
+def test_quoted_string():
+    assert parse_bytes(quoted_string('"'), b"\"blahblah\"") == "blahblah"

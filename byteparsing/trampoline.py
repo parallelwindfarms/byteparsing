@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 from dataclasses import dataclass
-from typing import Any, Tuple, Callable, Union
+from typing import Any, Tuple, Callable, Union, Optional
 
 from .cursor import Cursor
 from .decorator import decorator
@@ -58,9 +58,10 @@ def bind(p: Parser, f: Callable[[Any], Parser]) -> Parser:
 @dataclass
 class Parser:
     """Wrapper for parser functions."""
-    func: ParserFunctionIssue708
+    func: Optional[ParserFunctionIssue708]
 
     def __call__(self, cursor: Cursor, aux: Any) -> Call:
+        assert self.func is not None
         return Call(self.func, cursor, aux)
 
     def __rshift__(self, g: Callable[[Any], Parser]) -> Parser:

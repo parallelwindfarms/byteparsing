@@ -270,9 +270,9 @@ scientific_number = sequence(
     flush(to_number))
 
 
-def check_size(n):
+def check_size(n: int) -> Callable:
     """ Raises an exception if size is not n."""
-    def f(lst):
+    def f(lst: list):
         if len(lst) != n:
             raise Failure(f"Expected list of size {n}, got size {len(lst)}")
         return value(lst)

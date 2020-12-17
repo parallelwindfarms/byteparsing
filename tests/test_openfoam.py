@@ -55,6 +55,12 @@ def test_vector():
 def test_dimensions():
     assert parse_bytes(dimensions, b"[0 2 -2 0 0 0 0]") \
         == [0, 2, -2, 0, 0, 0, 0]
+    with pytest.raises(Failure):
+        # Wrongly formatted dimensions vector
+        parse_bytes(dimensions, b"(0 2 -1 0 0 0 0 2)")
+    with pytest.raises(Failure):
+        # The number of dimensions should be 7
+        parse_bytes(dimensions, b"[0 2 -1 0 0 0]")
 
 
 def test_simple_list():

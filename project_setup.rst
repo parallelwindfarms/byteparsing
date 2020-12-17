@@ -63,7 +63,7 @@ Testing and code coverage
 
 * Use `GitHub actions <https://github.com/parallelwindfarms/byteparsing/actions>`_ to automatically run tests and to test using multiple Python versions
 
-  - Configuration can be found in ``.github/workflows/python-package.yml``_
+  - Configuration can be found in ``.github/workflows/python-package.yml``
 
 * TODO: add something about code quality/coverage tool?
 * `Relevant section in the guide <https://guide.esciencecenter.nl/best_practices/language_guides/python.html#testing>`_
@@ -89,7 +89,7 @@ Documentation
 * The ``docs/_templates`` directory contains an (empty) ``.gitignore`` file, to be able to add it to the repository. This file can be safely removed (or you can just leave it there).
 * To put the documentation on `Read the Docs <https://readthedocs.org>`_, log in to your Read the Docs account, and import the repository (under 'My Projects').
 
-  - Include the link to the documentation in this README_.
+  - Include the link to the documentation in this README.
 
 * `Relevant section in the guide <https://guide.esciencecenter.nl/best_practices/language_guides/python.html#writingdocumentation>`_
 

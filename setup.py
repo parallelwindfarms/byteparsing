@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 import os
 
-from setuptools import setup
+from setuptools import setup  # type: ignore
 
 here = os.path.abspath(os.path.dirname(__file__))
 
@@ -20,7 +20,10 @@ test_deps = [
     'pytest-cov',
     'pytest-flake8',
     'pycodestyle',
-    'pytest-mypy' ]
+    'pytest-mypy',
+    'sphinx',
+    'sphinx_rtd_theme'
+    'nbsphinx']
 
 setup(
     name='byteparsing',

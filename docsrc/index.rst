@@ -10,7 +10,9 @@ Welcome to byteparsing's documentation!
    :maxdepth: 2
    :caption: Contents:
 
-
+   Introduction <self>
+   functional
+   api
 
 Indices and tables
 ==================

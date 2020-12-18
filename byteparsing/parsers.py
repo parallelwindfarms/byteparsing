@@ -1,6 +1,5 @@
 import logging
 from typing import Any, Union, List, Optional, Callable
-import string
 
 from .cursor import Cursor
 from .failure import Failure, EndOfInput, Expected, MultipleFailures
@@ -261,6 +260,7 @@ def to_number(s: str) -> Union[int, float]:
         return int(s)
     except ValueError:
         return float(s)
+
 
 scientific_number = sequence(
     flush(),

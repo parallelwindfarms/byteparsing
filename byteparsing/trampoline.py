@@ -66,3 +66,7 @@ class Parser:
 
     def __rshift__(self, g: Callable[[Any], Parser]) -> Parser:
         return bind(self, g)
+
+    def parse(self, data: bytes):
+        (x, _, _) = self(Cursor.from_bytes(data), []).invoke()
+        return x

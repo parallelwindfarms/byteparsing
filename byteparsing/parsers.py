@@ -270,6 +270,15 @@ scientific_number = sequence(
     flush(to_number))
 
 
+def check_size(n: int) -> Callable:
+    """ Raises an exception if size is not n."""
+    def f(lst: list):
+        if len(lst) != n:
+            raise Failure(f"Expected list of size {n}, got size {len(lst)}")
+        return value(lst)
+    return f
+
+
 def tokenize(p: Parser) -> Parser:
     """Parses `p`, clearing surrounding whitespace."""
     return sequence(

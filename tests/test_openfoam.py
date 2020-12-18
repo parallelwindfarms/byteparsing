@@ -48,13 +48,19 @@ def test_key_value_pair():
 
 
 def test_vector():
-    assert parse_bytes(vector(scientific_number), b"(3.4 10 5e10)") \
-        == [3.4, 10, 5e10]
+    assert parse_bytes(vector(scientific_number), b"(3.4 10 -1.2 5e9 -4e-5)") \
+        == [3.4, 10, -1.2, 5e9, -4e-5]
 
 
 def test_dimensions():
     assert parse_bytes(dimensions, b"[0 2 -2 0 0 0 0]") \
         == [0, 2, -2, 0, 0, 0, 0]
+    with pytest.raises(Failure):
+        # Wrongly formatted dimensions vector
+        parse_bytes(dimensions, b"(0 2 -1 0 0 0 0 2)")
+    with pytest.raises(Failure):
+        # The number of dimensions should be 7
+        parse_bytes(dimensions, b"[0 2 -1 0 0 0]")
 
 
 def test_simple_list():

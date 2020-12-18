@@ -44,21 +44,6 @@ Packaging/One command install
 
 You can distribute your code using pipy or conda. Again, the project template does not enforce the use of either one. `The guide <https://guide.esciencecenter.nl/best_practices/language_guides/python.html#building-and-packaging-code>`_ can help you decide which tool to use for packaging.
 
-If you decide to use pypi for distributing you code, you can configure travis to upload to pypi when you make a release. If you specified your pypi user name during generation of this package, the ``.travis.yml`` file contains a section that looks like:
-
-.. code-block:: yaml
-
-  deploy:
-    provider: pypi
-    user: nlesc
-    password:
-      secure: FIXME; see README for more info
-   on:
-      tags: true
-      branch: master
-
-Before this actually works, you need to add an encrypted password for your pypi account. The `travis documentation <https://docs.travis-ci.com/user/deployment/pypi/>`_ specifies how to do this.
-
 Testing and code coverage
 -------------------------
 
@@ -76,10 +61,9 @@ Testing and code coverage
 
   - This is configured in ``setup.py`` and ``setup.cfg``
 
-* Use `Travis CI <https://travis-ci.com/>`_ to automatically run tests and to test using multiple Python versions
+* Use `GitHub actions <https://github.com/parallelwindfarms/byteparsing/actions>`_ to automatically run tests and to test using multiple Python versions
 
-  - Configuration can be found in ``.travis.yml``
-  - `Getting started with Travis CI <https://docs.travis-ci.com/user/getting-started/>`_
+  - Configuration can be found in ``.github/workflows/python-package.yml``
 
 * TODO: add something about code quality/coverage tool?
 * `Relevant section in the guide <https://guide.esciencecenter.nl/best_practices/language_guides/python.html#testing>`_
@@ -105,7 +89,7 @@ Documentation
 * The ``docs/_templates`` directory contains an (empty) ``.gitignore`` file, to be able to add it to the repository. This file can be safely removed (or you can just leave it there).
 * To put the documentation on `Read the Docs <https://readthedocs.org>`_, log in to your Read the Docs account, and import the repository (under 'My Projects').
 
-  - Include the link to the documentation in this README_.
+  - Include the link to the documentation in this README.
 
 * `Relevant section in the guide <https://guide.esciencecenter.nl/best_practices/language_guides/python.html#writingdocumentation>`_
 

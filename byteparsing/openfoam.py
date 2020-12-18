@@ -3,8 +3,10 @@ from .parsers import (
     choice, sequence, named_sequence, flush, flush_decode,
     many, push, pop, fail, value, some,
     char, char_pred, Parser, integer, scientific_number, optional, whitespace,
-    quoted_string
+    quoted_string, check_size
 )
+
+from .failure import Failure
 
 def latin_char(c):
     return 64 < c < 91 or 96 < c < 123
@@ -75,10 +77,9 @@ def foam_list(p: Parser) -> Parser:
         size=tokenize(integer), data=entries)
     return choice(simple_list, numbered_list, full_list)
 
-
 dimensions = sequence(
     tokenize(char('[')),
-    some(tokenize(integer)) >> push,
+    some(tokenize(integer)) >> check_size(7) >> push,
     tokenize(char(']')),
     pop())
 

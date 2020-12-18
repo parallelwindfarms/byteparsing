@@ -20,10 +20,7 @@ test_deps = [
     'pytest-cov',
     'pytest-flake8',
     'pycodestyle',
-    'pytest-mypy',
-    'sphinx',
-    'sphinx_rtd_theme'
-    'nbsphinx']
+    'pytest-mypy']
 
 setup(
     name='byteparsing',

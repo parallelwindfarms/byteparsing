@@ -33,7 +33,7 @@ Documentation
 
 .. _README:
 
-Full documentation [here](https://parallelwindfarms.github.io/byteparsing/functional.html).
+Full documentation `here <https://parallelwindfarms.github.io/byteparsing/functional.html>`_.
 
 Contributing
 ************

@@ -1,5 +1,6 @@
 import logging
 from typing import Any, Union, List, Optional, Callable
+import numpy as np
 
 from .cursor import Cursor
 from .failure import Failure, EndOfInput, Expected, MultipleFailures
@@ -284,3 +285,17 @@ def tokenize(p: Parser) -> Parser:
     return sequence(
         p >> push,
         optional(whitespace), pop())
+
+
+def array(dtype: np.dtype, size: int) -> Parser:
+    """Reads the next `sizeof(dtype) * product(shape)` bytes from the
+    cursor and interprets them as numeric binary data."""
+    @parser
+    def array_p(c: Cursor, a: Any):
+        try:
+            result = np.frombuffer(c.data, dtype=dtype, count=size, offset=c.end)
+        except ValueError as e:
+            raise Failure(str(e))
+        return result, c.increment(result.nbytes), a
+
+    return array_p

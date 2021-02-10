@@ -4,7 +4,7 @@ from byteparsing.parsers import (
     value, parse_bytes, item, fail, char, many_char, flush, sequence,
     literal, text_literal, ignore, tokenize, integer, some, scientific_number,
     choice, ascii_alpha_num, ascii_underscore, named_sequence, some_char,
-    push, pop, quoted_string
+    push, pop, quoted_string, array
 )
 
 
@@ -87,3 +87,21 @@ def test_pop():
 
 def test_quoted_string():
     assert parse_bytes(quoted_string('"'), b"\"blahblah\"") == "blahblah"
+
+
+def test_array():
+    import numpy as np
+    numbers = np.random.normal(size=128)
+    byte_data = numbers.data.tobytes()
+    np.testing.assert_array_equal(
+        parse_bytes(array(np.dtype(float), 128), byte_data),
+        numbers)
+
+    p = named_sequence(
+        open=char("("),
+        data=array(np.dtype(float), 128),
+        close=char(")"))
+    mixed_data = b'(' + byte_data + b')'
+    np.testing.assert_array_equal(
+        parse_bytes(p, mixed_data)["data"],
+        numbers)

@@ -2,6 +2,7 @@ import logging
 from typing import Any, Union, List, Optional, Callable
 import numpy as np
 import functools
+import mmap
 
 from .cursor import Cursor
 from .failure import Failure, EndOfInput, Expected, MultipleFailures
@@ -20,7 +21,7 @@ def value(x) -> Parser:
     return g
 
 
-def parse_bytes(p: Parser, data: bytes):
+def parse_bytes(p: Parser, data: Union[bytes, bytearray, mmap.mmap]):
     """Call parser `p` on `data` and returns result."""
     cursor = Cursor.from_bytes(data)
     result, _, _ = p(cursor, []).invoke()

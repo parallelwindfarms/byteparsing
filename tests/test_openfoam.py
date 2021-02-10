@@ -1,4 +1,5 @@
 import pytest
+import numpy as np
 from pathlib import Path
 
 from byteparsing.failure import (
@@ -125,3 +126,34 @@ def test_binary_scalar():
     }
     print(x["data"])
     assert x["data"]["internalField"].size == 9200
+
+
+def test_modify_data(tmpdir):
+    import mmap
+    import shutil
+    test_path = Path(".") / "tests" / "data" / "binary_scalar"
+    shutil.copy(test_path, tmpdir / "testfile")
+
+    test_file = (tmpdir / "testfile").open(mode="r+b")
+    mm = mmap.mmap(test_file.fileno(), 0)
+
+    x = parse_bytes(foam_file, mm)
+    assert x["preamble"] == {
+        "name": "FoamFile",
+        "content": {
+            "version": 2.0,
+            "format": "binary",
+            "class": "volScalarField",
+            "arch":  "LSB;label=32;scalar=64",
+            "location": "1",
+            "object": "p"
+        }
+    }
+    print(x["data"])
+    assert x["data"]["internalField"].size == 9200
+
+    x["data"]["internalField"][:10] = np.arange(10)
+    y = parse_bytes(foam_file, mm)
+    np.testing.assert_array_equal(
+        y["data"]["internalField"][:10],
+        np.arange(10))

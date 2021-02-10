@@ -1,11 +1,13 @@
 from dataclasses import dataclass
+from typing import Union
+import mmap
 
 
 @dataclass
 class Cursor:
     """Encapsulates a byte string and two offsets to reference the input
     data."""
-    data: bytes
+    data: Union[bytes, bytearray, mmap.mmap]
     begin: int
     end: int
     encoding: str = "utf-8"

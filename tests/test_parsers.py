@@ -4,7 +4,7 @@ from byteparsing.parsers import (
     value, parse_bytes, item, fail, char, many_char, flush, sequence,
     literal, text_literal, ignore, tokenize, integer, some, scientific_number,
     choice, ascii_alpha_num, ascii_underscore, named_sequence, some_char,
-    push, pop, quoted_string, array
+    push, pop, quoted_string, array, with_config, using_config
 )
 
 
@@ -105,3 +105,37 @@ def test_array():
     np.testing.assert_array_equal(
         parse_bytes(p, mixed_data)["data"],
         numbers)
+
+
+def test_config():
+    data = b''
+
+    @using_config
+    def p(x, config=None):
+        config["hello"] = x
+        return value(None)
+
+    @using_config
+    def q(config=None):
+        return value(config["hello"])
+
+    assert parse_bytes(with_config(sequence(p("world"), q())), data) == "world"
+
+    @using_config
+    def set_cap(x, config):
+        config["upper"] = (x == 1)
+        return value(None)
+
+    @using_config
+    def get_text(config):
+        if config["upper"]:
+            return many_char(item, lambda x: x.decode().upper())
+        else:
+            return many_char(item, lambda x: x.decode())
+
+    assert parse_bytes(
+        with_config(sequence(integer >> set_cap, get_text())),
+        b'0hello') == "hello"
+    assert parse_bytes(
+        with_config(sequence(integer >> set_cap, get_text())),
+        b'1hello') == "HELLO"

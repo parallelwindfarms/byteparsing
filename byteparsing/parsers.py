@@ -303,11 +303,11 @@ def array(dtype: np.dtype, size: int) -> Parser:
     return array_p
 
 
-def with_config(p: Parser) -> Parser:
+def with_config(p: Parser, **kwargs) -> Parser:
     """Creates a config object at the bottom of the auxiliary stack.
     The config will be a empty dictionary. The resulting parser should
     be the outer-most parser being used."""
-    return sequence(set_aux([{}]), p)
+    return sequence(set_aux([dict(kwargs)]), p)
 
 
 @decorator
@@ -317,4 +317,5 @@ def using_config(f):
     @functools.wraps(f)
     def g(*args, **kwargs) -> Parser:
         return get_aux() >> (lambda a: f(*args, **kwargs, config=a[0]))
+
     return g

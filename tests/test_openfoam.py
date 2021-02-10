@@ -7,7 +7,8 @@ from byteparsing.failure import (
 
 from byteparsing.parsers import (
     parse_bytes,
-    scientific_number
+    scientific_number,
+    with_config
 )
 
 from byteparsing.openfoam import (
@@ -19,7 +20,6 @@ from byteparsing.openfoam import (
     foam_file,
     dimensions,
     foam_list,
-    foam_numeric,
     dictionary
 )
 
@@ -64,7 +64,8 @@ def test_dimensions():
 
 
 def test_simple_list():
-    assert parse_bytes(foam_list(foam_numeric), b"hello (1 2 3 4 5)") \
+    assert parse_bytes(with_config(foam_list(), format="ascii"),
+                       b"hello (1 2 3 4 5)") \
         == {"name": "hello", "data": [1, 2, 3, 4, 5]}
 
 
@@ -76,7 +77,7 @@ def test_nested_dict():
 def test_preamble():
     test_file = Path(".") / "tests" / "data" / "ascii_scalar"
     data = test_file.open(mode="rb").read()
-    assert parse_bytes(preamble, data) == {
+    assert parse_bytes(with_config(preamble), data) == {
         "name": "FoamFile",
         "content": {
             "version": 2.0,
@@ -105,3 +106,22 @@ def test_ascii_scalar():
     print(x["data"])
     assert x["data"]["internalField"]["size"] == 10
     assert len(x["data"]["internalField"]["data"]) == 10
+
+
+def test_binary_scalar():
+    test_file = Path(".") / "tests" / "data" / "binary_scalar"
+    data = test_file.open(mode="rb").read()
+    x = parse_bytes(foam_file, data)
+    assert x["preamble"] == {
+        "name": "FoamFile",
+        "content": {
+            "version": 2.0,
+            "format": "binary",
+            "class": "volScalarField",
+            "arch":  "LSB;label=32;scalar=64",
+            "location": "1",
+            "object": "p"
+        }
+    }
+    print(x["data"])
+    assert x["data"]["internalField"].size == 9200

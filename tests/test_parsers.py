@@ -111,12 +111,12 @@ def test_config():
     data = b''
 
     @using_config
-    def p(x, config=None):
+    def p(x, config):
         config["hello"] = x
         return value(None)
 
     @using_config
-    def q(config=None):
+    def q(config):
         return value(config["hello"])
 
     assert parse_bytes(with_config(sequence(p("world"), q())), data) == "world"

@@ -1,9 +1,12 @@
+import numpy as np
+from functools import partial
+
 from .parsers import (
     text_literal, text_end_by,
     choice, sequence, named_sequence, flush, flush_decode,
     many, push, pop, fail, value, some,
     char, char_pred, Parser, integer, scientific_number, optional, whitespace,
-    quoted_string, check_size
+    quoted_string, check_size, array, with_config, using_config
 )
 
 from .failure import Failure
@@ -61,11 +64,10 @@ list_type = sequence(
     text_literal(">"),
     pop())
 
-
-def foam_list(p: Parser) -> Parser:
+def foam_list_ascii() -> Parser:
     entries = sequence(
         tokenize(char('(')),
-        many(p) >> push,
+        many(foam_numeric) >> push,
         tokenize(char(')')),
         pop())
     simple_list = named_sequence(
@@ -76,6 +78,30 @@ def foam_list(p: Parser) -> Parser:
         name=tokenize(identifier), dtype=tokenize(list_type),
         size=tokenize(integer), data=entries)
     return choice(simple_list, numbered_list, full_list)
+
+def binary_blob(header) -> Parser:
+    if header["dtype"] == b"scalar":
+        return sequence(
+            char('('), array(np.dtype(float), header["size"]) >> push,
+            tokenize(char(')')), pop())
+    if header["dtype"] == b"vector":
+        return sequence(
+            char('('), array(np.dtype(float), header["size"] * 3) >> push,
+            tokenize(char(')')), pop())
+    return fail("Unrecognized data type: " + header["dtype"].decode())
+
+def foam_list_binary() -> Parser:
+    header = named_sequence(
+        name=tokenize(identifier), dtype=tokenize(list_type),
+        size=tokenize(integer))
+    return header >> binary_blob
+
+@using_config
+def foam_list(config) -> Parser:
+    if config.get("format", "ascii") == "ascii":
+        return foam_list_ascii()
+    else:
+        return foam_list_binary()
 
 dimensions = sequence(
     tokenize(char('[')),
@@ -96,7 +122,7 @@ foam_compound_value = named_sequence(
     rest=many(foam_value)) >> handle_compound
 
 foam_value.func = tokenize(
-    choice(foam_numeric, quoted_string(), foam_list(foam_numeric),
+    choice(foam_numeric, quoted_string(), foam_list(),
            dimensions, foam_compound_value)).func
 
 dictionary = Parser(None)
@@ -122,13 +148,18 @@ dictionary.func = sequence(
     pop(key_value_pairs_to_dict)
 ).func
 
+@using_config
+def set_config(header, config):
+    config.update(header["content"])
+    return value(header)
+
 preamble = sequence(
     optional(whitespace),
     many(tokenize(choice(block_comment, line_comment))),
     named_sequence(
         name=tokenize(identifier),
-        content=tokenize(dictionary)))
+        content=tokenize(dictionary))) >> set_config
 
-foam_file = named_sequence(
+foam_file = with_config(named_sequence(
     preamble=preamble,
-    data=some(key_value_pair) >> fmap(key_value_pairs_to_dict))
+    data=some(key_value_pair) >> fmap(key_value_pairs_to_dict)))

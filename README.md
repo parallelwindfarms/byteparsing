@@ -4,7 +4,11 @@
 [![PyPI version](https://img.shields.io/pypi/v/byteparsing.svg?colorB=blue)](https://pypi.python.org/pypi/byteparsing/)
 [![fair-software.eu](https://img.shields.io/badge/fair--software.eu-%E2%97%8F%20%20%E2%97%8F%20%20%E2%97%8F%20%20%E2%97%8F%20%20%E2%97%8B-orange)](https://fair-software.eu)
 
-Parser for mixed ASCII/binary data
+Parser for mixed ASCII/binary data. Features:
+
+- Works extremely well with memory-mapped Numpy arrays
+- Included parsers:
+    - OpenFOAM
 
 The project setup is documented in [a separate
 document](project_setup.rst).

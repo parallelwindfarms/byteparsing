@@ -12,6 +12,7 @@ Welcome to byteparsing's documentation!
 
    Introduction <self>
    functional
+   architecture
    api
 
 Indices and tables

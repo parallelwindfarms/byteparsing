@@ -7,7 +7,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
-  <title>Python Module Index &mdash; byteparsing 0.1.0 documentation</title>
+  <title>Architecture &mdash; byteparsing 0.1.0 documentation</title>
   
 
   
@@ -42,9 +42,8 @@
     
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
- 
-
-
+    <link rel="next" title="API Documentation" href="api.html" />
+    <link rel="prev" title="Introduction to Functional Parsing in Python" href="functional.html" /> 
 </head>
 
 <body class="wy-body-for-nav">
@@ -94,10 +93,18 @@
             
             
               <p class="caption"><span class="caption-text">Contents:</span></p>
-<ul>
+<ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="index.html">Introduction</a></li>
 <li class="toctree-l1"><a class="reference internal" href="functional.html">Introduction to Functional Parsing in Python</a></li>
-<li class="toctree-l1"><a class="reference internal" href="architecture.html">Architecture</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Architecture</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#functional-parsers">Functional parsers</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#trampoline">Trampoline</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#cursors">Cursors</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#memory-mapping">Memory mapping</a></li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="api.html">API Documentation</a></li>
 </ul>
 
@@ -147,10 +154,14 @@
     
       <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
         
-      <li>Python Module Index</li>
+      <li>Architecture</li>
     
     
       <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="_sources/architecture.md.txt" rel="nofollow"> View page source</a>
+          
         
       </li>
     
@@ -162,50 +173,55 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
+  
+<style>
+/* CSS overrides for sphinx_rtd_theme */
 
-   <h1>Python Module Index</h1>
+/* 24px margin */
+.nbinput.nblast.container,
+.nboutput.nblast.container {
+    margin-bottom: 19px;  /* padding has already 5px */
+}
 
-   <div class="modindex-jumpbox">
-   <a href="#cap-b"><strong>b</strong></a>
-   </div>
+/* ... except between code cells! */
+.nblast.container + .nbinput.container {
+    margin-top: -19px;
+}
 
-   <table class="indextable modindextable">
-     <tr class="pcap"><td></td><td>&#160;</td><td></td></tr>
-     <tr class="cap" id="cap-b"><td></td><td>
-       <strong>b</strong></td><td></td></tr>
-     <tr>
-       <td><img src="_static/minus.png" class="toggler"
-              id="toggle-1" style="display: none" alt="-" /></td>
-       <td>
-       <code class="xref">byteparsing</code></td><td>
-       <em></em></td></tr>
-     <tr class="cg-1">
-       <td></td>
-       <td>&#160;&#160;&#160;
-       <a href="api.html#module-byteparsing.cursor"><code class="xref">byteparsing.cursor</code></a></td><td>
-       <em></em></td></tr>
-     <tr class="cg-1">
-       <td></td>
-       <td>&#160;&#160;&#160;
-       <a href="api.html#module-byteparsing.failure"><code class="xref">byteparsing.failure</code></a></td><td>
-       <em></em></td></tr>
-     <tr class="cg-1">
-       <td></td>
-       <td>&#160;&#160;&#160;
-       <a href="api.html#module-byteparsing.parsers"><code class="xref">byteparsing.parsers</code></a></td><td>
-       <em></em></td></tr>
-     <tr class="cg-1">
-       <td></td>
-       <td>&#160;&#160;&#160;
-       <a href="api.html#module-byteparsing.trampoline"><code class="xref">byteparsing.trampoline</code></a></td><td>
-       <em></em></td></tr>
-   </table>
+.admonition > p:before {
+    margin-right: 4px;  /* make room for the exclamation icon */
+}
+
+/* Fix math alignment, see https://github.com/rtfd/sphinx_rtd_theme/pull/686 */
+.math {
+    text-align: unset;
+}
+</style>
+<div class="section" id="architecture">
+<h1>Architecture<a class="headerlink" href="#architecture" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="functional-parsers">
+<h2>Functional parsers<a class="headerlink" href="#functional-parsers" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="trampoline">
+<h3>Trampoline<a class="headerlink" href="#trampoline" title="Permalink to this headline">¶</a></h3>
+</div>
+</div>
+<div class="section" id="cursors">
+<h2>Cursors<a class="headerlink" href="#cursors" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="memory-mapping">
+<h2>Memory mapping<a class="headerlink" href="#memory-mapping" title="Permalink to this headline">¶</a></h2>
+<!-- vim: set ft=markdown: --></div>
+</div>
 
 
            </div>
            
           </div>
           <footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+        <a href="api.html" class="btn btn-neutral float-right" title="API Documentation" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="functional.html" class="btn btn-neutral float-left" title="Introduction to Functional Parsing in Python" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
 
   <hr/>
 

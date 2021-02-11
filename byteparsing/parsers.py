@@ -1,10 +1,85 @@
+"""
+Parsers
+=======
+
+Some general remarks:
+
+`tokenize`
+~~~~~~~~~~
+
+The `tokenize` function is an important tool to deal with whitespace. A
+tokenized parser first parses whatever it is supposed to, and then whitespace
+of some kind (could also include comments). Note however that `tokenize` only
+strips *trailing* whitespace.
+
+`char` variants of `many` and `some`
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+The parsers `many` and `some` take a parser and use it many times to generate a
+list of objects.
+
+Say we have a tokenized parser that parses integers called `integer`, then::
+
+    >>> parse_bytes(many(integer), b"1 2 3 4")
+    [1, 2, 3, 4]
+
+Now, we have class of characters `ascii_alpha` parsing any latin character::
+
+    >>> parse_bytes(many(ascii_alpha), b"abcd")
+    [b'a', b'b', b'c', b'd']
+
+Probably this is not what you wanted. In many cases what we want is not to
+parse a sequence of objects but rather allow for a range of characters to
+repeat and then read off the entire resulting string in one go.  This is why we
+have `many_char`::
+
+    >>> parse_bytes(many_char(ascii_alpha), b"abcd efgh")
+    b"abcd"
+
+How this works is that `many_char` flushes the cursor before running, then
+parses `ascii_alpha` until that fails. At that point the cursor is again
+flushed and the resulting content returned.
+
+If you use the `many_char` parser as part of a larger parser that uses the
+cursor selection, you should use `many_char_0`. This does the same as
+`many_char` without flushing. As a consequence `many_char_0` *only* moves the
+cursor, it doesn't return anything.
+
+Auxiliary stack
+~~~~~~~~~~~~~~~
+
+An auxilary stack variable is threaded through to keep bits of information. A
+parser may `push` or `pop` values to this stack. The most common use case for
+this is to retrieve values from the middle of a sequence.
+
+If we're parsing a delimited list say `(1 2 3 4)` we can use `sequence`::
+
+    >>> parse_bytes(
+    ...     sequence(char('('), many(integer), char(')')),
+    ...     b"(1 2 3 4)")
+    b')'
+
+What happened is that `sequence` returns the value of the last parser in the
+list.  to get at the actual juice, we can push the important value and then pop
+it at the end.
+
+    >>> parse_bytes(
+    ...     sequence(char('('), many(integer) >> push, char(')'), pop()),
+    ...     b"(1 2 3 4)")
+    [1, 2, 3, 4]
+
+This is not the pretiest thing, but it works.
+
+Parsers
+~~~~~~~
+"""
+
 import logging
 from typing import Any, Union, List, Optional, Callable
 import numpy as np
 import functools
-import mmap
 
-from .cursor import Cursor
+from .cursor import Cursor, Buffer
 from .failure import Failure, EndOfInput, Expected, MultipleFailures
 from .trampoline import Parser, parser
 from .decorator import decorator
@@ -21,7 +96,7 @@ def value(x) -> Parser:
     return g
 
 
-def parse_bytes(p: Parser, data: Union[bytes, bytearray, mmap.mmap]):
+def parse_bytes(p: Parser, data: Buffer):
     """Call parser `p` on `data` and returns result."""
     cursor = Cursor.from_bytes(data)
     result, _, _ = p(cursor, []).invoke()
@@ -29,6 +104,8 @@ def parse_bytes(p: Parser, data: Union[bytes, bytearray, mmap.mmap]):
 
 
 def sequence(first: Parser, *rest: Parser) -> Parser:
+    """Parse `first`, then `sequence(*rest)`. The parser result
+    is that of the last parser in the sequence."""
     if rest:
         return first >> (lambda _: sequence(*rest))
     else:
@@ -36,6 +113,9 @@ def sequence(first: Parser, *rest: Parser) -> Parser:
 
 
 def named_sequence(**kwargs: Parser) -> Parser:
+    """Similar to `sequence`, this parses using all of the arguments in order.
+    The result is now a dictionary where the elements are assigned using the
+    result of each given parser."""
     @parser
     def g(c: Cursor, a: Any):
         result = {}
@@ -71,6 +151,7 @@ def choice(*ps: Parser) -> Parser:
 
 
 def fail(msg: str) -> Parser:
+    """A parser that always fails with the given message."""
     @parser
     def g(cursor: Cursor, aux: Any):
         raise Failure(msg)
@@ -78,10 +159,13 @@ def fail(msg: str) -> Parser:
 
 
 def optional(p: Parser, default=None):
+    """Doesn't fail if the given parser fails, but returns a default value."""
     return choice(p, value(default))
 
 
 def pop(transfer=lambda x: x):
+    """Pops a value off the auxiliary stack. The result may be transformed
+    by a `transfer` function, which defaults to the identity function."""
     @parser
     def g(c: Cursor, a: List[Any]):
         try:
@@ -92,6 +176,7 @@ def pop(transfer=lambda x: x):
 
 
 def push(x: Any):
+    """Pushes a value to the auxiliary stack."""
     @parser
     def g(c: Cursor, a: List[Any]):
         return None, c, a + [x]
@@ -99,6 +184,7 @@ def push(x: Any):
 
 
 def set_aux(x: Any):
+    """Replace the entire auxiliary stack. Not commonly used."""
     @parser
     def g(c: Cursor, a: Any):
         return None, c, x
@@ -106,6 +192,7 @@ def set_aux(x: Any):
 
 
 def get_aux():
+    """Get the entire auxiliary stack. Not commonly used."""
     @parser
     def g(c: Cursor, a: Any):
         return a, c, a
@@ -113,10 +200,13 @@ def get_aux():
 
 
 def ignore(p: Parser):
+    """Runs the given parser, but doesn't mutate the stack."""
     return get_aux() >> (lambda a: sequence(p, set_aux(a)))
 
 
 def flush(transfer=lambda x: x):
+    """Flush the cursor and return the underlying data. The return
+    value can be mapped by the optional `transfer` function."""
     @parser
     def g(c: Cursor, a: Any):
         try:
@@ -127,6 +217,8 @@ def flush(transfer=lambda x: x):
 
 
 def flush_decode():
+    """Flush the cursor and return the underlying data as a decoded
+    string."""
     @parser
     def g(c: Cursor, a: Any):
         return c.content_str, c.flush(), a
@@ -134,6 +226,7 @@ def flush_decode():
 
 
 def many(p: Parser, init: Optional[List[Any]] = None) -> Parser:
+    """Parse `p` any number of times."""
     @parser
     def g(c: Cursor, a: Any):
         try:
@@ -147,6 +240,7 @@ def many(p: Parser, init: Optional[List[Any]] = None) -> Parser:
 
 
 def some(p: Parser) -> Parser:
+    """Parse `p` one or more times."""
     return p >> (lambda x: many(p, [x]))
 
 
@@ -162,6 +256,7 @@ def many_char_0(p: Parser) -> Parser:
 
 
 def many_char(p: Parser, transfer=lambda x: x) -> Parser:
+    """Parse `p` zero or more times, returns the string."""
     return sequence(flush(), many_char_0(p), flush(transfer))
 
 
@@ -176,6 +271,7 @@ def text_end_by(x: str) -> Parser:
 
 
 def quoted_string(quote='"'):
+    """Parses a quoted string, no quote escaping implemented yet."""
     return sequence(
         char(quote), flush(),
         text_end_by(quote))
@@ -198,7 +294,8 @@ def char_pred(pred: Callable[[int], bool]) -> Parser:
         if pred(x):
             return value(x)
         else:
-            raise Failure(f"Character '{chr(x)}' fails predicate `{pred.__name__}`")
+            raise Failure(f"Character '{chr(x)}' fails predicate"
+                          " `{pred.__name__}`")
 
     return item >> f
 
@@ -296,7 +393,8 @@ def array(dtype: np.dtype, size: int) -> Parser:
     @parser
     def array_p(c: Cursor, a: Any):
         try:
-            result = np.frombuffer(c.data, dtype=dtype, count=size, offset=c.end)
+            result = np.frombuffer(c.data, dtype=dtype, count=size,
+                                   offset=c.end)
         except ValueError as e:
             raise Failure(str(e))
         return result, c.increment(result.nbytes), a

@@ -1,6 +1,15 @@
 API Documentation
 =================
 
-.. automodule:: byteparsing
+.. automodule:: byteparsing.cursor
+   :members:
+
+.. automodule:: byteparsing.failure
+   :members:
+
+.. automodule:: byteparsing.parsers
+   :members:
+
+.. automodule:: byteparsing.trampoline
    :members:
 

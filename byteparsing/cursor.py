@@ -1,13 +1,38 @@
+"""
+Cursors
+=======
+
+A `Cursor` object contains a reference to the buffer (`bytes`, `bytearray` or
+`mmap`), together with a `begin` and `end` pointer. While parsing, usually only
+the `end` pointer is updated. Certain parsers first lex the input, i.e. find
+where a token begins and ends, and then use some function to convert the
+selection to a useable object.
+
+An immediate example: we may use the Python built-in `float` function to
+convert a string to a floating point number.  Such a routine should then first
+`flush` the cursor, so that `begin` and `end` point to the same location. After
+passing a number of numeric characters, decimal point, exponent indication etc,
+the part that we think represents a floating-point number can be passed to the
+`float` function. This saves us the bother of coding floating point conversion
+manually.
+
+.. py:data:: Buffer
+
+    Type for the buffer. One of: `bytes`, `bytearray`, `mmap.mmap`.
+"""
+
 from dataclasses import dataclass
 from typing import Union
 import mmap
+
+Buffer = Union[bytes, bytearray, mmap.mmap]
 
 
 @dataclass
 class Cursor:
     """Encapsulates a byte string and two offsets to reference the input
     data."""
-    data: Union[bytes, bytearray, mmap.mmap]
+    data: Buffer
     begin: int
     end: int
     encoding: str = "utf-8"
@@ -43,6 +68,7 @@ class Cursor:
         return self.content.decode(self.encoding)
 
     def look_ahead(self, n: int = 1):
+        """Get the next `n` bytes."""
         return self.data[self.end:self.end+n]
 
     def increment(self, n: int = 1):
@@ -54,4 +80,6 @@ class Cursor:
         return Cursor(self.data, self.end, self.end)
 
     def find(self, x: bytes):
+        """Get a cursor where the `end` position is shifted to the next
+        location where `x` is found."""
         return Cursor(self.data, self.begin, self.data.find(x, self.end))

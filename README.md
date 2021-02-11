@@ -1,7 +1,7 @@
 # Byteparsing
 
 ![Python package](https://github.com/parallelwindfarms/byteparsing/workflows/Python%20package/badge.svg)
-[![PyPI version](https://badge.fury.io/py/byteparsing.svg)](https://badge.fury.io/py/byteparsing)
+[![PyPI version](https://img.shields.io/pypi/v/byteparsing.svg?colorB=blue)](https://pypi.python.org/pypi/byteparsing/)
 
 Parser for mixed ASCII/binary data
 

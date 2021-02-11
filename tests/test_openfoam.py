@@ -109,6 +109,26 @@ def test_ascii_scalar():
     assert len(x["data"]["internalField"]["data"]) == 10
 
 
+def test_ascii_vector():
+    test_file = Path(".") / "tests" / "data" / "ascii_vector"
+    data = test_file.open(mode="rb").read()
+    x = parse_bytes(foam_file, data)
+    assert x["preamble"] == {
+        "name": "FoamFile",
+        "content": {
+            "version": 2.0,
+            "format": "ascii",
+            "class": "volVectorField",
+            "location": "1",
+            "object": "U"
+        }
+    }
+    print(x["data"])
+    assert x["data"]["internalField"]["size"] == 10
+    assert len(x["data"]["internalField"]["data"]) == 10
+    assert np.array(x["data"]["internalField"]["data"]).shape == (10, 3)
+
+
 def test_binary_scalar():
     test_file = Path(".") / "tests" / "data" / "binary_scalar"
     data = test_file.open(mode="rb").read()
@@ -126,6 +146,25 @@ def test_binary_scalar():
     }
     print(x["data"])
     assert x["data"]["internalField"].size == 9200
+
+
+def test_binary_vector():
+    test_file = Path(".") / "tests" / "data" / "binary_vector"
+    data = test_file.open(mode="rb").read()
+    x = parse_bytes(foam_file, data)
+    assert x["preamble"] == {
+        "name": "FoamFile",
+        "content": {
+            "version": 2.0,
+            "format": "binary",
+            "class": "volVectorField",
+            "arch":  "LSB;label=32;scalar=64",
+            "location": "1",
+            "object": "U"
+        }
+    }
+    print(x["data"])
+    assert x["data"]["internalField"].shape == (9200, 3)
 
 
 def test_modify_data(tmpdir):

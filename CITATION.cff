@@ -1,0 +1,27 @@
+# YAML 1.2
+---
+authors: 
+  -
+    affiliation: "Netherlands eScience Center"
+    family-names: Hidding
+    given-names: Johan
+  -
+    affiliation: "Netherlands eScience Center"
+    family-names: "Rodríguez-Sánchez"
+    given-names: Pablo
+    orcid: "https://orcid.org/0000-0002-2855-940X"
+cff-version: "1.1.0"
+date-released: 2020-02-11
+identifiers: 
+  - 
+    type: url
+    value: "https://pypi.org/project/byteparsing/"
+keywords: 
+  - parsing
+  - binary
+  - ascii
+license: "Apache-2.0"
+message: "If you use this software, please cite it using these metadata."
+title: Byteparsing
+version: "0.1"
+...

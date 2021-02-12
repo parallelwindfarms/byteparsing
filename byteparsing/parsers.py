@@ -70,6 +70,37 @@ it at the end.
 
 This is not the pretiest thing, but it works.
 
+Config variable
+~~~~~~~~~~~~~~~
+
+We may use the auxiliary stack to store a config variable that can be accessed
+from any parser. To make this use a bit more user friendly, we define two
+functions: :py:func:`with_config` and the :py:func:`use_config` decorator.
+
+Example
+-------
+We have as input a number and a string. The string is returned in upper-case if
+the number is 1::
+
+    @using_config
+    def set_case(x, config):
+        config["uppercase"] = (x == 1)
+        return value(None)
+
+    @using_config
+    def get_text(config):
+        if config["uppercase"]:
+            return many_char(item, lambda x: x.decode().upper())
+        else:
+            return many_char(item, lambda x: x.decode())
+
+    assert parse_bytes(
+        with_config(sequence(integer >> set_cap, get_text())),
+        b'0hello') == "hello"
+    assert parse_bytes(
+        with_config(sequence(integer >> set_cap, get_text())),
+        b'1hello') == "HELLO"
+
 Parsers
 ~~~~~~~
 """

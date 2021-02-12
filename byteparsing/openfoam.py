@@ -52,6 +52,7 @@ identifier = sequence(
 
 
 def vector(p: Parser) -> Parser:
+    """Parses a list of `p` delimited by parens."""
     return sequence(
         tokenize(text_literal("(")),
         many(tokenize(p)) >> push,
@@ -70,6 +71,7 @@ list_type = sequence(
 
 
 def foam_list_ascii() -> Parser:
+    """Parses an OpenFOAM list in ASCII format."""
     entries = sequence(
         tokenize(char('(')),
         many(foam_numeric) >> push,
@@ -86,6 +88,8 @@ def foam_list_ascii() -> Parser:
 
 
 def binary_blob(header) -> Parser:
+    """Parses a binary blob to a numpy array. This is a helper function
+    to `foam_list_binary`."""
     if header["dtype"] == b"scalar":
         return sequence(
             char('('), array(np.dtype(float), header["size"]) >> push,
@@ -98,6 +102,8 @@ def binary_blob(header) -> Parser:
 
 
 def foam_list_binary() -> Parser:
+    """Parses a binary OpenFoam list. Unlike the ASCII format the size of
+    the list is mandatory."""
     header = named_sequence(
         name=tokenize(identifier), dtype=tokenize(list_type),
         size=tokenize(integer))
@@ -106,6 +112,8 @@ def foam_list_binary() -> Parser:
 
 @using_config
 def foam_list(config) -> Parser:
+    """Based on the information in config, this parses either a binary
+    list or an ASCII list."""
     if config.get("format", "ascii") == "ascii":
         return foam_list_ascii()
     else:

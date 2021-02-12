@@ -29,7 +29,7 @@ pip install byteparsing
 
 To install the latest version of byteparsing, do:
 
-``` {.console}
+```{.console}
 git clone https://github.com/parallelwindfarms/byteparsing.git
 cd byteparsing
 pip install .

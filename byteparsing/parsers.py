@@ -152,7 +152,8 @@ def named_sequence(**kwargs: Parser) -> Parser:
         result = {}
         for k, v in kwargs.items():
             x, c, a = v(c, a).invoke()
-            result[k] = x
+            if k[0] != "_":
+                result[k] = x
         return result, c, a
     return g
 
@@ -372,6 +373,36 @@ def text_one_of(x: str) -> Parser:
         options = [literal(ch.encode(c.encoding)) for ch in x]
         return choice(*options)(c, a)
     return g
+
+
+def satisfies(p: Parser, pred) -> Parser:
+    def sat_filter(v):
+        if pred(v):
+            return value(v)
+        else:
+            raise Failure(f"Unexpected {v}")
+
+    return p >> sat_filter
+
+
+def byte_one_of(x: bytes) -> Parser:
+    return satisfies(item, lambda y: y in x)
+
+
+def byte_none_of(x: bytes) -> Parser:
+    """Parses none of the characters in `x`."""
+    return satisfies(item, lambda y: y not in x)
+
+
+def repeat_n(p: Parser, n: int) -> Parser:
+    @parser
+    def repeated(c: Cursor, a: Any):
+        result = []
+        for i in range(n):
+            x, c, a = p(c, a).invoke()
+            result.append(x)
+        return result, c, a
+    return repeated
 
 
 whitespace = some_char(text_one_of(" \t\n"))

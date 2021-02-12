@@ -29,4 +29,14 @@ jobs:
         pip install -e .[test]
     - name: Test with pytest
       run: |
-        pytest --cov=./ --cov-report=xml
+        pytest
+        coverage xml
+    - name: Upload coverage
+      if: matrix.python-version == 3.9
+      uses: codecov/codecov-action@v1
+      with:
+        token: ${{ secrets.CODECOV_TOKEN }} #required
+        file: ./coverage.xml #optional
+        flags: unittests #optional
+        name: codecov-umbrella #optional
+        yml: ./codecov.yml #optional

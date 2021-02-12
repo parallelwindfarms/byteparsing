@@ -190,6 +190,20 @@
 </style>
 <div class="section" id="welcome-to-byteparsing-s-documentation">
 <h1>Welcome to byteparsing’s documentation!<a class="headerlink" href="#welcome-to-byteparsing-s-documentation" title="Permalink to this headline">¶</a></h1>
+<p>Byteparsing is a package for <strong>mixed text and binary</strong> parsing in Python. The main driver for developing this package was to write a parser for binary OpenFOAM files. The binary file format in OpenFOAM is “special”. It is the same as the ASCII based text format, except where large blocks of floating point data are concerned.</p>
+<p>When <strong>not to use</strong> <cite>byteparsing</cite>:</p>
+<ul class="simple">
+<li><p>You just need to parse some text: use <cite>pyparsing</cite>, it is the industry’s standard.</p></li>
+</ul>
+<p><strong>Do use</strong> <cite>byteparsing</cite> if:</p>
+<ul class="simple">
+<li><p>You need to tinker with large binary OpenFOAM files directly from Python.</p></li>
+<li><p>There is a different package that does not adhere to data standards and hacked together its own mixed ASCII/binary file format. You will have to roll out your own parser. Byteparsing can make this easier.</p></li>
+</ul>
+<p><strong>Coolest feature</strong>:</p>
+<ul class="simple">
+<li><p>Works with <code class="xref py py-mod docutils literal notranslate"><span class="pre">mmap</span></code> and <code class="xref py py-mod docutils literal notranslate"><span class="pre">numpy</span></code>! This means you can open the file without reading it entirely into memory, change the NumPy array data and the changes are automatically saved to disk.</p></li>
+</ul>
 <div class="toctree-wrapper compound">
 <p class="caption"><span class="caption-text">Contents:</span></p>
 <ul class="current">

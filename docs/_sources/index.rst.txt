@@ -28,6 +28,7 @@ When **not to use** `byteparsing`:
    Introduction <self>
    functional
    examples
+   ply
    architecture
    api
 

@@ -1,0 +1,559 @@
+{
+ "cells": [
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "# Advanced example: parsing PLY files\n",
+    "\n",
+    "PLY is a file format storing 3D polygonal data that has support for both ASCII and binary formats. Some references: [Wikipedia entry](https://en.wikipedia.org/wiki/PLY_(file_format)) and [Paul Bourke's pages](http://paulbourke.net/dataformats/ply/)."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 66,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "from __future__ import annotations\n",
+    "from dataclasses import dataclass\n",
+    "from functools import partial\n",
+    "import numpy as np\n",
+    "\n",
+    "from byteparsing import (parse_bytes)\n",
+    "from byteparsing.trampoline import (Parser, parser)\n",
+    "from byteparsing.parsers import (\n",
+    "    sequence, named_sequence, choice, optional, value, repeat_n,\n",
+    "    text_literal, char, text_one_of, text_end_by,\n",
+    "    byte_none_of, byte_one_of,\n",
+    "    flush, flush_decode,\n",
+    "    push, pop,\n",
+    "    many, some, many_char, some_char, many_char_0, some_char_0,\n",
+    "    ascii_alpha, ascii_underscore, ascii_alpha_num,\n",
+    "    integer, scientific_number)"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "## Header\n",
+    "\n",
+    "The header starts with a \"magic number\", a line containing `ply`."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 67,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "eol = choice(text_literal(\"\\n\"), text_literal(\"\\n\\r\"))\n",
+    "ply_magic_number = sequence(text_literal(\"ply\"), eol)"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "The second line indicates which variation of the PLY format this is."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 68,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "from enum import Enum\n",
+    "\n",
+    "class PlyFormat(Enum):\n",
+    "    ASCII = 1\n",
+    "    BINARY_LE = 2\n",
+    "    BINARY_BE = 3\n",
+    "    \n",
+    "    @staticmethod\n",
+    "    def from_string(s: str) -> PlyFormat:\n",
+    "        if s == \"ascii\":\n",
+    "            return PlyFormat.ASCII\n",
+    "        if s == \"binary_little_endian\":\n",
+    "            return PlyFormat.BINARY_LE\n",
+    "        if s == \"binary_big_endian\":\n",
+    "            return PlyFormat.BINARY_BE\n",
+    "        else:\n",
+    "            raise ValueError(f\"Unrecognized format string: {s}\")"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 69,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "def fmap(f):\n",
+    "    return lambda x: value(f(x))\n",
+    "\n",
+    "def tokenize(p: Parser) -> Parser:\n",
+    "    return sequence(p >> push, many_char(text_one_of(\" \")), pop())\n",
+    "\n",
+    "word = sequence(\n",
+    "    flush(), ascii_alpha, many_char_0(choice(ascii_alpha_num, ascii_underscore)),\n",
+    "    flush_decode())"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 70,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "ply_format = sequence(\n",
+    "    tokenize(text_literal(\"format\")),\n",
+    "    tokenize(word) >> fmap(PlyFormat.from_string) >> push,\n",
+    "    tokenize(text_literal(\"1.0\")), eol, pop())"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 71,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "<PlyFormat.BINARY_LE: 2>"
+      ]
+     },
+     "execution_count": 71,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "parse_bytes(ply_format, b\"format binary_little_endian 1.0\\n\")"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "Comments may be placed in the header by using the word comment at the start of the line. Everything from there until the end of the line should then be ignored."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 72,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "ply_comment = sequence(\n",
+    "    tokenize(text_literal(\"comment\")),\n",
+    "    text_end_by(\"\\n\"), optional(char(\"\\r\")))"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 73,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "x = np.dtype(\"float\")"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 74,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "3.4"
+      ]
+     },
+     "execution_count": 74,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "x.type(b\"3.4   \")"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 90,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "ply_type_table = {\n",
+    "    \"char\": \"int8\",\n",
+    "    \"uchar\": \"uint8\",\n",
+    "    \"short\": \"int16\",\n",
+    "    \"ushort\": \"uint16\",\n",
+    "    \"int\": \"int32\",\n",
+    "    \"uint\": \"uint32\",\n",
+    "    \"float\": \"float32\",\n",
+    "    \"double\": \"float64\"\n",
+    "}\n",
+    "\n",
+    "class PlyType:\n",
+    "    pass\n",
+    "\n",
+    "@dataclass\n",
+    "class PlyPrimitiveType(PlyType):\n",
+    "    dtype: np.dtype\n",
+    "        \n",
+    "    @staticmethod\n",
+    "    def from_string(s: str) -> PlyPrimitiveType:\n",
+    "        sanitized_name = ply_type_table.get(s, s)\n",
+    "        return PlyPrimitiveType(np.dtype(sanitized_name))\n",
+    "    \n",
+    "    def ascii(self) -> Parser:\n",
+    "        return sequence(\n",
+    "            flush(), some_char_0(byte_none_of(b\"\\n \")),\n",
+    "            many_char_0(byte_one_of(b\"\\n \")), flush(self.dtype.type))\n",
+    "    \n",
+    "@dataclass\n",
+    "class PlyListType(PlyType):\n",
+    "    size_type: PlyPrimitiveType\n",
+    "    dtype: PlyPrimitiveType\n",
+    "        \n",
+    "    def ascii(self) -> Parser:\n",
+    "        return self.size_type.ascii() >> partial(repeat_n, self.dtype.ascii())\n",
+    "        \n",
+    "def construct(f):\n",
+    "    return lambda kwargs: value(f(**kwargs))"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 76,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "primitive_type = tokenize(word) >> fmap(PlyPrimitiveType.from_string)\n",
+    "\n",
+    "list_type = named_sequence(\n",
+    "    _1=tokenize(text_literal(\"list\")),\n",
+    "    size_type=primitive_type,\n",
+    "    dtype=primitive_type) >> construct(PlyListType)\n",
+    "\n",
+    "ply_type = choice(list_type, primitive_type)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 77,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "PlyPrimitiveType(dtype=dtype('float32'))"
+      ]
+     },
+     "execution_count": 77,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "parse_bytes(ply_type, b\"float float\")"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 78,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "PlyListType(size_type=PlyPrimitiveType(dtype=dtype('uint8')), dtype=PlyPrimitiveType(dtype=dtype('float32')))"
+      ]
+     },
+     "execution_count": 78,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "parse_bytes(ply_type, b\"list uint8 float\")"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 79,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "@dataclass\n",
+    "class PlyProperty:\n",
+    "    dtype: PlyType\n",
+    "    name: str\n",
+    "\n",
+    "ply_property = named_sequence(\n",
+    "    _1=tokenize(text_literal(\"property\")),\n",
+    "    dtype=ply_type,\n",
+    "    name=tokenize(word),\n",
+    "    _2=eol) >> construct(PlyProperty)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 80,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "PlyProperty(dtype=PlyPrimitiveType(dtype=dtype('float32')), name='x')"
+      ]
+     },
+     "execution_count": 80,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "parse_bytes(\n",
+    "    ply_property,\n",
+    "    b\"property float x\\n\")"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 81,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "end_header = sequence(text_literal(\"end_header\"), eol)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 82,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "@dataclass\n",
+    "class PlyElement:\n",
+    "    name: str\n",
+    "    size: int\n",
+    "    properties: List[PlyProperty]\n",
+    "        \n",
+    "    def ascii(self) -> Parser:\n",
+    "        single_item = named_sequence(\n",
+    "            **{p.name: p.dtype.ascii() for p in self.properties})\n",
+    "        return repeat_n(single_item, self.size)\n",
+    "\n",
+    "ply_element = named_sequence(\n",
+    "    _1=tokenize(text_literal(\"element\")),\n",
+    "    name=tokenize(word),\n",
+    "    size=tokenize(integer),\n",
+    "    _2=eol,\n",
+    "    properties=some(ply_property)) >> construct(PlyElement)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 83,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "[PlyElement(name='vertex', size=8, properties=[PlyProperty(dtype=PlyPrimitiveType(dtype=dtype('float32')), name='x'), PlyProperty(dtype=PlyPrimitiveType(dtype=dtype('float32')), name='y'), PlyProperty(dtype=PlyPrimitiveType(dtype=dtype('float32')), name='z')]),\n",
+       " PlyElement(name='face', size=6, properties=[PlyProperty(dtype=PlyListType(size_type=PlyPrimitiveType(dtype=dtype('uint8')), dtype=PlyPrimitiveType(dtype=dtype('int32'))), name='vertex_index')])]"
+      ]
+     },
+     "execution_count": 83,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "parse_bytes(\n",
+    "    some(ply_element), \n",
+    "    b\"element vertex 8\\nproperty float x\\nproperty float y\\nproperty float z\\n\" +\n",
+    "    b\"element face 6\\nproperty list uchar int vertex_index\\n\")"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 84,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "PlyElement(name='face', size=6, properties=[PlyProperty(dtype=PlyListType(size_type=PlyPrimitiveType(dtype=dtype('uint8')), dtype=PlyPrimitiveType(dtype=dtype('int32'))), name='vertex_index')])"
+      ]
+     },
+     "execution_count": 84,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "parse_bytes(ply_element, b\"element face 6\\nproperty list uchar int vertex_index\\n\")"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 85,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "@dataclass\n",
+    "class PlyHeader:\n",
+    "    format: PlyFormat\n",
+    "    comment: List[str]\n",
+    "    elements: List[PlyElement]\n",
+    "        \n",
+    "    def parser(self) -> Parser:\n",
+    "        if self.format == PlyFormat.ASCII:\n",
+    "            return named_sequence(\n",
+    "                **{e.name: e.ascii() for e in self.elements})\n",
+    "        else:\n",
+    "            raise NotImplementedError()\n",
+    "\n",
+    "ply_header = named_sequence(\n",
+    "    _1=ply_magic_number,\n",
+    "    format=ply_format,\n",
+    "    comment=many(ply_comment),\n",
+    "    elements=some(ply_element),\n",
+    "    _2=sequence(text_literal(\"end_header\"), eol)) >> construct(PlyHeader)\n",
+    "\n",
+    "def ply_data(header):\n",
+    "    return named_sequence(header=value(header), data=header.parser())\n",
+    "\n",
+    "ply_file = ply_header >> ply_data"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 86,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "ascii_example = b\"\"\"ply\n",
+    "format ascii 1.0\n",
+    "comment made by Greg Turk\n",
+    "comment this file is a cube\n",
+    "element vertex 8\n",
+    "property float x\n",
+    "property float y\n",
+    "property float z\n",
+    "element face 6\n",
+    "property list uchar int vertex_index\n",
+    "end_header\n",
+    "0 0 0\n",
+    "0 0 1\n",
+    "0 1 1\n",
+    "0 1 0\n",
+    "1 0 0\n",
+    "1 0 1\n",
+    "1 1 1\n",
+    "1 1 0\n",
+    "4 0 1 2 3\n",
+    "4 7 6 5 4\n",
+    "4 0 4 5 1\n",
+    "4 1 5 6 2\n",
+    "4 2 6 7 3\n",
+    "4 3 7 4 0\n",
+    "\"\"\""
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 87,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "PlyHeader(format=<PlyFormat.ASCII: 1>, comment=[None, None], elements=[PlyElement(name='vertex', size=8, properties=[PlyProperty(dtype=PlyPrimitiveType(dtype=dtype('float32')), name='x'), PlyProperty(dtype=PlyPrimitiveType(dtype=dtype('float32')), name='y'), PlyProperty(dtype=PlyPrimitiveType(dtype=dtype('float32')), name='z')]), PlyElement(name='face', size=6, properties=[PlyProperty(dtype=PlyListType(size_type=PlyPrimitiveType(dtype=dtype('uint8')), dtype=PlyPrimitiveType(dtype=dtype('int32'))), name='vertex_index')])])"
+      ]
+     },
+     "execution_count": 87,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "parse_bytes(ply_header, ascii_example)"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "No for the fun part! The header that we read actually encodes the parser for the rest of the file!"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 88,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "{'header': PlyHeader(format=<PlyFormat.ASCII: 1>, comment=[None, None], elements=[PlyElement(name='vertex', size=8, properties=[PlyProperty(dtype=PlyPrimitiveType(dtype=dtype('float32')), name='x'), PlyProperty(dtype=PlyPrimitiveType(dtype=dtype('float32')), name='y'), PlyProperty(dtype=PlyPrimitiveType(dtype=dtype('float32')), name='z')]), PlyElement(name='face', size=6, properties=[PlyProperty(dtype=PlyListType(size_type=PlyPrimitiveType(dtype=dtype('uint8')), dtype=PlyPrimitiveType(dtype=dtype('int32'))), name='vertex_index')])]),\n",
+       " 'data': {'vertex': [{'x': 0.0, 'y': 0.0, 'z': 0.0},\n",
+       "   {'x': 0.0, 'y': 0.0, 'z': 1.0},\n",
+       "   {'x': 0.0, 'y': 1.0, 'z': 1.0},\n",
+       "   {'x': 0.0, 'y': 1.0, 'z': 0.0},\n",
+       "   {'x': 1.0, 'y': 0.0, 'z': 0.0},\n",
+       "   {'x': 1.0, 'y': 0.0, 'z': 1.0},\n",
+       "   {'x': 1.0, 'y': 1.0, 'z': 1.0},\n",
+       "   {'x': 1.0, 'y': 1.0, 'z': 0.0}],\n",
+       "  'face': [{'vertex_index': [0, 1, 2, 3]},\n",
+       "   {'vertex_index': [7, 6, 5, 4]},\n",
+       "   {'vertex_index': [0, 4, 5, 1]},\n",
+       "   {'vertex_index': [1, 5, 6, 2]},\n",
+       "   {'vertex_index': [2, 6, 7, 3]},\n",
+       "   {'vertex_index': [3, 7, 4, 0]}]}}"
+      ]
+     },
+     "execution_count": 88,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "parse_bytes(ply_file, ascii_example)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": []
+  }
+ ],
+ "metadata": {
+  "kernelspec": {
+   "display_name": "Python 3",
+   "language": "python",
+   "name": "python3"
+  },
+  "language_info": {
+   "codemirror_mode": {
+    "name": "ipython",
+    "version": 3
+   },
+   "file_extension": ".py",
+   "mimetype": "text/x-python",
+   "name": "python",
+   "nbconvert_exporter": "python",
+   "pygments_lexer": "ipython3",
+   "version": "3.9.1"
+  }
+ },
+ "nbformat": 4,
+ "nbformat_minor": 4
+}

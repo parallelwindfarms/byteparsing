@@ -1,28 +1,8 @@
 {
- "metadata": {
-  "language_info": {
-   "codemirror_mode": {
-    "name": "ipython",
-    "version": 3
-   },
-   "file_extension": ".py",
-   "mimetype": "text/x-python",
-   "name": "python",
-   "nbconvert_exporter": "python",
-   "pygments_lexer": "ipython3",
-   "version": "3.7.7-final"
-  },
-  "orig_nbformat": 2,
-  "kernelspec": {
-   "name": "python37464bitanaconda3virtualenv14810d6c473e49049cbc1e24a5530a71",
-   "display_name": "Python 3.7.4 64-bit ('anaconda3': virtualenv)",
-   "language": "python"
-  }
- },
- "nbformat": 4,
- "nbformat_minor": 2,
  "cells": [
   {
+   "cell_type": "markdown",
+   "metadata": {},
    "source": [
     "# Examples of usage\n",
     "\n",
@@ -44,9 +24,7 @@
     "```\n",
     "\n",
     "Once installed, of course, you'll need to import it:"
-   ],
-   "cell_type": "markdown",
-   "metadata": {}
+   ]
   },
   {
    "cell_type": "code",
@@ -58,6 +36,8 @@
    ]
   },
   {
+   "cell_type": "markdown",
+   "metadata": {},
    "source": [
     "## Parsing an email address\n",
     "\n",
@@ -84,11 +64,13 @@
     "3. We continue, and we expect to find a \".\" here. We ignore it, and continue. The next email-valid chars after the \".\" correspond to the `country` field. It should contain at least one char. \n",
     "\n",
     "In the example below, you can see the implementation of this algorithm.\n"
-   ],
-   "cell_type": "markdown",
-   "metadata": {}
+   ]
   },
   {
+   "cell_type": "code",
+   "execution_count": 2,
+   "metadata": {},
+   "outputs": [],
    "source": [
     "# First, we define what charachters are acceptable on an email (email-valid chars)\n",
     "email_char = choice(ascii_alpha_num, ascii_underscore)\n",
@@ -100,18 +82,14 @@
     "        server=sequence(text_literal(\"@\"), flush(), some_char(email_char)), # Step 2\n",
     "        country=sequence(text_literal(\".\"), flush(), some_char(email_char)) # Step 3\n",
     ")"
-   ],
-   "cell_type": "code",
-   "metadata": {},
-   "execution_count": 2,
-   "outputs": []
+   ]
   },
   {
+   "cell_type": "markdown",
+   "metadata": {},
    "source": [
     "Let's apply to a made-up email address and see if it works:"
-   ],
-   "cell_type": "markdown",
-   "metadata": {}
+   ]
   },
   {
    "cell_type": "code",
@@ -119,8 +97,8 @@
    "metadata": {},
    "outputs": [
     {
-     "output_type": "stream",
      "name": "stdout",
+     "output_type": "stream",
      "text": [
       "{'user': b'pab', 'server': b'rod', 'country': b'es'}\n"
      ]
@@ -133,6 +111,8 @@
    ]
   },
   {
+   "cell_type": "markdown",
+   "metadata": {},
    "source": [
     "Notice that we used the `parse_bytes` method to actually apply the parser.\n",
     "We'll use this method very often, so it is good to stop for a moment and reflect about its structure.\n",
@@ -142,9 +122,28 @@
     "2. The data itself.\n",
     "\n",
     "The output will be the parsed data."
-   ],
-   "cell_type": "markdown",
-   "metadata": {}
+   ]
   }
- ]
+ ],
+ "metadata": {
+  "kernelspec": {
+   "display_name": "Python 3",
+   "language": "python",
+   "name": "python3"
+  },
+  "language_info": {
+   "codemirror_mode": {
+    "name": "ipython",
+    "version": 3
+   },
+   "file_extension": ".py",
+   "mimetype": "text/x-python",
+   "name": "python",
+   "nbconvert_exporter": "python",
+   "pygments_lexer": "ipython3",
+   "version": "3.9.1"
+  }
+ },
+ "nbformat": 4,
+ "nbformat_minor": 4
 }

@@ -106,6 +106,9 @@ def test_array():
         parse_bytes(p, mixed_data)["data"],
         numbers)
 
+    with pytest.raises(Failure):
+        parse_bytes(array(np.dtype(float), 129), byte_data)
+
 
 def test_config():
     data = b''

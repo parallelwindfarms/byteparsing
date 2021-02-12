@@ -106,8 +106,3 @@ class Parser:
         """The `>>` operator is one of the primary ways of composing
         parsers (the other being `choice`)."""
         return bind(self, g)
-
-    def parse(self, data: bytes):
-        """DEPRICATED: call `byteparsing.parse_bytes` instead."""
-        (x, _, _) = self(Cursor.from_bytes(data), []).invoke()
-        return x

@@ -99,6 +99,7 @@
 <li class="toctree-l1"><a class="reference internal" href="examples.html">Examples of usage</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Advanced example: parsing PLY files</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#Header">Header</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#The-Stanford-Bunny">The Stanford Bunny</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="architecture.html">Architecture</a></li>
@@ -444,14 +445,16 @@ div.rendered_html tbody tr:hover {
 <h1>Advanced example: parsing PLY files<a class="headerlink" href="#Advanced-example:-parsing-PLY-files" title="Permalink to this headline">¶</a></h1>
 <p>PLY is a file format storing 3D polygonal data that has support for both ASCII and binary formats. Some references: <a class="reference external" href="https://en.wikipedia.org/wiki/PLY_(file_format)">Wikipedia entry</a> and <a class="reference external" href="http://paulbourke.net/dataformats/ply/">Paul Bourke’s pages</a>.</p>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[66]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[73]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
 <span></span><span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">annotations</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Optional</span>
 <span class="kn">from</span> <span class="nn">dataclasses</span> <span class="kn">import</span> <span class="n">dataclass</span>
 <span class="kn">from</span> <span class="nn">functools</span> <span class="kn">import</span> <span class="n">partial</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">pprint</span>
 
 <span class="kn">from</span> <span class="nn">byteparsing</span> <span class="kn">import</span> <span class="p">(</span><span class="n">parse_bytes</span><span class="p">)</span>
 <span class="kn">from</span> <span class="nn">byteparsing.trampoline</span> <span class="kn">import</span> <span class="p">(</span><span class="n">Parser</span><span class="p">,</span> <span class="n">parser</span><span class="p">)</span>
@@ -463,7 +466,9 @@ div.rendered_html tbody tr:hover {
     <span class="n">push</span><span class="p">,</span> <span class="n">pop</span><span class="p">,</span>
     <span class="n">many</span><span class="p">,</span> <span class="n">some</span><span class="p">,</span> <span class="n">many_char</span><span class="p">,</span> <span class="n">some_char</span><span class="p">,</span> <span class="n">many_char_0</span><span class="p">,</span> <span class="n">some_char_0</span><span class="p">,</span>
     <span class="n">ascii_alpha</span><span class="p">,</span> <span class="n">ascii_underscore</span><span class="p">,</span> <span class="n">ascii_alpha_num</span><span class="p">,</span>
-    <span class="n">integer</span><span class="p">,</span> <span class="n">scientific_number</span><span class="p">)</span>
+    <span class="n">integer</span><span class="p">,</span> <span class="n">scientific_number</span><span class="p">,</span> <span class="n">array</span><span class="p">)</span>
+
+<span class="n">pp</span> <span class="o">=</span> <span class="n">pprint</span><span class="o">.</span><span class="n">PrettyPrinter</span><span class="p">(</span><span class="n">indent</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="mi">80</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -471,7 +476,7 @@ div.rendered_html tbody tr:hover {
 <h2>Header<a class="headerlink" href="#Header" title="Permalink to this headline">¶</a></h2>
 <p>The header starts with a “magic number”, a line containing <code class="docutils literal notranslate"><span class="pre">ply</span></code>.</p>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[67]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[59]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
@@ -482,7 +487,7 @@ div.rendered_html tbody tr:hover {
 </div>
 <p>The second line indicates which variation of the PLY format this is.</p>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[68]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[60]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
@@ -507,15 +512,21 @@ div.rendered_html tbody tr:hover {
 </div>
 </div>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[69]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[61]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
 <span></span><span class="k">def</span> <span class="nf">fmap</span><span class="p">(</span><span class="n">f</span><span class="p">):</span>
     <span class="k">return</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">value</span><span class="p">(</span><span class="n">f</span><span class="p">(</span><span class="n">x</span><span class="p">))</span>
 
+<span class="k">def</span> <span class="nf">construct</span><span class="p">(</span><span class="n">f</span><span class="p">):</span>
+    <span class="k">return</span> <span class="k">lambda</span> <span class="n">kwargs</span><span class="p">:</span> <span class="n">value</span><span class="p">(</span><span class="n">f</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">))</span>
+
 <span class="k">def</span> <span class="nf">tokenize</span><span class="p">(</span><span class="n">p</span><span class="p">:</span> <span class="n">Parser</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Parser</span><span class="p">:</span>
     <span class="k">return</span> <span class="n">sequence</span><span class="p">(</span><span class="n">p</span> <span class="o">&gt;&gt;</span> <span class="n">push</span><span class="p">,</span> <span class="n">many_char</span><span class="p">(</span><span class="n">text_one_of</span><span class="p">(</span><span class="s2">&quot; &quot;</span><span class="p">)),</span> <span class="n">pop</span><span class="p">())</span>
+
+<span class="k">def</span> <span class="nf">binary_value</span><span class="p">(</span><span class="n">dtype</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">dtype</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">array</span><span class="p">(</span><span class="n">dtype</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span> <span class="o">&gt;&gt;</span> <span class="n">fmap</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
 
 <span class="n">word</span> <span class="o">=</span> <span class="n">sequence</span><span class="p">(</span>
     <span class="n">flush</span><span class="p">(),</span> <span class="n">ascii_alpha</span><span class="p">,</span> <span class="n">many_char_0</span><span class="p">(</span><span class="n">choice</span><span class="p">(</span><span class="n">ascii_alpha_num</span><span class="p">,</span> <span class="n">ascii_underscore</span><span class="p">)),</span>
@@ -524,7 +535,7 @@ div.rendered_html tbody tr:hover {
 </div>
 </div>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[70]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[62]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
@@ -536,7 +547,7 @@ div.rendered_html tbody tr:hover {
 </div>
 </div>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[71]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[63]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
@@ -545,7 +556,7 @@ div.rendered_html tbody tr:hover {
 </div>
 </div>
 <div class="nboutput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[71]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[63]:
 </pre></div>
 </div>
 <div class="output_area docutils container">
@@ -555,45 +566,18 @@ div.rendered_html tbody tr:hover {
 </div>
 <p>Comments may be placed in the header by using the word comment at the start of the line. Everything from there until the end of the line should then be ignored.</p>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[72]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[64]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
 <span></span><span class="n">ply_comment</span> <span class="o">=</span> <span class="n">sequence</span><span class="p">(</span>
-    <span class="n">tokenize</span><span class="p">(</span><span class="n">text_literal</span><span class="p">(</span><span class="s2">&quot;comment&quot;</span><span class="p">)),</span>
-    <span class="n">text_end_by</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">),</span> <span class="n">optional</span><span class="p">(</span><span class="n">char</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\r</span><span class="s2">&quot;</span><span class="p">)))</span>
+    <span class="n">tokenize</span><span class="p">(</span><span class="n">text_literal</span><span class="p">(</span><span class="s2">&quot;comment&quot;</span><span class="p">)),</span> <span class="n">flush</span><span class="p">(),</span>
+    <span class="n">text_end_by</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span> <span class="o">&gt;&gt;</span> <span class="n">push</span><span class="p">,</span> <span class="n">optional</span><span class="p">(</span><span class="n">char</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\r</span><span class="s2">&quot;</span><span class="p">)),</span> <span class="n">pop</span><span class="p">())</span>
 </pre></div>
 </div>
 </div>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[73]:
-</pre></div>
-</div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">dtype</span><span class="p">(</span><span class="s2">&quot;float&quot;</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-<div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[74]:
-</pre></div>
-</div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="n">x</span><span class="o">.</span><span class="n">type</span><span class="p">(</span><span class="sa">b</span><span class="s2">&quot;3.4   &quot;</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-<div class="nboutput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[74]:
-</pre></div>
-</div>
-<div class="output_area docutils container">
-<div class="highlight"><pre>
-3.4
-</pre></div></div>
-</div>
-<div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[90]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[65]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
@@ -620,26 +604,33 @@ div.rendered_html tbody tr:hover {
         <span class="n">sanitized_name</span> <span class="o">=</span> <span class="n">ply_type_table</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="n">s</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">PlyPrimitiveType</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">dtype</span><span class="p">(</span><span class="n">sanitized_name</span><span class="p">))</span>
 
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">byte_size</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">dtype</span><span class="o">.</span><span class="n">itemsize</span>
+
     <span class="k">def</span> <span class="nf">ascii</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Parser</span><span class="p">:</span>
         <span class="k">return</span> <span class="n">sequence</span><span class="p">(</span>
             <span class="n">flush</span><span class="p">(),</span> <span class="n">some_char_0</span><span class="p">(</span><span class="n">byte_none_of</span><span class="p">(</span><span class="sa">b</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2"> &quot;</span><span class="p">)),</span>
             <span class="n">many_char_0</span><span class="p">(</span><span class="n">byte_one_of</span><span class="p">(</span><span class="sa">b</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2"> &quot;</span><span class="p">)),</span> <span class="n">flush</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">dtype</span><span class="o">.</span><span class="n">type</span><span class="p">))</span>
 
+    <span class="k">def</span> <span class="nf">binary</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Parser</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">binary_value</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">dtype</span><span class="p">)</span>
+
 <span class="nd">@dataclass</span>
 <span class="k">class</span> <span class="nc">PlyListType</span><span class="p">(</span><span class="n">PlyType</span><span class="p">):</span>
     <span class="n">size_type</span><span class="p">:</span> <span class="n">PlyPrimitiveType</span>
-    <span class="n">dtype</span><span class="p">:</span> <span class="n">PlyPrimitiveType</span>
+    <span class="n">value_type</span><span class="p">:</span> <span class="n">PlyPrimitiveType</span>
 
     <span class="k">def</span> <span class="nf">ascii</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Parser</span><span class="p">:</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">size_type</span><span class="o">.</span><span class="n">ascii</span><span class="p">()</span> <span class="o">&gt;&gt;</span> <span class="n">partial</span><span class="p">(</span><span class="n">repeat_n</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">dtype</span><span class="o">.</span><span class="n">ascii</span><span class="p">())</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">size_type</span><span class="o">.</span><span class="n">ascii</span><span class="p">()</span> <span class="o">&gt;&gt;</span> <span class="n">partial</span><span class="p">(</span><span class="n">repeat_n</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">value_type</span><span class="o">.</span><span class="n">ascii</span><span class="p">())</span>
 
-<span class="k">def</span> <span class="nf">construct</span><span class="p">(</span><span class="n">f</span><span class="p">):</span>
-    <span class="k">return</span> <span class="k">lambda</span> <span class="n">kwargs</span><span class="p">:</span> <span class="n">value</span><span class="p">(</span><span class="n">f</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">))</span>
+    <span class="k">def</span> <span class="nf">binary</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Parser</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">binary_value</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">size_type</span><span class="o">.</span><span class="n">dtype</span><span class="p">)</span> <span class="o">&gt;&gt;</span> <span class="n">partial</span><span class="p">(</span><span class="n">array</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">value_type</span><span class="o">.</span><span class="n">dtype</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[76]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[66]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
@@ -648,14 +639,14 @@ div.rendered_html tbody tr:hover {
 <span class="n">list_type</span> <span class="o">=</span> <span class="n">named_sequence</span><span class="p">(</span>
     <span class="n">_1</span><span class="o">=</span><span class="n">tokenize</span><span class="p">(</span><span class="n">text_literal</span><span class="p">(</span><span class="s2">&quot;list&quot;</span><span class="p">)),</span>
     <span class="n">size_type</span><span class="o">=</span><span class="n">primitive_type</span><span class="p">,</span>
-    <span class="n">dtype</span><span class="o">=</span><span class="n">primitive_type</span><span class="p">)</span> <span class="o">&gt;&gt;</span> <span class="n">construct</span><span class="p">(</span><span class="n">PlyListType</span><span class="p">)</span>
+    <span class="n">value_type</span><span class="o">=</span><span class="n">primitive_type</span><span class="p">)</span> <span class="o">&gt;&gt;</span> <span class="n">construct</span><span class="p">(</span><span class="n">PlyListType</span><span class="p">)</span>
 
 <span class="n">ply_type</span> <span class="o">=</span> <span class="n">choice</span><span class="p">(</span><span class="n">list_type</span><span class="p">,</span> <span class="n">primitive_type</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[77]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[67]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
@@ -664,7 +655,7 @@ div.rendered_html tbody tr:hover {
 </div>
 </div>
 <div class="nboutput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[77]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[67]:
 </pre></div>
 </div>
 <div class="output_area docutils container">
@@ -673,25 +664,24 @@ PlyPrimitiveType(dtype=dtype(&#39;float32&#39;))
 </pre></div></div>
 </div>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[78]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[68]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="n">parse_bytes</span><span class="p">(</span><span class="n">ply_type</span><span class="p">,</span> <span class="sa">b</span><span class="s2">&quot;list uint8 float&quot;</span><span class="p">)</span>
+<span></span><span class="n">pp</span><span class="o">.</span><span class="n">pprint</span><span class="p">(</span><span class="n">parse_bytes</span><span class="p">(</span><span class="n">ply_type</span><span class="p">,</span> <span class="sa">b</span><span class="s2">&quot;list uint8 float&quot;</span><span class="p">))</span>
 </pre></div>
 </div>
 </div>
 <div class="nboutput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[78]:
-</pre></div>
+<div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-PlyListType(size_type=PlyPrimitiveType(dtype=dtype(&#39;uint8&#39;)), dtype=PlyPrimitiveType(dtype=dtype(&#39;float32&#39;)))
+PlyListType(size_type=PlyPrimitiveType(dtype=dtype(&#39;uint8&#39;)), value_type=PlyPrimitiveType(dtype=dtype(&#39;float32&#39;)))
 </pre></div></div>
 </div>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[79]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[43]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
@@ -709,7 +699,7 @@ PlyListType(size_type=PlyPrimitiveType(dtype=dtype(&#39;uint8&#39;)), dtype=PlyP
 </div>
 </div>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[80]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[44]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
@@ -720,7 +710,7 @@ PlyListType(size_type=PlyPrimitiveType(dtype=dtype(&#39;uint8&#39;)), dtype=PlyP
 </div>
 </div>
 <div class="nboutput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[80]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[44]:
 </pre></div>
 </div>
 <div class="output_area docutils container">
@@ -729,7 +719,7 @@ PlyProperty(dtype=PlyPrimitiveType(dtype=dtype(&#39;float32&#39;)), name=&#39;x&
 </pre></div></div>
 </div>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[81]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[45]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
@@ -738,7 +728,7 @@ PlyProperty(dtype=PlyPrimitiveType(dtype=dtype(&#39;float32&#39;)), name=&#39;x&
 </div>
 </div>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[82]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[46]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
@@ -753,6 +743,21 @@ PlyProperty(dtype=PlyPrimitiveType(dtype=dtype(&#39;float32&#39;)), name=&#39;x&
             <span class="o">**</span><span class="p">{</span><span class="n">p</span><span class="o">.</span><span class="n">name</span><span class="p">:</span> <span class="n">p</span><span class="o">.</span><span class="n">dtype</span><span class="o">.</span><span class="n">ascii</span><span class="p">()</span> <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">properties</span><span class="p">})</span>
         <span class="k">return</span> <span class="n">repeat_n</span><span class="p">(</span><span class="n">single_item</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">size</span><span class="p">)</span>
 
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">afine</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+        <span class="k">return</span> <span class="nb">all</span><span class="p">(</span><span class="nb">isinstance</span><span class="p">(</span><span class="n">p</span><span class="o">.</span><span class="n">dtype</span><span class="p">,</span> <span class="n">PlyPrimitiveType</span><span class="p">)</span>
+                   <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">properties</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">binary</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Parser</span><span class="p">:</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">afine</span><span class="p">:</span>
+            <span class="n">compound_type</span> <span class="o">=</span> <span class="p">[(</span><span class="n">p</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">p</span><span class="o">.</span><span class="n">dtype</span><span class="o">.</span><span class="n">dtype</span><span class="p">)</span> <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">properties</span><span class="p">]</span>
+            <span class="k">return</span> <span class="n">array</span><span class="p">(</span><span class="n">compound_type</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">size</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">single_item</span> <span class="o">=</span> <span class="n">named_sequence</span><span class="p">(</span>
+                <span class="o">**</span><span class="p">{</span><span class="n">p</span><span class="o">.</span><span class="n">name</span><span class="p">:</span> <span class="n">p</span><span class="o">.</span><span class="n">dtype</span><span class="o">.</span><span class="n">binary</span><span class="p">()</span> <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">properties</span><span class="p">})</span>
+            <span class="k">return</span> <span class="n">repeat_n</span><span class="p">(</span><span class="n">single_item</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">size</span><span class="p">)</span>
+
+
 <span class="n">ply_element</span> <span class="o">=</span> <span class="n">named_sequence</span><span class="p">(</span>
     <span class="n">_1</span><span class="o">=</span><span class="n">tokenize</span><span class="p">(</span><span class="n">text_literal</span><span class="p">(</span><span class="s2">&quot;element&quot;</span><span class="p">)),</span>
     <span class="n">name</span><span class="o">=</span><span class="n">tokenize</span><span class="p">(</span><span class="n">word</span><span class="p">),</span>
@@ -763,7 +768,7 @@ PlyProperty(dtype=PlyPrimitiveType(dtype=dtype(&#39;float32&#39;)), name=&#39;x&
 </div>
 </div>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[83]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[70]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
@@ -775,17 +780,17 @@ PlyProperty(dtype=PlyPrimitiveType(dtype=dtype(&#39;float32&#39;)), name=&#39;x&
 </div>
 </div>
 <div class="nboutput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[83]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[70]:
 </pre></div>
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
 [PlyElement(name=&#39;vertex&#39;, size=8, properties=[PlyProperty(dtype=PlyPrimitiveType(dtype=dtype(&#39;float32&#39;)), name=&#39;x&#39;), PlyProperty(dtype=PlyPrimitiveType(dtype=dtype(&#39;float32&#39;)), name=&#39;y&#39;), PlyProperty(dtype=PlyPrimitiveType(dtype=dtype(&#39;float32&#39;)), name=&#39;z&#39;)]),
- PlyElement(name=&#39;face&#39;, size=6, properties=[PlyProperty(dtype=PlyListType(size_type=PlyPrimitiveType(dtype=dtype(&#39;uint8&#39;)), dtype=PlyPrimitiveType(dtype=dtype(&#39;int32&#39;))), name=&#39;vertex_index&#39;)])]
+ PlyElement(name=&#39;face&#39;, size=6, properties=[PlyProperty(dtype=PlyListType(size_type=PlyPrimitiveType(dtype=dtype(&#39;uint8&#39;)), value_type=PlyPrimitiveType(dtype=dtype(&#39;int32&#39;))), name=&#39;vertex_index&#39;)])]
 </pre></div></div>
 </div>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[84]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[48]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
@@ -794,16 +799,16 @@ PlyProperty(dtype=PlyPrimitiveType(dtype=dtype(&#39;float32&#39;)), name=&#39;x&
 </div>
 </div>
 <div class="nboutput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[84]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[48]:
 </pre></div>
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-PlyElement(name=&#39;face&#39;, size=6, properties=[PlyProperty(dtype=PlyListType(size_type=PlyPrimitiveType(dtype=dtype(&#39;uint8&#39;)), dtype=PlyPrimitiveType(dtype=dtype(&#39;int32&#39;))), name=&#39;vertex_index&#39;)])
+PlyElement(name=&#39;face&#39;, size=6, properties=[PlyProperty(dtype=PlyListType(size_type=PlyPrimitiveType(dtype=dtype(&#39;uint8&#39;)), value_type=PlyPrimitiveType(dtype=dtype(&#39;int32&#39;))), name=&#39;vertex_index&#39;)])
 </pre></div></div>
 </div>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[85]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[49]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
@@ -817,6 +822,9 @@ PlyElement(name=&#39;face&#39;, size=6, properties=[PlyProperty(dtype=PlyListTyp
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">format</span> <span class="o">==</span> <span class="n">PlyFormat</span><span class="o">.</span><span class="n">ASCII</span><span class="p">:</span>
             <span class="k">return</span> <span class="n">named_sequence</span><span class="p">(</span>
                 <span class="o">**</span><span class="p">{</span><span class="n">e</span><span class="o">.</span><span class="n">name</span><span class="p">:</span> <span class="n">e</span><span class="o">.</span><span class="n">ascii</span><span class="p">()</span> <span class="k">for</span> <span class="n">e</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">elements</span><span class="p">})</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">format</span> <span class="o">==</span> <span class="n">PlyFormat</span><span class="o">.</span><span class="n">BINARY_LE</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">named_sequence</span><span class="p">(</span>
+                <span class="o">**</span><span class="p">{</span><span class="n">e</span><span class="o">.</span><span class="n">name</span><span class="p">:</span> <span class="n">e</span><span class="o">.</span><span class="n">binary</span><span class="p">()</span> <span class="k">for</span> <span class="n">e</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">elements</span><span class="p">})</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">()</span>
 
@@ -834,8 +842,9 @@ PlyElement(name=&#39;face&#39;, size=6, properties=[PlyProperty(dtype=PlyListTyp
 </pre></div>
 </div>
 </div>
+<p>The following ASCII example is given on Paul Bourke’s page.</p>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[86]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[53]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
@@ -869,65 +878,96 @@ PlyElement(name=&#39;face&#39;, size=6, properties=[PlyProperty(dtype=PlyListTyp
 </div>
 </div>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[87]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[71]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="n">parse_bytes</span><span class="p">(</span><span class="n">ply_header</span><span class="p">,</span> <span class="n">ascii_example</span><span class="p">)</span>
+<span></span><span class="n">pp</span><span class="o">.</span><span class="n">pprint</span><span class="p">(</span><span class="n">parse_bytes</span><span class="p">(</span><span class="n">ply_header</span><span class="p">,</span> <span class="n">ascii_example</span><span class="p">))</span>
 </pre></div>
 </div>
 </div>
 <div class="nboutput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[87]:
-</pre></div>
+<div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-PlyHeader(format=&lt;PlyFormat.ASCII: 1&gt;, comment=[None, None], elements=[PlyElement(name=&#39;vertex&#39;, size=8, properties=[PlyProperty(dtype=PlyPrimitiveType(dtype=dtype(&#39;float32&#39;)), name=&#39;x&#39;), PlyProperty(dtype=PlyPrimitiveType(dtype=dtype(&#39;float32&#39;)), name=&#39;y&#39;), PlyProperty(dtype=PlyPrimitiveType(dtype=dtype(&#39;float32&#39;)), name=&#39;z&#39;)]), PlyElement(name=&#39;face&#39;, size=6, properties=[PlyProperty(dtype=PlyListType(size_type=PlyPrimitiveType(dtype=dtype(&#39;uint8&#39;)), dtype=PlyPrimitiveType(dtype=dtype(&#39;int32&#39;))), name=&#39;vertex_index&#39;)])])
+PlyHeader(format=&lt;PlyFormat.ASCII: 1&gt;, comment=[&#39;made by Greg Turk&#39;, &#39;this file is a cube&#39;], elements=[PlyElement(name=&#39;vertex&#39;, size=8, properties=[PlyProperty(dtype=PlyPrimitiveType(dtype=dtype(&#39;float32&#39;)), name=&#39;x&#39;), PlyProperty(dtype=PlyPrimitiveType(dtype=dtype(&#39;float32&#39;)), name=&#39;y&#39;), PlyProperty(dtype=PlyPrimitiveType(dtype=dtype(&#39;float32&#39;)), name=&#39;z&#39;)]), PlyElement(name=&#39;face&#39;, size=6, properties=[PlyProperty(dtype=PlyListType(size_type=PlyPrimitiveType(dtype=dtype(&#39;uint8&#39;)), value_type=PlyPrimitiveType(dtype=dtype(&#39;int32&#39;))), name=&#39;vertex_index&#39;)])])
 </pre></div></div>
 </div>
 <p>No for the fun part! The header that we read actually encodes the parser for the rest of the file!</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[88]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[74]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="n">parse_bytes</span><span class="p">(</span><span class="n">ply_file</span><span class="p">,</span> <span class="n">ascii_example</span><span class="p">)</span>
+<span></span><span class="n">pp</span><span class="o">.</span><span class="n">pprint</span><span class="p">(</span><span class="n">parse_bytes</span><span class="p">(</span><span class="n">ply_file</span><span class="p">,</span> <span class="n">ascii_example</span><span class="p">))</span>
 </pre></div>
 </div>
 </div>
 <div class="nboutput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[88]:
-</pre></div>
+<div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-{&#39;header&#39;: PlyHeader(format=&lt;PlyFormat.ASCII: 1&gt;, comment=[None, None], elements=[PlyElement(name=&#39;vertex&#39;, size=8, properties=[PlyProperty(dtype=PlyPrimitiveType(dtype=dtype(&#39;float32&#39;)), name=&#39;x&#39;), PlyProperty(dtype=PlyPrimitiveType(dtype=dtype(&#39;float32&#39;)), name=&#39;y&#39;), PlyProperty(dtype=PlyPrimitiveType(dtype=dtype(&#39;float32&#39;)), name=&#39;z&#39;)]), PlyElement(name=&#39;face&#39;, size=6, properties=[PlyProperty(dtype=PlyListType(size_type=PlyPrimitiveType(dtype=dtype(&#39;uint8&#39;)), dtype=PlyPrimitiveType(dtype=dtype(&#39;int32&#39;))), name=&#39;vertex_index&#39;)])]),
- &#39;data&#39;: {&#39;vertex&#39;: [{&#39;x&#39;: 0.0, &#39;y&#39;: 0.0, &#39;z&#39;: 0.0},
-   {&#39;x&#39;: 0.0, &#39;y&#39;: 0.0, &#39;z&#39;: 1.0},
-   {&#39;x&#39;: 0.0, &#39;y&#39;: 1.0, &#39;z&#39;: 1.0},
-   {&#39;x&#39;: 0.0, &#39;y&#39;: 1.0, &#39;z&#39;: 0.0},
-   {&#39;x&#39;: 1.0, &#39;y&#39;: 0.0, &#39;z&#39;: 0.0},
-   {&#39;x&#39;: 1.0, &#39;y&#39;: 0.0, &#39;z&#39;: 1.0},
-   {&#39;x&#39;: 1.0, &#39;y&#39;: 1.0, &#39;z&#39;: 1.0},
-   {&#39;x&#39;: 1.0, &#39;y&#39;: 1.0, &#39;z&#39;: 0.0}],
-  &#39;face&#39;: [{&#39;vertex_index&#39;: [0, 1, 2, 3]},
-   {&#39;vertex_index&#39;: [7, 6, 5, 4]},
-   {&#39;vertex_index&#39;: [0, 4, 5, 1]},
-   {&#39;vertex_index&#39;: [1, 5, 6, 2]},
-   {&#39;vertex_index&#39;: [2, 6, 7, 3]},
-   {&#39;vertex_index&#39;: [3, 7, 4, 0]}]}}
+{ &#39;data&#39;: { &#39;face&#39;: [ {&#39;vertex_index&#39;: [0, 1, 2, 3]},
+                      {&#39;vertex_index&#39;: [7, 6, 5, 4]},
+                      {&#39;vertex_index&#39;: [0, 4, 5, 1]},
+                      {&#39;vertex_index&#39;: [1, 5, 6, 2]},
+                      {&#39;vertex_index&#39;: [2, 6, 7, 3]},
+                      {&#39;vertex_index&#39;: [3, 7, 4, 0]}],
+            &#39;vertex&#39;: [ {&#39;x&#39;: 0.0, &#39;y&#39;: 0.0, &#39;z&#39;: 0.0},
+                        {&#39;x&#39;: 0.0, &#39;y&#39;: 0.0, &#39;z&#39;: 1.0},
+                        {&#39;x&#39;: 0.0, &#39;y&#39;: 1.0, &#39;z&#39;: 1.0},
+                        {&#39;x&#39;: 0.0, &#39;y&#39;: 1.0, &#39;z&#39;: 0.0},
+                        {&#39;x&#39;: 1.0, &#39;y&#39;: 0.0, &#39;z&#39;: 0.0},
+                        {&#39;x&#39;: 1.0, &#39;y&#39;: 0.0, &#39;z&#39;: 1.0},
+                        {&#39;x&#39;: 1.0, &#39;y&#39;: 1.0, &#39;z&#39;: 1.0},
+                        {&#39;x&#39;: 1.0, &#39;y&#39;: 1.0, &#39;z&#39;: 0.0}]},
+  &#39;header&#39;: PlyHeader(format=&lt;PlyFormat.ASCII: 1&gt;, comment=[&#39;made by Greg Turk&#39;, &#39;this file is a cube&#39;], elements=[PlyElement(name=&#39;vertex&#39;, size=8, properties=[PlyProperty(dtype=PlyPrimitiveType(dtype=dtype(&#39;float32&#39;)), name=&#39;x&#39;), PlyProperty(dtype=PlyPrimitiveType(dtype=dtype(&#39;float32&#39;)), name=&#39;y&#39;), PlyProperty(dtype=PlyPrimitiveType(dtype=dtype(&#39;float32&#39;)), name=&#39;z&#39;)]), PlyElement(name=&#39;face&#39;, size=6, properties=[PlyProperty(dtype=PlyListType(size_type=PlyPrimitiveType(dtype=dtype(&#39;uint8&#39;)), value_type=PlyPrimitiveType(dtype=dtype(&#39;int32&#39;))), name=&#39;vertex_index&#39;)])])}
 </pre></div></div>
 </div>
+</div>
+<div class="section" id="The-Stanford-Bunny">
+<h2>The Stanford Bunny<a class="headerlink" href="#The-Stanford-Bunny" title="Permalink to this headline">¶</a></h2>
+<p>Now that we have the capability to parse binary PLY files, we can load the Stanford Bunny. For visualisation purposes it helps to know that all faces in this file are triangles.</p>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[33]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span>
+<span></span><span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="n">Path</span>
+
+<span class="n">bunny</span> <span class="o">=</span> <span class="n">parse_bytes</span><span class="p">(</span><span class="n">ply_file</span><span class="p">,</span> <span class="n">Path</span><span class="p">(</span><span class="s2">&quot;_static/stanford_bunny.ply&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">mode</span><span class="o">=</span><span class="s2">&quot;rb&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">read</span><span class="p">())</span>
 </pre></div>
 </div>
 </div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[34]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">ipyvolume</span> <span class="k">as</span> <span class="nn">ipv</span>
+
+<span class="n">v</span> <span class="o">=</span> <span class="n">bunny</span><span class="p">[</span><span class="s2">&quot;data&quot;</span><span class="p">][</span><span class="s2">&quot;vertex&quot;</span><span class="p">]</span>
+<span class="n">t</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">f</span><span class="p">[</span><span class="s2">&quot;vertex_indices&quot;</span><span class="p">]</span> <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">bunny</span><span class="p">[</span><span class="s2">&quot;data&quot;</span><span class="p">][</span><span class="s2">&quot;face&quot;</span><span class="p">]])</span>
+<span class="n">ipv</span><span class="o">.</span><span class="n">figure</span><span class="p">()</span>
+<span class="n">mesh</span> <span class="o">=</span> <span class="n">ipv</span><span class="o">.</span><span class="n">plot_trisurf</span><span class="p">(</span><span class="n">v</span><span class="p">[</span><span class="s2">&quot;x&quot;</span><span class="p">],</span> <span class="n">v</span><span class="p">[</span><span class="s2">&quot;y&quot;</span><span class="p">],</span> <span class="n">v</span><span class="p">[</span><span class="s2">&quot;z&quot;</span><span class="p">],</span> <span class="n">triangles</span><span class="o">=</span><span class="n">t</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;#5588ee&quot;</span><span class="p">)</span>
+<span class="n">ipv</span><span class="o">.</span><span class="n">xlim</span><span class="p">(</span><span class="o">-</span><span class="mf">0.1</span><span class="p">,</span> <span class="mf">0.05</span><span class="p">)</span>
+<span class="n">ipv</span><span class="o">.</span><span class="n">zlim</span><span class="p">(</span><span class="o">-</span><span class="mf">0.075</span><span class="p">,</span> <span class="mf">0.075</span><span class="p">)</span>
+<span class="n">ipv</span><span class="o">.</span><span class="n">ylim</span><span class="p">(</span><span class="mf">0.03</span><span class="p">,</span> <span class="mf">0.18</span><span class="p">)</span>
+<span class="n">ipv</span><span class="o">.</span><span class="n">pylab</span><span class="o">.</span><span class="n">style</span><span class="o">.</span><span class="n">box_off</span><span class="p">()</span>
+<span class="n">ipv</span><span class="o">.</span><span class="n">pylab</span><span class="o">.</span><span class="n">style</span><span class="o">.</span><span class="n">axes_off</span><span class="p">()</span>
+<span class="n">ipv</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<script type="application/vnd.jupyter.widget-view+json">{"model_id": "1faa2aea54be465ca7a57ffad2e03228", "version_major": 2, "version_minor": 0}</script></div>
+</div>
+<p><img alt="The bunny" src="_images/stanford_bunny.png" /></p>
 </div>
 </div>
 

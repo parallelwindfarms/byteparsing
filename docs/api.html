@@ -418,6 +418,12 @@ cursor and interprets them as numeric binary data.</p>
 </dd></dl>
 
 <dl class="py function">
+<dt id="byteparsing.parsers.binary_value">
+<code class="sig-prename descclassname">byteparsing.parsers.</code><code class="sig-name descname">binary_value</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">dtype</span><span class="p">:</span> <span class="n">numpy.dtype</span></em><span class="sig-paren">)</span><a class="headerlink" href="#byteparsing.parsers.binary_value" title="Permalink to this definition">¶</a></dt>
+<dd><p>Parses a single binary value of the given <cite>dtype</cite>.</p>
+</dd></dl>
+
+<dl class="py function">
 <dt id="byteparsing.parsers.byte_none_of">
 <code class="sig-prename descclassname">byteparsing.parsers.</code><code class="sig-name descname">byte_none_of</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">x</span><span class="p">:</span> <span class="n">bytes</span></em><span class="sig-paren">)</span> &#x2192; <a class="reference internal" href="#byteparsing.trampoline.Parser" title="byteparsing.trampoline.Parser">byteparsing.trampoline.Parser</a><a class="headerlink" href="#byteparsing.parsers.byte_none_of" title="Permalink to this definition">¶</a></dt>
 <dd><p>Parses none of the characters in <cite>x</cite>.</p>
@@ -448,6 +454,32 @@ cursor and interprets them as numeric binary data.</p>
 </dd></dl>
 
 <dl class="py function">
+<dt id="byteparsing.parsers.construct">
+<code class="sig-prename descclassname">byteparsing.parsers.</code><code class="sig-name descname">construct</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">f</span></em><span class="sig-paren">)</span><a class="headerlink" href="#byteparsing.parsers.construct" title="Permalink to this definition">¶</a></dt>
+<dd><p>Construct an object <cite>f</cite> by passing a dictionary as keyword arguments. Use this
+in conjunction with <cite>named_sequence</cite>.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nd">@dataclass</span>
+<span class="gp">... </span><span class="k">class</span> <span class="nc">Point</span><span class="p">:</span>
+<span class="gp">... </span>    <span class="n">x</span><span class="p">:</span> <span class="nb">float</span>
+<span class="gp">... </span>    <span class="n">y</span><span class="p">:</span> <span class="nb">float</span>
+</pre></div>
+</div>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">point</span> <span class="o">=</span> <span class="n">named_sequence</span><span class="p">(</span>
+<span class="gp">... </span>    <span class="n">_1</span><span class="o">=</span><span class="n">tokenize</span><span class="p">(</span><span class="n">char</span><span class="p">(</span><span class="s2">&quot;(&quot;</span><span class="p">)),</span>
+<span class="gp">... </span>    <span class="n">x</span><span class="o">=</span><span class="n">tokenize</span><span class="p">(</span><span class="n">scientific_number</span><span class="p">),</span>
+<span class="gp">... </span>    <span class="n">_2</span><span class="o">=</span><span class="n">tokenize</span><span class="p">(</span><span class="n">char</span><span class="p">(</span><span class="s2">&quot;,&quot;</span><span class="p">))</span>
+<span class="gp">... </span>    <span class="n">y</span><span class="o">=</span><span class="n">tokenize</span><span class="p">(</span><span class="n">scientific_number</span><span class="p">),</span>
+<span class="gp">... </span>    <span class="n">_3</span><span class="o">=</span><span class="n">tokenize</span><span class="p">(</span><span class="n">char</span><span class="p">(</span><span class="s2">&quot;)&quot;</span><span class="p">))</span>
+<span class="gp">... </span>    <span class="p">)</span> <span class="o">&gt;&gt;</span> <span class="n">construct</span><span class="p">(</span><span class="n">Point</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">parse_bytes</span><span class="p">(</span><span class="n">point</span><span class="p">,</span> <span class="s2">&quot;(1, 2)&quot;</span><span class="p">)</span>
+<span class="go">Point(x=1, y=2)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function">
 <dt id="byteparsing.parsers.fail">
 <code class="sig-prename descclassname">byteparsing.parsers.</code><code class="sig-name descname">fail</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">msg</span><span class="p">:</span> <span class="n">str</span></em><span class="sig-paren">)</span> &#x2192; <a class="reference internal" href="#byteparsing.trampoline.Parser" title="byteparsing.trampoline.Parser">byteparsing.trampoline.Parser</a><a class="headerlink" href="#byteparsing.parsers.fail" title="Permalink to this definition">¶</a></dt>
 <dd><p>A parser that always fails with the given message.</p>
@@ -465,6 +497,16 @@ value can be mapped by the optional <cite>transfer</cite> function.</p>
 <code class="sig-prename descclassname">byteparsing.parsers.</code><code class="sig-name descname">flush_decode</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#byteparsing.parsers.flush_decode" title="Permalink to this definition">¶</a></dt>
 <dd><p>Flush the cursor and return the underlying data as a decoded
 string.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt id="byteparsing.parsers.fmap">
+<code class="sig-prename descclassname">byteparsing.parsers.</code><code class="sig-name descname">fmap</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">f</span></em><span class="sig-paren">)</span><a class="headerlink" href="#byteparsing.parsers.fmap" title="Permalink to this definition">¶</a></dt>
+<dd><p>Maps a parsed value by a function <cite>f</cite>.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">parse_bytes</span><span class="p">(</span><span class="n">text_literal</span><span class="p">(</span><span class="s2">&quot;hello&quot;</span><span class="p">)</span> <span class="o">&gt;&gt;</span> <span class="n">fmap</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="o">.</span><span class="n">upper</span><span class="p">()),</span> <span class="sa">b</span><span class="s2">&quot;hello&quot;</span><span class="p">)</span>
+<span class="go">&quot;HELLO&quot;</span>
+</pre></div>
+</div>
 </dd></dl>
 
 <dl class="py function">

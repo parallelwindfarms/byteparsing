@@ -445,7 +445,7 @@ div.rendered_html tbody tr:hover {
 <h1>Advanced example: parsing PLY files<a class="headerlink" href="#Advanced-example:-parsing-PLY-files" title="Permalink to this headline">¶</a></h1>
 <p>PLY is a file format storing 3D polygonal data that has support for both ASCII and binary formats. Some references: <a class="reference external" href="https://en.wikipedia.org/wiki/PLY_(file_format)">Wikipedia entry</a> and <a class="reference external" href="http://paulbourke.net/dataformats/ply/">Paul Bourke’s pages</a>.</p>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[73]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
@@ -466,7 +466,8 @@ div.rendered_html tbody tr:hover {
     <span class="n">push</span><span class="p">,</span> <span class="n">pop</span><span class="p">,</span>
     <span class="n">many</span><span class="p">,</span> <span class="n">some</span><span class="p">,</span> <span class="n">many_char</span><span class="p">,</span> <span class="n">some_char</span><span class="p">,</span> <span class="n">many_char_0</span><span class="p">,</span> <span class="n">some_char_0</span><span class="p">,</span>
     <span class="n">ascii_alpha</span><span class="p">,</span> <span class="n">ascii_underscore</span><span class="p">,</span> <span class="n">ascii_alpha_num</span><span class="p">,</span>
-    <span class="n">integer</span><span class="p">,</span> <span class="n">scientific_number</span><span class="p">,</span> <span class="n">array</span><span class="p">)</span>
+    <span class="n">integer</span><span class="p">,</span> <span class="n">scientific_number</span><span class="p">,</span> <span class="n">array</span><span class="p">,</span> <span class="n">binary_value</span><span class="p">,</span>
+    <span class="n">fmap</span><span class="p">,</span> <span class="n">construct</span><span class="p">)</span>
 
 <span class="n">pp</span> <span class="o">=</span> <span class="n">pprint</span><span class="o">.</span><span class="n">PrettyPrinter</span><span class="p">(</span><span class="n">indent</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="mi">80</span><span class="p">)</span>
 </pre></div>
@@ -476,7 +477,7 @@ div.rendered_html tbody tr:hover {
 <h2>Header<a class="headerlink" href="#Header" title="Permalink to this headline">¶</a></h2>
 <p>The header starts with a “magic number”, a line containing <code class="docutils literal notranslate"><span class="pre">ply</span></code>.</p>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[59]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
@@ -487,7 +488,7 @@ div.rendered_html tbody tr:hover {
 </div>
 <p>The second line indicates which variation of the PLY format this is.</p>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[60]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
@@ -512,21 +513,12 @@ div.rendered_html tbody tr:hover {
 </div>
 </div>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[61]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="k">def</span> <span class="nf">fmap</span><span class="p">(</span><span class="n">f</span><span class="p">):</span>
-    <span class="k">return</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">value</span><span class="p">(</span><span class="n">f</span><span class="p">(</span><span class="n">x</span><span class="p">))</span>
-
-<span class="k">def</span> <span class="nf">construct</span><span class="p">(</span><span class="n">f</span><span class="p">):</span>
-    <span class="k">return</span> <span class="k">lambda</span> <span class="n">kwargs</span><span class="p">:</span> <span class="n">value</span><span class="p">(</span><span class="n">f</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">))</span>
-
-<span class="k">def</span> <span class="nf">tokenize</span><span class="p">(</span><span class="n">p</span><span class="p">:</span> <span class="n">Parser</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Parser</span><span class="p">:</span>
+<span></span><span class="k">def</span> <span class="nf">tokenize</span><span class="p">(</span><span class="n">p</span><span class="p">:</span> <span class="n">Parser</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Parser</span><span class="p">:</span>
     <span class="k">return</span> <span class="n">sequence</span><span class="p">(</span><span class="n">p</span> <span class="o">&gt;&gt;</span> <span class="n">push</span><span class="p">,</span> <span class="n">many_char</span><span class="p">(</span><span class="n">text_one_of</span><span class="p">(</span><span class="s2">&quot; &quot;</span><span class="p">)),</span> <span class="n">pop</span><span class="p">())</span>
-
-<span class="k">def</span> <span class="nf">binary_value</span><span class="p">(</span><span class="n">dtype</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">dtype</span><span class="p">):</span>
-    <span class="k">return</span> <span class="n">array</span><span class="p">(</span><span class="n">dtype</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span> <span class="o">&gt;&gt;</span> <span class="n">fmap</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
 
 <span class="n">word</span> <span class="o">=</span> <span class="n">sequence</span><span class="p">(</span>
     <span class="n">flush</span><span class="p">(),</span> <span class="n">ascii_alpha</span><span class="p">,</span> <span class="n">many_char_0</span><span class="p">(</span><span class="n">choice</span><span class="p">(</span><span class="n">ascii_alpha_num</span><span class="p">,</span> <span class="n">ascii_underscore</span><span class="p">)),</span>
@@ -535,7 +527,7 @@ div.rendered_html tbody tr:hover {
 </div>
 </div>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[62]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
@@ -547,7 +539,7 @@ div.rendered_html tbody tr:hover {
 </div>
 </div>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[63]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
@@ -556,7 +548,7 @@ div.rendered_html tbody tr:hover {
 </div>
 </div>
 <div class="nboutput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[63]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
 </pre></div>
 </div>
 <div class="output_area docutils container">
@@ -566,7 +558,7 @@ div.rendered_html tbody tr:hover {
 </div>
 <p>Comments may be placed in the header by using the word comment at the start of the line. Everything from there until the end of the line should then be ignored.</p>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[64]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
@@ -577,7 +569,7 @@ div.rendered_html tbody tr:hover {
 </div>
 </div>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[65]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[8]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
@@ -630,7 +622,7 @@ div.rendered_html tbody tr:hover {
 </div>
 </div>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[66]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[9]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
@@ -646,7 +638,7 @@ div.rendered_html tbody tr:hover {
 </div>
 </div>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[67]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[10]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
@@ -655,7 +647,7 @@ div.rendered_html tbody tr:hover {
 </div>
 </div>
 <div class="nboutput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[67]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[10]:
 </pre></div>
 </div>
 <div class="output_area docutils container">
@@ -664,7 +656,7 @@ PlyPrimitiveType(dtype=dtype(&#39;float32&#39;))
 </pre></div></div>
 </div>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[68]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[11]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
@@ -681,7 +673,7 @@ PlyListType(size_type=PlyPrimitiveType(dtype=dtype(&#39;uint8&#39;)), value_type
 </pre></div></div>
 </div>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[43]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[12]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
@@ -699,7 +691,7 @@ PlyListType(size_type=PlyPrimitiveType(dtype=dtype(&#39;uint8&#39;)), value_type
 </div>
 </div>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[44]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[13]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
@@ -710,7 +702,7 @@ PlyListType(size_type=PlyPrimitiveType(dtype=dtype(&#39;uint8&#39;)), value_type
 </div>
 </div>
 <div class="nboutput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[44]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[13]:
 </pre></div>
 </div>
 <div class="output_area docutils container">
@@ -719,7 +711,7 @@ PlyProperty(dtype=PlyPrimitiveType(dtype=dtype(&#39;float32&#39;)), name=&#39;x&
 </pre></div></div>
 </div>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[45]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[14]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
@@ -728,7 +720,7 @@ PlyProperty(dtype=PlyPrimitiveType(dtype=dtype(&#39;float32&#39;)), name=&#39;x&
 </div>
 </div>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[46]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[15]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
@@ -768,7 +760,7 @@ PlyProperty(dtype=PlyPrimitiveType(dtype=dtype(&#39;float32&#39;)), name=&#39;x&
 </div>
 </div>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[70]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[16]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
@@ -780,7 +772,7 @@ PlyProperty(dtype=PlyPrimitiveType(dtype=dtype(&#39;float32&#39;)), name=&#39;x&
 </div>
 </div>
 <div class="nboutput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[70]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[16]:
 </pre></div>
 </div>
 <div class="output_area docutils container">
@@ -790,7 +782,7 @@ PlyProperty(dtype=PlyPrimitiveType(dtype=dtype(&#39;float32&#39;)), name=&#39;x&
 </pre></div></div>
 </div>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[48]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[17]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
@@ -799,7 +791,7 @@ PlyProperty(dtype=PlyPrimitiveType(dtype=dtype(&#39;float32&#39;)), name=&#39;x&
 </div>
 </div>
 <div class="nboutput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[48]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[17]:
 </pre></div>
 </div>
 <div class="output_area docutils container">
@@ -808,7 +800,7 @@ PlyElement(name=&#39;face&#39;, size=6, properties=[PlyProperty(dtype=PlyListTyp
 </pre></div></div>
 </div>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[49]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[18]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
@@ -844,7 +836,7 @@ PlyElement(name=&#39;face&#39;, size=6, properties=[PlyProperty(dtype=PlyListTyp
 </div>
 <p>The following ASCII example is given on Paul Bourke’s page.</p>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[53]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[19]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
@@ -878,7 +870,7 @@ PlyElement(name=&#39;face&#39;, size=6, properties=[PlyProperty(dtype=PlyListTyp
 </div>
 </div>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[71]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[20]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
@@ -896,7 +888,7 @@ PlyHeader(format=&lt;PlyFormat.ASCII: 1&gt;, comment=[&#39;made by Greg Turk&#39
 </div>
 <p>No for the fun part! The header that we read actually encodes the parser for the rest of the file!</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[74]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[21]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
@@ -931,7 +923,7 @@ PlyHeader(format=&lt;PlyFormat.ASCII: 1&gt;, comment=[&#39;made by Greg Turk&#39
 <h2>The Stanford Bunny<a class="headerlink" href="#The-Stanford-Bunny" title="Permalink to this headline">¶</a></h2>
 <p>Now that we have the capability to parse binary PLY files, we can load the Stanford Bunny. For visualisation purposes it helps to know that all faces in this file are triangles.</p>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[33]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[22]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
@@ -942,7 +934,7 @@ PlyHeader(format=&lt;PlyFormat.ASCII: 1&gt;, comment=[&#39;made by Greg Turk&#39
 </div>
 </div>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[34]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[25]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
@@ -965,9 +957,18 @@ PlyHeader(format=&lt;PlyFormat.ASCII: 1&gt;, comment=[&#39;made by Greg Turk&#39
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<script type="application/vnd.jupyter.widget-view+json">{"model_id": "1faa2aea54be465ca7a57ffad2e03228", "version_major": 2, "version_minor": 0}</script></div>
+<script type="application/vnd.jupyter.widget-view+json">{"model_id": "11ab5f28aa2949328b6ced1bb19b82a7", "version_major": 2, "version_minor": 0}</script></div>
 </div>
 <p><img alt="The bunny" src="_images/stanford_bunny.png" /></p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span>
+</pre></div>
+</div>
+</div>
 </div>
 </div>
 

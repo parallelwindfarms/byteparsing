@@ -199,7 +199,7 @@ def pop(transfer=lambda x: x):
     """Pops a value off the auxiliary stack. The result may be transformed
     by a `transfer` function, which defaults to the identity function."""
     @parser
-    def g(c: Cursor, a: List[Any]):
+    def g(c: Cursor, a: Any):
         try:
             return transfer(a[-1]), c, a[:-1]
         except Exception as e:
@@ -464,6 +464,11 @@ def array(dtype: np.dtype, size: int) -> Parser:
     return array_p
 
 
+def binary_value(dtype: np.dtype):
+    """Parses a single binary value of the given `dtype`."""
+    return array(dtype, 1) >> fmap(lambda x: x[0])
+
+
 def with_config(p: Parser, **kwargs) -> Parser:
     """Creates a config object at the bottom of the auxiliary stack.
     The config will be a empty dictionary. The resulting parser should
@@ -480,3 +485,36 @@ def using_config(f):
         return get_aux() >> (lambda a: f(*args, **kwargs, config=a[0]))
 
     return g
+
+
+def fmap(f):
+    """Maps a parsed value by a function `f`.
+
+        >>> parse_bytes(text_literal("hello") >> fmap(lambda x: x.upper()), b"hello")
+        "HELLO"
+    """
+    return lambda x: value(f(x))
+
+
+def construct(f):
+    """Construct an object `f` by passing a dictionary as keyword arguments. Use this
+    in conjunction with `named_sequence`.
+
+        >>> @dataclass
+        ... class Point:
+        ...     x: float
+        ...     y: float
+
+        >>> point = named_sequence(
+        ...     _1=tokenize(char("(")),
+        ...     x=tokenize(scientific_number),
+        ...     _2=tokenize(char(","))
+        ...     y=tokenize(scientific_number),
+        ...     _3=tokenize(char(")"))
+        ...     ) >> construct(Point)
+
+        >>> parse_bytes(point, "(1, 2)")
+        Point(x=1, y=2)
+    """
+    return lambda kwargs: value(f(**kwargs))
+

@@ -106,3 +106,4 @@ class Parser:
         """The `>>` operator is one of the primary ways of composing
         parsers (the other being `choice`)."""
         return bind(self, g)
+

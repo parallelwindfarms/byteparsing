@@ -108,6 +108,7 @@
 <li class="toctree-l3"><a class="reference internal" href="#Parse-a-list-of-emails">Parse a list of emails</a></li>
 </ul>
 </li>
+<li class="toctree-l2"><a class="reference internal" href="#Parse-a-CSV">Parse a CSV</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="ply.html">Advanced example: parsing PLY files</a></li>
@@ -808,6 +809,84 @@ p.rodriguez-sanchez@esciencencenter.nl
 nl
 </pre></div></div>
 </div>
+</div>
+</div>
+<div class="section" id="Parse-a-CSV">
+<h2>Parse a CSV<a class="headerlink" href="#Parse-a-CSV" title="Permalink to this headline">¶</a></h2>
+<p>Imagine we have stored numerical information on a CSV file. The file looks like this:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="mi">1</span><span class="p">;</span><span class="o">-</span><span class="mi">2</span><span class="p">;</span><span class="mf">3.14</span><span class="p">;</span><span class="o">-</span><span class="mi">4</span>
+<span class="mi">5</span><span class="p">;</span><span class="o">-</span><span class="mf">6.2</span><span class="p">;</span><span class="mi">7</span><span class="p">;</span><span class="o">-</span><span class="mf">8.1</span>
+<span class="mi">9</span><span class="p">;</span><span class="o">-</span><span class="mi">10</span><span class="p">;</span><span class="mi">11</span><span class="p">;</span><span class="o">-</span><span class="mi">12</span>
+</pre></div>
+</div>
+<p>We can first create a parser for a single line.</p>
+<p>The recipe is the following:</p>
+<ol class="arabic simple">
+<li><p>Split the content (floats) by separator (“;”)</p></li>
+<li><p>Expect 0 or 1 end-of-line chars</p></li>
+</ol>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[21]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">csvline</span> <span class="o">=</span> <span class="n">sequence</span><span class="p">(</span>
+    <span class="n">sep_by</span><span class="p">(</span><span class="n">scientific_number</span><span class="p">,</span> <span class="n">text_literal</span><span class="p">(</span><span class="s2">&quot;;&quot;</span><span class="p">))</span> <span class="o">&gt;&gt;</span> <span class="n">push</span><span class="p">,</span>
+    <span class="n">many</span><span class="p">(</span><span class="n">eol</span><span class="p">),</span> <span class="c1"># Just check the eol exists. Don&#39;t store it</span>
+    <span class="n">pop</span><span class="p">())</span> <span class="c1"># Return pushed content</span>
+</pre></div>
+</div>
+</div>
+<p>Let’s try it:</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[22]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">data</span> <span class="o">=</span> <span class="sa">b</span><span class="s2">&quot;1;-2;3.14;-4/n&quot;</span>
+<span class="n">parse_bytes</span><span class="p">(</span><span class="n">csvline</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[22]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+[1, -2, 3.14, -4]
+</pre></div></div>
+</div>
+<p>A complete CSV just contains several lines like the one above. Our syntax makes this generalization remarkably simple:</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[23]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">csv</span> <span class="o">=</span> <span class="n">some</span><span class="p">(</span><span class="n">csvline</span><span class="p">)</span> <span class="c1"># A csv contains at least one line</span>
+</pre></div>
+</div>
+</div>
+<p>Let’s try it:</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[24]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">data</span> <span class="o">=</span> <span class="sa">b</span><span class="s2">&quot;1;-2;3;-4</span><span class="se">\n</span><span class="s2">5;-6.2;7;-8.1</span><span class="se">\n</span><span class="s2">9;-10;11;-12&quot;</span>
+
+<span class="n">parse_bytes</span><span class="p">(</span><span class="n">csv</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[24]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+[[1, -2, 3, -4], [5, -6.2, 7, -8.1], [9, -10, 11, -12]]
+</pre></div></div>
 </div>
 </div>
 </div>

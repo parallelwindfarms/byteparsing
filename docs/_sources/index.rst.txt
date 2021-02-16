@@ -26,6 +26,7 @@ When **not to use** `byteparsing`:
    :caption: Contents:
 
    Introduction <self>
+   install
    functional
    examples
    ply

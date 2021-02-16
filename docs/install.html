@@ -7,7 +7,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
-  <title>Search &mdash; byteparsing 0.1.0 documentation</title>
+  <title>Installation &mdash; byteparsing 0.1.0 documentation</title>
   
 
   
@@ -24,7 +24,6 @@
   
 
   
-    
   <!--[if lt IE 9]>
     <script src="_static/js/html5shiv.min.js"></script>
   <![endif]-->
@@ -42,10 +41,10 @@
     <script type="text/javascript" src="_static/js/theme.js"></script>
 
     
-    <script type="text/javascript" src="_static/searchtools.js"></script>
-    <script type="text/javascript" src="_static/language_data.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
-    <link rel="search" title="Search" href="#" /> 
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Introduction to Functional Parsing in Python" href="functional.html" />
+    <link rel="prev" title="Welcome to byteparsing’s documentation!" href="index.html" /> 
 </head>
 
 <body class="wy-body-for-nav">
@@ -76,7 +75,7 @@
 
           
 <div role="search">
-  <form id="rtd-search-form" class="wy-form" action="#" method="get">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
     <input type="text" name="q" placeholder="Search docs" />
     <input type="hidden" name="check_keywords" value="yes" />
     <input type="hidden" name="area" value="default" />
@@ -95,9 +94,13 @@
             
             
               <p class="caption"><span class="caption-text">Contents:</span></p>
-<ul>
+<ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="index.html">Introduction</a></li>
-<li class="toctree-l1"><a class="reference internal" href="install.html">Installation</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Installation</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#Latest-stable-version">Latest stable version</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#Development-version">Development version</a></li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="functional.html">Introduction to Functional Parsing in Python</a></li>
 <li class="toctree-l1"><a class="reference internal" href="examples.html">Examples of usage</a></li>
 <li class="toctree-l1"><a class="reference internal" href="ply.html">Advanced example: parsing PLY files</a></li>
@@ -151,10 +154,14 @@
     
       <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
         
-      <li>Search</li>
+      <li>Installation</li>
     
     
       <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="_sources/install.ipynb.txt" rel="nofollow"> View page source</a>
+          
         
       </li>
     
@@ -166,23 +173,59 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <noscript>
-  <div id="fallback" class="admonition warning">
-    <p class="last">
-      Please activate JavaScript to enable the search functionality.
-    </p>
-  </div>
-  </noscript>
+  
+<style>
+/* CSS overrides for sphinx_rtd_theme */
 
-  
-  <div id="search-results">
-  
-  </div>
+/* 24px margin */
+.nbinput.nblast.container,
+.nboutput.nblast.container {
+    margin-bottom: 19px;  /* padding has already 5px */
+}
+
+/* ... except between code cells! */
+.nblast.container + .nbinput.container {
+    margin-top: -19px;
+}
+
+.admonition > p:before {
+    margin-right: 4px;  /* make room for the exclamation icon */
+}
+
+/* Fix math alignment, see https://github.com/rtfd/sphinx_rtd_theme/pull/686 */
+.math {
+    text-align: unset;
+}
+</style>
+<div class="section" id="Installation">
+<h1>Installation<a class="headerlink" href="#Installation" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="Latest-stable-version">
+<h2>Latest stable version<a class="headerlink" href="#Latest-stable-version" title="Permalink to this headline">¶</a></h2>
+<p>You can comfortably install the latest stable version using:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">pip install byteparsing</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="Development-version">
+<h2>Development version<a class="headerlink" href="#Development-version" title="Permalink to this headline">¶</a></h2>
+<p>If you feel adventurous and want to try the very latest version, use this instead:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">git clone https://github.com/parallelwindfarms/byteparsing.git</span>
+<span class="go">cd byteparsing</span>
+<span class="go">pip install .</span>
+</pre></div>
+</div>
+</div>
+</div>
+
 
            </div>
            
           </div>
           <footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+        <a href="functional.html" class="btn btn-neutral float-right" title="Introduction to Functional Parsing in Python" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="index.html" class="btn btn-neutral float-left" title="Welcome to byteparsing’s documentation!" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
 
   <hr/>
 
@@ -219,14 +262,7 @@
   
   
     
-  
-  <script type="text/javascript">
-    jQuery(function() { Search.loadIndex("searchindex.js"); });
-  </script>
-  
-  <script type="text/javascript" id="searchindexloader"></script>
    
-
 
 </body>
 </html>

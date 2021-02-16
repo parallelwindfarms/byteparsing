@@ -579,6 +579,12 @@ by a <cite>transfer</cite> function, which defaults to the identity function.</p
 </dd></dl>
 
 <dl class="py function">
+<dt id="byteparsing.parsers.sep_by">
+<code class="sig-prename descclassname">byteparsing.parsers.</code><code class="sig-name descname">sep_by</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">p</span><span class="p">:</span> <span class="n"><a class="reference internal" href="#byteparsing.trampoline.Parser" title="byteparsing.trampoline.Parser">byteparsing.trampoline.Parser</a></span></em>, <em class="sig-param"><span class="n">sep</span><span class="p">:</span> <span class="n"><a class="reference internal" href="#byteparsing.trampoline.Parser" title="byteparsing.trampoline.Parser">byteparsing.trampoline.Parser</a></span></em><span class="sig-paren">)</span> &#x2192; <a class="reference internal" href="#byteparsing.trampoline.Parser" title="byteparsing.trampoline.Parser">byteparsing.trampoline.Parser</a><a class="headerlink" href="#byteparsing.parsers.sep_by" title="Permalink to this definition">¶</a></dt>
+<dd><p>Parse <cite>p</cite> separated by <cite>sep</cite>. Returns list of <cite>p</cite>.</p>
+</dd></dl>
+
+<dl class="py function">
 <dt id="byteparsing.parsers.sequence">
 <code class="sig-prename descclassname">byteparsing.parsers.</code><code class="sig-name descname">sequence</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">first</span><span class="p">:</span> <span class="n"><a class="reference internal" href="#byteparsing.trampoline.Parser" title="byteparsing.trampoline.Parser">byteparsing.trampoline.Parser</a></span></em>, <em class="sig-param"><span class="o">*</span><span class="n">rest</span><span class="p">:</span> <span class="n"><a class="reference internal" href="#byteparsing.trampoline.Parser" title="byteparsing.trampoline.Parser">byteparsing.trampoline.Parser</a></span></em><span class="sig-paren">)</span> &#x2192; <a class="reference internal" href="#byteparsing.trampoline.Parser" title="byteparsing.trampoline.Parser">byteparsing.trampoline.Parser</a><a class="headerlink" href="#byteparsing.parsers.sequence" title="Permalink to this definition">¶</a></dt>
 <dd><p>Parse <cite>first</cite>, then <cite>sequence(*rest)</cite>. The parser result

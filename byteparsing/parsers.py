@@ -292,6 +292,12 @@ def many_char(p: Parser, transfer=lambda x: x) -> Parser:
     return sequence(flush(), many_char_0(p), flush(transfer))
 
 
+def sep_by(p: Parser, sep: Parser) -> Parser:
+    """Parse `p` separated by `sep`. Returns list of `p`."""
+    return p >> (lambda first: many(sequence(sep, p))
+                 >> (lambda rest: value([first] + rest)))
+
+
 def text_end_by(x: str) -> Parser:
     @parser
     def g(c: Cursor, a: Any):

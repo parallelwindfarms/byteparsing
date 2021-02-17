@@ -27,6 +27,7 @@ When **not to use** `byteparsing`:
 
    Introduction <self>
    install
+   cursors
    functional
    examples
    ply

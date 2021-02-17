@@ -28,6 +28,7 @@ When **not to use** `byteparsing`:
    Introduction <self>
    install
    cursors
+   parsers
    functional
    examples
    ply

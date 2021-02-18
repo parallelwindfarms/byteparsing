@@ -38,8 +38,9 @@ class Cursor:
     encoding: str = "utf-8"
 
     def __bool__(self):
-        """`False` if the cursor refererences the end of input, `True`
-        otherwise."""
+        """`False` if the cursor references the end of input, `True`
+        otherwise. 
+        Tip: use `while Cursor:` to run until the end of input"""
         return self.end < len(self.data)
 
     def __len__(self):

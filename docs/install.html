@@ -7,7 +7,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
-  <title>Architecture &mdash; byteparsing 0.1.0 documentation</title>
+  <title>Installation &mdash; byteparsing 0.1.0 documentation</title>
   
 
   
@@ -43,8 +43,8 @@
     
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="API Documentation" href="api.html" />
-    <link rel="prev" title="Advanced example: parsing PLY files" href="ply.html" /> 
+    <link rel="next" title="Cursors" href="cursors.html" />
+    <link rel="prev" title="Welcome to byteparsing’s documentation!" href="index.html" /> 
 </head>
 
 <body class="wy-body-for-nav">
@@ -96,21 +96,17 @@
               <p class="caption"><span class="caption-text">Contents:</span></p>
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="index.html">Introduction</a></li>
-<li class="toctree-l1"><a class="reference internal" href="install.html">Installation</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Installation</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#Latest-stable-version">Latest stable version</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#Development-version">Development version</a></li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="cursors.html">Cursors</a></li>
 <li class="toctree-l1"><a class="reference internal" href="parsers.html">Parsers</a></li>
 <li class="toctree-l1"><a class="reference internal" href="functional.html">Introduction to Functional Parsing in Python</a></li>
 <li class="toctree-l1"><a class="reference internal" href="examples.html">Examples of usage</a></li>
 <li class="toctree-l1"><a class="reference internal" href="ply.html">Advanced example: parsing PLY files</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">Architecture</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#functional-parsers">Functional parsers</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#trampoline">Trampoline</a></li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="#cursors">Cursors</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#memory-mapping">Memory mapping</a></li>
-</ul>
-</li>
+<li class="toctree-l1"><a class="reference internal" href="architecture.html">Architecture</a></li>
 <li class="toctree-l1"><a class="reference internal" href="api.html">API Documentation</a></li>
 </ul>
 
@@ -160,13 +156,13 @@
     
       <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
         
-      <li>Architecture</li>
+      <li>Installation</li>
     
     
       <li class="wy-breadcrumbs-aside">
         
           
-            <a href="_sources/architecture.md.txt" rel="nofollow"> View page source</a>
+            <a href="_sources/install.ipynb.txt" rel="nofollow"> View page source</a>
           
         
       </li>
@@ -203,20 +199,24 @@
     text-align: unset;
 }
 </style>
-<div class="section" id="architecture">
-<h1>Architecture<a class="headerlink" href="#architecture" title="Permalink to this headline">¶</a></h1>
-<div class="section" id="functional-parsers">
-<h2>Functional parsers<a class="headerlink" href="#functional-parsers" title="Permalink to this headline">¶</a></h2>
-<div class="section" id="trampoline">
-<h3>Trampoline<a class="headerlink" href="#trampoline" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="Installation">
+<h1>Installation<a class="headerlink" href="#Installation" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="Latest-stable-version">
+<h2>Latest stable version<a class="headerlink" href="#Latest-stable-version" title="Permalink to this headline">¶</a></h2>
+<p>You can comfortably install the latest stable version using:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">pip install byteparsing</span>
+</pre></div>
 </div>
 </div>
-<div class="section" id="cursors">
-<h2>Cursors<a class="headerlink" href="#cursors" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="Development-version">
+<h2>Development version<a class="headerlink" href="#Development-version" title="Permalink to this headline">¶</a></h2>
+<p>If you feel adventurous and want to try the very latest version, use this instead:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">git clone https://github.com/parallelwindfarms/byteparsing.git</span>
+<span class="go">cd byteparsing</span>
+<span class="go">pip install .</span>
+</pre></div>
 </div>
-<div class="section" id="memory-mapping">
-<h2>Memory mapping<a class="headerlink" href="#memory-mapping" title="Permalink to this headline">¶</a></h2>
-<!-- vim: set ft=markdown: --></div>
+</div>
 </div>
 
 
@@ -225,8 +225,8 @@
           </div>
           <footer>
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
-        <a href="api.html" class="btn btn-neutral float-right" title="API Documentation" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
-        <a href="ply.html" class="btn btn-neutral float-left" title="Advanced example: parsing PLY files" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="cursors.html" class="btn btn-neutral float-right" title="Cursors" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="index.html" class="btn btn-neutral float-left" title="Welcome to byteparsing’s documentation!" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
     </div>
 
   <hr/>

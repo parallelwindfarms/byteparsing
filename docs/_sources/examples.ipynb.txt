@@ -8,27 +8,12 @@
     "\n",
     "In this section we'll show several examples of usage of the `byteparsing` package.\n",
     "\n",
-    "First of all, of course, we'll need to have the package installed.\n",
-    "If you have not done it before, you can comfortably install the latest stable version using:\n",
-    "\n",
-    "```{.console}\n",
-    "pip install byteparsing\n",
-    "```\n",
-    "\n",
-    "If you feel adventurous and want to try the very latest development version, use this instead:\n",
-    "\n",
-    "```{.console}\n",
-    "git clone https://github.com/parallelwindfarms/byteparsing.git\n",
-    "cd byteparsing\n",
-    "pip install .\n",
-    "```\n",
-    "\n",
-    "Once installed, of course, you'll need to import it:"
+    "For now, we'll import all the parsers."
    ]
   },
   {
    "cell_type": "code",
-   "execution_count": 2,
+   "execution_count": 1,
    "metadata": {},
    "outputs": [],
    "source": [
@@ -39,18 +24,17 @@
    "cell_type": "markdown",
    "metadata": {},
    "source": [
-    "## Parsing an email address\n",
+    "## Simple email address parser\n",
     "\n",
     "An email address typically contains three pieces of information:\n",
     "\n",
-    "- User\n",
-    "- Server\n",
-    "- Country / Domain\n",
+    "- Username\n",
+    "- Host\n",
     "\n",
     "This information is easy to parse with the naked eye:\n",
     "\n",
     "```sh\n",
-    "[user]@[server].[country]\n",
+    "[username]@[host]\n",
     "```\n",
     "\n",
     "A parser, of course, has no eyes. \n",
@@ -60,28 +44,33 @@
     "\n",
     "0. Keep in mind that not all chars are valid for an email.\n",
     "1. The first email-valid chars constitute the `user` field. It should contain at least one char.\n",
-    "2. We continue, and we expect to find an \"@\" here. We ignore it, and continue. The next email-valid chars after the \"@\" correspond to the `server` field. It should contain at least one char.\n",
-    "3. We continue, and we expect to find a \".\" here. We ignore it, and continue. The next email-valid chars after the \".\" correspond to the `country` field. It should contain at least one char. \n",
+    "2. After the `user` field we expect an \"@\". We check that it is there, and we ignore it.\n",
+    "3. The next email-valid chars after the \"@\" correspond to the `host` field. It should contain at least one char.\n",
     "\n",
-    "In the example below, you can see the implementation of this algorithm.\n"
+    "In the example below, you can see the implementation of this algorithm."
    ]
   },
   {
    "cell_type": "code",
-   "execution_count": 3,
+   "execution_count": 2,
    "metadata": {},
    "outputs": [],
    "source": [
     "# First, we define what charachters are acceptable on an email (email-valid chars)\n",
-    "email_char = choice(ascii_alpha_num, ascii_underscore)\n",
+    "email_char = choice(ascii_alpha_num, ascii_underscore, text_literal(\".\"), text_literal(\"-\"))\n",
     "\n",
     "# We abstract the information contained in an email as:\n",
-    "# [user]@[server].[country]\n",
-    "email = named_sequence( # Our expected result will be (user, server, country)\n",
-    "        user=some_char(email_char), # Step 1\n",
-    "        server=sequence(text_literal(\"@\"), flush(), some_char(email_char)), # Step 2\n",
-    "        country=sequence(text_literal(\".\"), flush(), some_char(email_char)) # Step 3\n",
-    ")"
+    "# [username]@[host]\n",
+    "email = named_sequence(\n",
+    "            user=some_char(email_char), # Step 1\n",
+    "            _1=text_literal(\"@\"), # Step 2\n",
+    "            host=some_char(email_char) # Step 3\n",
+    "        )\n",
+    "\n",
+    "# Notice that we ignore the \"@\" by assigning it to the field \"_1\".\n",
+    "# Why not use just \"_\"? Because we need these fields to be unique.\n",
+    "# In case we had more than one ignored value, we recommend to use\n",
+    "# _1, _2, and so on for the ignored fields."
    ]
   },
   {
@@ -93,19 +82,19 @@
   },
   {
    "cell_type": "code",
-   "execution_count": 4,
+   "execution_count": 3,
    "metadata": {},
    "outputs": [
     {
      "name": "stdout",
      "output_type": "stream",
      "text": [
-      "{'user': b'pab', 'server': b'rod', 'country': b'es'}\n"
+      "{'user': b'p.rodriguez-sanchez', 'host': b'esciencecenter.nl'}\n"
      ]
     }
    ],
    "source": [
-    "parsed = parse_bytes(email, b'pab@rod.es')\n",
+    "parsed = parse_bytes(email, b'p.rodriguez-sanchez@esciencecenter.nl')\n",
     "\n",
     "print(parsed)"
    ]
@@ -125,12 +114,96 @@
    ]
   },
   {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "## More advanced email address parsers"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "### More detailed fields\n",
+    "\n",
+    "The information contained in an email address can be further dissected.\n",
+    "For instance, the `host` information can be split in `server` and `country` code.\n",
+    "That is:\n",
+    "\n",
+    "[username]@[server].[country]\n",
+    "\n",
+    "We can create a more detailed parser that splits strings wherever it finds a dot.\n",
+    "\n",
+    "In order to do this, we first have to redefine the set of acceptable email chars, to not include the dot anymore."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 4,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "email_char = choice(ascii_alpha_num, ascii_underscore, text_literal(\"-\"))"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "Now, we can use the parser below to dissect email components."
+   ]
+  },
+  {
    "cell_type": "code",
    "execution_count": 5,
    "metadata": {},
    "outputs": [],
    "source": [
-    "from byteparsing.parsers import sep_by"
+    "email_component = sep_by(some_char(email_char, lambda b: b.decode()), text_literal(\".\"))"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "Let's build the improved parser."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 6,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "better_email = named_sequence(\n",
+    "                user=email_component,\n",
+    "                _1=text_literal(\"@\"),\n",
+    "                host=email_component\n",
+    "                )"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "And try it:"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 7,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "my_email = parse_bytes(better_email,\n",
+    "            b\"pablo.rodriguez-sanchez@esciencecenter.nl\")"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "The output is a dictionary containing the dissected parts of the email."
    ]
   },
   {
@@ -139,30 +212,406 @@
    "metadata": {},
    "outputs": [
     {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "{'user': ['pablo', 'rodriguez-sanchez'], 'host': ['esciencecenter', 'nl']}\n"
+     ]
+    }
+   ],
+   "source": [
+    "print(my_email)"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "#### Pro tip: construct a data class\n",
+    "\n",
+    "We can use the dictionary to create an instance of a data class.\n",
+    "As we will see, this will allow for maximum flexibility.\n",
+    "\n",
+    "First, we create a data class representing an email address."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 9,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "from dataclasses import dataclass\n",
+    "\n",
+    "@dataclass\n",
+    "class Email:\n",
+    "    user: List[str]\n",
+    "    host: List[str]\n",
+    "        \n",
+    "    @property\n",
+    "    def country(self):\n",
+    "        \"\"\"Return the country code\"\"\"\n",
+    "        return self.host[-1]\n",
+    "\n",
+    "    def __str__(self):\n",
+    "        \"\"\"Prints the email in a human-readable fashion\"\"\"\n",
+    "        return \".\".join(self.user) + \"@\" + \".\".join(self.host)"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "The `construct` method pipes the output directly into the class constructor"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 10,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "even_better_email = named_sequence(\n",
+    "                        user=email_component,\n",
+    "                        _1=text_literal(\"@\"),\n",
+    "                        host=email_component\n",
+    "                    ) >> construct(Email)"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "Let's try it:"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 11,
+   "metadata": {},
+   "outputs": [
+    {
      "data": {
       "text/plain": [
-       "[b'pablo', b'rodriguez', b'sanchez']"
+       "'pablo.rodriguez-sanchez@esciencecenter.nl'"
       ]
      },
-     "execution_count": 8,
+     "execution_count": 11,
      "metadata": {},
      "output_type": "execute_result"
     }
    ],
    "source": [
-    "email_component = sep_by(some_char(email_char), text_literal(\".\"))\n",
-    "parse_bytes(email_component,\n",
-    "            b\"pablo.rodriguez.sanchez\")"
+    "my_email = parse_bytes(even_better_email,\n",
+    "            b\"pablo.rodriguez-sanchez@esciencecenter.nl\")\n",
+    "\n",
+    "str(my_email)"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "The output is an instance of the class `Email`."
    ]
   },
   {
    "cell_type": "code",
-   "execution_count": null,
+   "execution_count": 12,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "Email(user=['pablo', 'rodriguez-sanchez'], host=['esciencecenter', 'nl'])"
+      ]
+     },
+     "execution_count": 12,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "my_email"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "We can of course use the class' methods:"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 13,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "'pablo.rodriguez-sanchez@esciencecenter.nl'"
+      ]
+     },
+     "execution_count": 13,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "str(my_email)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 14,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "'nl'"
+      ]
+     },
+     "execution_count": 14,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "my_email.country"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "### Parse a list of emails\n",
+    "\n",
+    "Imagine now we want to parse several email addresses from a file containing the information below.\n",
+    "Notice that each email address is separated by an end-of-line char."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 15,
    "metadata": {},
    "outputs": [],
    "source": [
-    "better_email = named_sequence(\n",
-    "    user=email_compon)"
+    "data = b\"j.hidding@esciencecenter.nl\\np.rodriguez-sanchez@esciencencenter.nl\""
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "The following parser will be helpful for dealing with end-of-line chars, because they are encoded differently depending on the OS."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 16,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "eol = choice(text_literal(\"\\n\"), text_literal(\"\\n\\r\"))"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "We can create a parser for a list of emails just by:"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 17,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "list_of_emails = sep_by(even_better_email, eol)"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "Let's try it:"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 18,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "our_emails = parse_bytes(list_of_emails, data)"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "It returns a list of instances of the class `Email`."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 19,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "[Email(user=['j', 'hidding'], host=['esciencecenter', 'nl']),\n",
+       " Email(user=['p', 'rodriguez-sanchez'], host=['esciencencenter', 'nl'])]"
+      ]
+     },
+     "execution_count": 19,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "our_emails"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "And once again, we can access the class' methods:"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 20,
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "j.hidding@esciencecenter.nl\n",
+      "nl\n",
+      "p.rodriguez-sanchez@esciencencenter.nl\n",
+      "nl\n"
+     ]
+    }
+   ],
+   "source": [
+    "for email in our_emails:\n",
+    "    print(email)\n",
+    "    print(email.country)"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "## Parse a CSV\n",
+    "\n",
+    "Imagine we have stored numerical information on a CSV file.\n",
+    "The file looks like this:\n",
+    "\n",
+    "```\n",
+    "1;-2;3.14;-4\n",
+    "5;-6.2;7;-8.1\n",
+    "9;-10;11;-12\n",
+    "```\n",
+    "\n",
+    "We can first create a parser for a single line.\n",
+    "\n",
+    "The recipe is the following:\n",
+    "\n",
+    "1. Split the content (floats) by separator (\";\")\n",
+    "2. Expect 0 or 1 end-of-line chars"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 21,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "csvline = sequence(\n",
+    "    sep_by(scientific_number, text_literal(\";\")) >> push, \n",
+    "    many(eol), # Just check the eol exists. Don't store it\n",
+    "    pop()) # Return pushed content"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "Let's try it:"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 22,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "[1, -2, 3.14, -4]"
+      ]
+     },
+     "execution_count": 22,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "data = b\"1;-2;3.14;-4/n\"\n",
+    "parse_bytes(csvline, data)"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "A complete CSV just contains several lines like the one above. Our syntax makes this generalization remarkably simple:"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 23,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "csv = some(csvline) # A csv contains at least one line"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "Let's try it:"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 24,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "[[1, -2, 3, -4], [5, -6.2, 7, -8.1], [9, -10, 11, -12]]"
+      ]
+     },
+     "execution_count": 24,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "data = b\"1;-2;3;-4\\n5;-6.2;7;-8.1\\n9;-10;11;-12\"\n",
+    "\n",
+    "parse_bytes(csv, data)"
    ]
   }
  ],
@@ -182,7 +631,7 @@
    "name": "python",
    "nbconvert_exporter": "python",
    "pygments_lexer": "ipython3",
-   "version": "3.9.1"
+   "version": "3.7.7"
   }
  },
  "nbformat": 4,

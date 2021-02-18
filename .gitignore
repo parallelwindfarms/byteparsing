@@ -28,3 +28,6 @@ docs/apidocs
 
 # mypy
 .mypy_cache
+
+# custom
+playground

@@ -412,6 +412,7 @@ def repeat_n(p: Parser, n: int) -> Parser:
 
 
 whitespace = some_char(text_one_of(" \t\n"))
+eol = choice(text_literal("\n"), text_literal("\n\r"))
 ascii_alpha = char_pred(lambda c: 64 < c < 91 or 96 < c < 123)
 ascii_num = char_pred(lambda c: 48 <= c < 58)
 ascii_alpha_num = choice(ascii_alpha, ascii_num)

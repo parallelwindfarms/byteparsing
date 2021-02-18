@@ -33,8 +33,8 @@ class Cursor:
     """Encapsulates a byte string and two offsets to reference the input
     data."""
     data: Buffer
-    begin: int
-    end: int
+    begin: int = 0
+    end: int = 0
     encoding: str = "utf-8"
 
     def __bool__(self):

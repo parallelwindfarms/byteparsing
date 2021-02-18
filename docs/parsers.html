@@ -100,6 +100,7 @@
 <li class="toctree-l1"><a class="reference internal" href="cursors.html">Cursors</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Parsers</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#Parsing-functions">Parsing functions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#The-Parser-class">The Parser class</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="functional.html">Introduction to Functional Parsing in Python</a></li>
@@ -470,7 +471,7 @@ div.rendered_html tbody tr:hover {
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
 <span></span><span class="c1"># Create some data to be parsed</span>
-<span class="n">data</span> <span class="o">=</span> <span class="s2">&quot;Hello world!&quot;</span>
+<span class="n">data</span> <span class="o">=</span> <span class="sa">b</span><span class="s2">&quot;Hello world!&quot;</span>
 
 <span class="c1"># Initialize the Cursor</span>
 <span class="n">c</span> <span class="o">=</span> <span class="n">Cursor</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">begin</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
@@ -481,7 +482,7 @@ div.rendered_html tbody tr:hover {
 <span class="c1"># Create a parsing function</span>
 <span class="k">def</span> <span class="nf">read_one</span><span class="p">(</span><span class="n">c</span><span class="p">,</span> <span class="n">a</span><span class="p">):</span>
     <span class="n">c</span> <span class="o">=</span> <span class="n">c</span><span class="o">.</span><span class="n">increment</span><span class="p">()</span> <span class="c1"># Increase end index by one</span>
-    <span class="n">x</span> <span class="o">=</span> <span class="n">c</span><span class="o">.</span><span class="n">content</span> <span class="c1"># Read content</span>
+    <span class="n">x</span> <span class="o">=</span> <span class="n">c</span><span class="o">.</span><span class="n">content_str</span> <span class="c1"># Read content</span>
     <span class="n">c</span> <span class="o">=</span> <span class="n">c</span><span class="o">.</span><span class="n">flush</span><span class="p">()</span> <span class="c1"># Flush (i.e.: move begin to end)</span>
     <span class="k">return</span> <span class="n">x</span><span class="p">,</span> <span class="n">c</span><span class="p">,</span> <span class="n">a</span>
 </pre></div>
@@ -554,12 +555,96 @@ d
 <div class="output_area docutils container">
 <div class="highlight"><pre>
 [&#39;H&#39;, &#39;e&#39;, &#39;l&#39;, &#39;l&#39;, &#39;o&#39;, &#39; &#39;, &#39;w&#39;, &#39;o&#39;, &#39;r&#39;, &#39;l&#39;, &#39;d&#39;, &#39;!&#39;]
-Cursor(data=&#39;Hello world!&#39;, begin=12, end=12, encoding=&#39;utf-8&#39;)
+Cursor(data=b&#39;Hello world!&#39;, begin=12, end=12, encoding=&#39;utf-8&#39;)
 </pre></div></div>
 </div>
 <p>Notice that the composition of two parsing functions (say, <span class="math notranslate nohighlight">\(f\)</span> and <span class="math notranslate nohighlight">\(g\)</span>) is slightly more complicated than <span class="math notranslate nohighlight">\(f \circ g\)</span>, because the input and the output spaces of parsing functions are slightly different.</p>
 <p>For these and other reasons, it is advisable to manage parsing functions with a more flexible data structure.</p>
 <p>We introduce the Parser (data) class.</p>
+</div>
+<div class="section" id="The-Parser-class">
+<h2>The Parser class<a class="headerlink" href="#The-Parser-class" title="Permalink to this headline">¶</a></h2>
+<p>This section is work in progress.</p>
+<p>We’ll manage parsing functions using a <code class="docutils literal notranslate"><span class="pre">Parser</span></code> class. <code class="docutils literal notranslate"><span class="pre">Parser</span></code> is a <code class="docutils literal notranslate"><span class="pre">dataclass</span></code> that contains a single field, <code class="docutils literal notranslate"><span class="pre">func</span></code>, representing a parser function.</p>
+<p>Let’s build a <code class="docutils literal notranslate"><span class="pre">Parser</span></code> class from the <code class="docutils literal notranslate"><span class="pre">read_one</span></code> parsing function defined in the previous section:</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="kn">from</span> <span class="nn">byteparsing.trampoline</span> <span class="kn">import</span> <span class="n">Parser</span><span class="p">,</span> <span class="n">parser</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="c1"># Initialize the Cursor</span>
+<span class="n">c</span> <span class="o">=</span> <span class="n">Cursor</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">begin</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+
+<span class="c1"># Use an empty auxiliary variable</span>
+<span class="n">a</span> <span class="o">=</span> <span class="p">[]</span>
+
+<span class="c1"># Create a function</span>
+<span class="k">def</span> <span class="nf">read_one</span><span class="p">(</span><span class="n">c</span><span class="p">,</span> <span class="n">a</span><span class="p">):</span>
+    <span class="n">c</span> <span class="o">=</span> <span class="n">c</span><span class="o">.</span><span class="n">increment</span><span class="p">()</span> <span class="c1"># Increase end index by one</span>
+    <span class="n">x</span> <span class="o">=</span> <span class="n">c</span><span class="o">.</span><span class="n">content_str</span> <span class="c1"># Read content</span>
+    <span class="n">c</span> <span class="o">=</span> <span class="n">c</span><span class="o">.</span><span class="n">flush</span><span class="p">()</span> <span class="c1"># Flush (i.e.: move begin to end)</span>
+    <span class="k">return</span> <span class="n">x</span><span class="p">,</span> <span class="n">c</span><span class="p">,</span> <span class="n">a</span>
+
+<span class="n">read_one_p</span> <span class="o">=</span> <span class="n">Parser</span><span class="p">(</span><span class="n">read_one</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<p>Note: the lines above are entirely equivalent to:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nd">@parser</span>
+<span class="k">def</span> <span class="nf">read_one_p</span><span class="p">(</span><span class="n">c</span><span class="p">,</span> <span class="n">a</span><span class="p">):</span>
+    <span class="n">c</span> <span class="o">=</span> <span class="n">c</span><span class="o">.</span><span class="n">increment</span><span class="p">()</span> <span class="c1"># Increase end index by one</span>
+    <span class="n">x</span> <span class="o">=</span> <span class="n">c</span><span class="o">.</span><span class="n">content_str</span> <span class="c1"># Read content</span>
+    <span class="n">c</span> <span class="o">=</span> <span class="n">c</span><span class="o">.</span><span class="n">flush</span><span class="p">()</span> <span class="c1"># Flush (i.e.: move begin to end)</span>
+    <span class="k">return</span> <span class="n">x</span><span class="p">,</span> <span class="n">c</span><span class="p">,</span> <span class="n">a</span>
+</pre></div>
+</div>
+<p>Parsers are callable, but they don’t return anything informative until they are invoked:</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[8]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="nb">print</span><span class="p">(</span><span class="n">read_one_p</span><span class="p">(</span><span class="n">c</span><span class="p">,</span> <span class="n">a</span><span class="p">))</span> <span class="c1"># Whithout invoking</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+Call(p=&lt;function read_one at 0x7fa3bb735b90&gt;, cursor=Cursor(data=b&#39;Hello world!&#39;, begin=0, end=0, encoding=&#39;utf-8&#39;), aux=[])
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[9]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">x</span><span class="p">,</span> <span class="n">c</span><span class="p">,</span> <span class="n">a</span> <span class="o">=</span> <span class="n">read_one_p</span><span class="p">(</span><span class="n">c</span><span class="p">,</span> <span class="n">a</span><span class="p">)</span><span class="o">.</span><span class="n">invoke</span><span class="p">()</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">c</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+H
+Cursor(data=b&#39;Hello world!&#39;, begin=1, end=1, encoding=&#39;utf-8&#39;)
+</pre></div></div>
+</div>
 </div>
 </div>
 

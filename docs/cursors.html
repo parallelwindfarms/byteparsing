@@ -459,7 +459,7 @@ div.rendered_html tbody tr:hover {
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="n">data</span> <span class="o">=</span> <span class="s2">&quot;Hello world!&quot;</span>
+<span></span><span class="n">data</span> <span class="o">=</span> <span class="sa">b</span><span class="s2">&quot;Hello world!&quot;</span>
 
 <span class="n">c</span> <span class="o">=</span> <span class="n">Cursor</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">begin</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="n">c</span><span class="p">)</span>
@@ -471,7 +471,7 @@ div.rendered_html tbody tr:hover {
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-Cursor(data=&#39;Hello world!&#39;, begin=0, end=3, encoding=&#39;utf-8&#39;)
+Cursor(data=b&#39;Hello world!&#39;, begin=0, end=3, encoding=&#39;utf-8&#39;)
 </pre></div></div>
 </div>
 <p>The <code class="docutils literal notranslate"><span class="pre">Cursor</span></code> is implemented as a <code class="docutils literal notranslate"><span class="pre">dataclass</span></code>. This means that it contains fields (particularly: <code class="docutils literal notranslate"><span class="pre">data</span></code>, <code class="docutils literal notranslate"><span class="pre">begin</span></code>, <code class="docutils literal notranslate"><span class="pre">end</span></code>, and <code class="docutils literal notranslate"><span class="pre">encoding</span></code>), and also methods.</p>
@@ -491,7 +491,7 @@ Cursor(data=&#39;Hello world!&#39;, begin=0, end=3, encoding=&#39;utf-8&#39;)
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-&#39;Hel&#39;
+b&#39;Hel&#39;
 </pre></div></div>
 </div>
 <p>The method <code class="docutils literal notranslate"><span class="pre">increment</span></code> returns a new cursor where <code class="docutils literal notranslate"><span class="pre">end</span></code> has been increased (by default, to <code class="docutils literal notranslate"><span class="pre">end</span> <span class="pre">+</span> <span class="pre">1</span></code>).</p>
@@ -512,8 +512,8 @@ Cursor(data=&#39;Hello world!&#39;, begin=0, end=3, encoding=&#39;utf-8&#39;)
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-Cursor(data=&#39;Hello world!&#39;, begin=0, end=3, encoding=&#39;utf-8&#39;)
-Cursor(data=&#39;Hello world!&#39;, begin=0, end=4, encoding=&#39;utf-8&#39;)
+Cursor(data=b&#39;Hello world!&#39;, begin=0, end=3, encoding=&#39;utf-8&#39;)
+Cursor(data=b&#39;Hello world!&#39;, begin=0, end=4, encoding=&#39;utf-8&#39;)
 </pre></div></div>
 </div>
 <p>An interesting property of cursors is that they can be evaluated to a boolean. Particularly, a <code class="docutils literal notranslate"><span class="pre">Cursor</span></code> is <code class="docutils literal notranslate"><span class="pre">True</span></code> if and only if <code class="docutils literal notranslate"><span class="pre">end</span></code> is not at the end of the <code class="docutils literal notranslate"><span class="pre">data</span></code> string.</p>
@@ -549,18 +549,18 @@ Cursor(data=&#39;Hello world!&#39;, begin=0, end=4, encoding=&#39;utf-8&#39;)
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-H
-He
-Hel
-Hell
-Hello
-Hello
-Hello w
-Hello wo
-Hello wor
-Hello worl
-Hello world
-Hello world!
+b&#39;H&#39;
+b&#39;He&#39;
+b&#39;Hel&#39;
+b&#39;Hell&#39;
+b&#39;Hello&#39;
+b&#39;Hello &#39;
+b&#39;Hello w&#39;
+b&#39;Hello wo&#39;
+b&#39;Hello wor&#39;
+b&#39;Hello worl&#39;
+b&#39;Hello world&#39;
+b&#39;Hello world!&#39;
 </pre></div></div>
 </div>
 </div>

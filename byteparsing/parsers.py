@@ -327,7 +327,7 @@ def some_char(p: Parser, transfer=lambda x: x) -> Parser:
 
 
 def char_pred(pred: Callable[[int], bool]) -> Parser:
-    """Parses a single character passing `pred`."""
+    """Parses a single character passing a given predicate."""
     def f(x):
         if pred(x):
             return value(x)

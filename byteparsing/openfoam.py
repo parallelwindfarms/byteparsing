@@ -65,7 +65,8 @@ foam_numeric = tokenize(choice(scientific_number, vector(scientific_number)))
 list_type = sequence(
     text_literal("List<"),
     choice(text_literal("scalar"),
-           text_literal("vector")) >> push,
+           text_literal("vector"),
+           text_literal("symmTensor")) >> push,
     text_literal(">"),
     pop())
 
@@ -98,6 +99,10 @@ def binary_blob(header) -> Parser:
         return sequence(
             char('('), array(np.dtype(float), header["size"] * 3) >> push,
             tokenize(char(')')), pop(lambda v: v.reshape([-1, 3])))
+    if header["dtype"] == b"symTensor":
+        return sequence(
+            char('('), array(np.dtype(float), header["size"] * 6) >> push,
+            tokenize(char(')')), pop(lambda v: v.reshape([-1, 6])))
     return fail("Unrecognized data type: " + header["dtype"].decode())
 
 

@@ -167,6 +167,25 @@ def test_binary_vector():
     assert x["data"]["internalField"].shape == (9200, 3)
 
 
+def test_binary_uniform():
+    test_file = Path(".") / "tests" / "data" / "binary_uniform"
+    data = test_file.open(mode="rb").read()
+    x = parse_bytes(foam_file, data)
+    assert x["preamble"] == {
+        "name": "FoamFile",
+        "content": {
+            "version": 2.0,
+            "format": "binary",
+            "class": "volSymmTensorField",
+            "arch":  "LSB;label=32;scalar=64",
+            "location": "0.0001",
+            "object": "UPrime2Mean"
+        }
+    }
+    print(x["data"])
+    assert x["data"]["internalField"]["data"] == [0, 0, 0, 0, 0, 0]
+
+
 def test_modify_data(tmpdir):
     import mmap
     import shutil

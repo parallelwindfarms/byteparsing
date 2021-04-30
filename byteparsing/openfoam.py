@@ -99,7 +99,7 @@ def binary_blob(header) -> Parser:
         return sequence(
             char('('), array(np.dtype(float), header["size"] * 3) >> push,
             tokenize(char(')')), pop(lambda v: v.reshape([-1, 3])))
-    if header["dtype"] == b"symTensor":
+    if header["dtype"] == b"symmTensor":
         return sequence(
             char('('), array(np.dtype(float), header["size"] * 6) >> push,
             tokenize(char(')')), pop(lambda v: v.reshape([-1, 6])))
@@ -115,6 +115,12 @@ def foam_list_binary() -> Parser:
     return header >> binary_blob
 
 
+def foam_list_uniform() -> Parser:
+    return named_sequence(
+            _1=tokenize(text_literal("uniform")),
+            data=foam_numeric)
+
+
 @using_config
 def foam_list(config) -> Parser:
     """Based on the information in config, this parses either a binary
@@ -122,7 +128,7 @@ def foam_list(config) -> Parser:
     if config.get("format", "ascii") == "ascii":
         return foam_list_ascii()
     else:
-        return foam_list_binary()
+        return choice(foam_list_binary(), foam_list_uniform())
 
 
 dimensions = sequence(

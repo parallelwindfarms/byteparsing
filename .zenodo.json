@@ -1,0 +1,26 @@
+{
+    "creators": [
+        {
+            "affiliation": "Netherlands eScience Center",
+            "name": "Hidding, Johan",
+            "orcid": "0000-0002-7550-1796"
+        },
+        {
+            "affiliation": "Netherlands eScience Center",
+            "name": "Rodríguez-Sánchez, Pablo",
+            "orcid": "0000-0002-2855-940X"
+        }
+    ],
+    "description": "Byteparsing is a package for mixed text and binary parsing in Python. The main driver for developing this package was to write a parser for binary OpenFOAM files. The binary file format in OpenFOAM is “special”. It is the same as the ASCII based text format, except where large blocks of floating point data are concerned.",
+    "keywords": [
+        "python",
+        "parsing",
+        "parser-combinator",
+        "OpenFOAM",
+        "binary"
+    ],
+    "license": {
+        "id": "Apache-2.0"
+    },
+    "title": "byteparsing"
+}

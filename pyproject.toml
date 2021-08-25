@@ -1,0 +1,20 @@
+[tool.poetry]
+name = "byteparsing"
+version = "0.1.1"
+description = "Parser for mixed ASCII/binary data formats"
+authors = ["Johan Hidding <j.hidding@esciencecenter.nl>"]
+license = "Apache v2"
+
+[tool.poetry.dependencies]
+python = ">=3.9,<3.11"
+numpy = "^1.21.2"
+
+[tool.poetry.dev-dependencies]
+pytest = "^6.2.4"
+pytest-cov = "^2.12.1"
+pytest-flake8 = "^1.0.7"
+pytest-mypy = "^0.8.1"
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"

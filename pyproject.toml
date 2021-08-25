@@ -1,9 +1,18 @@
 [tool.poetry]
 name = "byteparsing"
-version = "0.1.1"
+version = "0.1.2"
 description = "Parser for mixed ASCII/binary data formats"
-authors = ["Johan Hidding <j.hidding@esciencecenter.nl>"]
-license = "Apache v2"
+authors = ["Johan Hidding <j.hidding@esciencecenter.nl>",
+           "Pablo Rodríguez-Sánchez <p.rodriguez-sanchez@esciencecenter.nl>"]
+license = "Apache-2.0"
+readme = "README.md"
+homepage = "https://parallelwindfarms.github.io/byteparsing"
+repository = "https://github.com/parallelwindfarms/byteparsing"
+keywords = ["parsing", "binary data"]
+classifiers = [
+        "Development Status :: 2 - Pre-Alpha",
+        "Intended Audience :: Developers",
+        "Natural Language :: English" ]
 
 [tool.poetry.dependencies]
 python = ">=3.9,<3.11"

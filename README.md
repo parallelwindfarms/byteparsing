@@ -4,6 +4,7 @@
 [![PyPI version](https://img.shields.io/pypi/v/byteparsing.svg?colorB=blue)](https://pypi.python.org/pypi/byteparsing/)
 [![codecov](https://codecov.io/gh/parallelwindfarms/byteparsing/graph/badge.svg)](https://codecov.io/gh/parallelwindfarms/byteparsing)
 [![fair-software.eu](https://img.shields.io/badge/fair--software.eu-%E2%97%8F%20%20%E2%97%8F%20%20%E2%97%8F%20%20%E2%97%8F%20%20%E2%97%8B-orange)](https://fair-software.eu)
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.4734194.svg)](https://doi.org/10.5281/zenodo.4734194)
 
 Parser for mixed ASCII/binary data. Features:
 

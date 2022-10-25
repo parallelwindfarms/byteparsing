@@ -31,3 +31,7 @@ docs/apidocs
 
 # custom
 playground
+
+# paper
+paper/paper.jats
+paper/paper.pdf

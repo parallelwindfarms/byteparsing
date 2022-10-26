@@ -1,5 +1,5 @@
 ---
-title: 'byteparser: functional parsing for everyday problems'
+title: 'byteparser: a functional parser for binary and ASCII'
 tags:
   - Python
   - parsing

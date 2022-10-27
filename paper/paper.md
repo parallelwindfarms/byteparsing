@@ -11,6 +11,7 @@ authors:
     corresponding: true # (This is how to denote the corresponding author)
     equal-contrib: true
     affiliation: 1
+    orcid: 0000-0002-7550-1796
   - name: Pablo Rodríguez-Sánchez
     orcid: 0000-0002-2855-940X
     equal-contrib: true
@@ -29,37 +30,67 @@ bibliography: paper.bib
 
 # Summary
 
-The forces on stars, galaxies, and dark matter under external gravitational
-fields lead to the dynamical evolution of structures in the universe. The orbits
-of these bodies are therefore key to understanding the formation, history, and
-future state of galaxies. The field of "galactic dynamics," which aims to model
-the gravitating components of galaxies to study their structure and evolution,
-is now well-established, commonly taught, and frequently used in astronomy.
-Aside from toy problems and demonstrations, the majority of problems require
-efficient numerical tools, many of which require the same base code (e.g., for
-performing numerical orbit integration).
-
 # Statement of need
+In research there are many software packages that use non-standard data containers for their input and output. This can be a problem when we need to do post-processing, or when we want to embed such a package in a larger data pipeline. In many cases, these non-standard formats have header information in plain text, while the bulk of the data is saved in binary. For these cases, there are only few accesible options for parsing and manipulating data in Python.
 
-`Gala` is an Astropy-affiliated Python package for galactic dynamics. Python
-enables wrapping low-level languages (e.g., C) for speed without losing
-flexibility or ease-of-use in the user-interface. The API for `Gala` was
-designed to provide a class-based and user-friendly interface to fast (C or
-Cython-optimized) implementations of common operations such as gravitational
-potential and force evaluation, orbit integration, dynamical transformations,
-and chaos indicators for nonlinear dynamics. `Gala` also relies heavily on and
-interfaces well with the implementations of physical units and astronomical
-coordinate systems in the `Astropy` package [@astropy] (`astropy.units` and
-`astropy.coordinates`).
+Here are some Python modules for parsing that one could consider:
+- `pyparsing` is the de-facto standard for text parsing in Python. It seems to have no features for dealing with binary data though.
+- `construct` deals mostly with pure binary data
+- `Kaitai Struct`
+- `antlr` requires a large time investment to learn
 
-`Gala` was designed to be used by both astronomical researchers and by
-students in courses on gravitational dynamics or astronomy. It has already been
-used in a number of scientific publications [@Pearson:2017] and has also been
-used in graduate courses on Galactic dynamics to, e.g., provide interactive
-visualizations of textbook material [@Binney:2008]. The combination of speed,
-design, and support for Astropy functionality in `Gala` will enable exciting
-scientific explorations of forthcoming data releases from the *Gaia* mission
-[@gaia] by students and experts alike.
+The major downside of the other binary parser packages in Python that we could find, is that they focus mostly on parsing network trafic, or data structures that can be described in a fixed declarative language.
+
+The approach we take is:
+- Easy to program, using concepts similar to those found in other functional parser combinators like `pyparsing`.
+- Deals transparently with Python objects that support the buffer protocol (e.g. memory mapped file access is trivially supported).
+- Performant enough, considering the use case where we have small ASCII headers and large contiguous blocks of floating point data.
+
+# Architecture
+
+## Functional parser combinators
+
+## Cursor object
+Our parser works on top of a `Cursor` object that keeps track of two pointers within a buffer. These two pointers reference the begining and end (exclusive) of the currently selected range of data. Having a two-ended cursor object prevents a lot of back-tracking when parsing text that can also be captured by more primitive functions in Python, like standard string conversion routines (`float`, `int`, `datetime` functions), or regex matching.
+
+## Memory mapping
+
+# Parser grammar
+Because Python is not Haskell, that is to say, there is no nice syntax for monadic actions, we are bound to end up with a different grammar than we have in Haskell.
+
+## Combinators
+We have `many`, `some` and `choice` among others. The `many` and `some` combinators come in several flavours. Our architecture using two-ended cursors allows for combinators that flush the cursor and ones that don't. For example, if we're parsing a floating point number, we don't want to flush the cursor until we're sure that we capture the entire value, and then pass that part to the Python builtin `float` function. 
+
+## `sequence`
+
+## `named_sequence` and `construct`
+The `named_sequence` is the dictionary backed alternative to `sequence`. Instead of a `list` of parsed items, this returns a `dict` containing the items named as arguments to `named_sequence`. Any keyword argument starting with an underscore is thrown away. We may combine a `named_sequence` with the `construct` function to easily build a hierarchy of dataclasses.
+
+```python
+@dataclass Point:
+  x: float
+  y: float
+```
+
+```python
+point = named_sequence(
+  _1=tokenize(char("(")),
+  x=tokenize(scientific_number),
+  _2=tokenize(char(","))
+  y=tokenize(scientific_number),
+  _3=tokenize(char(")"))
+  ) >> construct(Point)
+```
+
+The `point` parser then constructs `Point` objects, such that
+
+```python
+parse_bytes(point, "(1, 2)")
+```
+
+gives `Point(x=1, y=2)` as output.
+
+## `using_config` and `with_config`
 
 # Mathematics
 

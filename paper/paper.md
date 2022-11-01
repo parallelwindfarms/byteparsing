@@ -31,19 +31,22 @@ bibliography: paper.bib
 # Summary
 
 # Statement of need
-In research there are many software packages that use non-standard data containers for their input and output. This can be a problem when we need to do post-processing, or when we want to embed such a package in a larger data pipeline. In many cases, these non-standard formats have header information in plain text, while the bulk of the data is saved in binary. For these cases, there are only few accesible options for parsing and manipulating data in Python.
+
+In research there are many software packages that use non-standard data containers for their input and output. This can be a problem when we need to do post-processing, or when we want to embed such a package in a larger data pipeline. In many cases, these non-standard formats have header information in plain text, while the bulk of the data is saved in binary. For these cases, there are only few accessible options for parsing and manipulating data in Python.
 
 Here are some Python modules for parsing that one could consider:
-- `pyparsing` is the de-facto standard for text parsing in Python. It seems to have no features for dealing with binary data though.
+
+- `pyparsing` is the _de facto_ standard for text parsing in Python. It seems to have no features for dealing with binary data though.
 - `construct` deals mostly with pure binary data
 - `Kaitai Struct`
 - `antlr` requires a large time investment to learn
 
-The major downside of the other binary parser packages in Python that we could find, is that they focus mostly on parsing network trafic, or data structures that can be described in a fixed declarative language.
+The major downside of the other binary parser packages in Python that we could find, is that they focus mostly on parsing network traffic, or data structures that can be described in a fixed declarative language.
 
 The approach we take is:
+
 - Easy to program, using concepts similar to those found in other functional parser combinators like `pyparsing`.
-- Deals transparently with Python objects that support the buffer protocol (e.g. memory mapped file access is trivially supported).
+- Deals transparently with Python objects that support the buffer protocol (_e.g._: memory mapped file access is trivially supported).
 - Performant enough, considering the use case where we have small ASCII headers and large contiguous blocks of floating point data.
 
 # Architecture
@@ -51,6 +54,7 @@ The approach we take is:
 ## Functional parser combinators
 
 ## Cursor object
+
 Our parser works on top of a `Cursor` object that keeps track of two pointers within a buffer. These two pointers reference the beginning and the (exclusive) end of the currently selected range of data. Having a two-ended cursor object prevents a lot of back-tracking when parsing text that can also be captured by more primitive functions in Python, like standard string conversion routines (`float`, `int`, `datetime` functions), or regex matching.
 
 Additionally, the `Cursor` class can be evaluated to a boolean. This boolean is always `True`, unless the buffer is fully consumed (i.e., both pointers coincide at the end of the buffer). This allows us to comfortably loop _"to the end of the data"_ using a `while` statement.
@@ -58,14 +62,17 @@ Additionally, the `Cursor` class can be evaluated to a boolean. This boolean is 
 ## Memory mapping
 
 # Parser grammar
+
 Because Python is not Haskell, that is to say, there is no nice syntax for monadic actions, we are bound to end up with a different grammar than we have in Haskell.
 
 ## Combinators
-We have `many`, `some` and `choice` among others. The `many` and `some` combinators come in several flavours. Our architecture using two-ended cursors allows for combinators that flush the cursor and ones that don't. For example, if we're parsing a floating point number, we don't want to flush the cursor until we're sure that we capture the entire value, and then pass that part to the Python builtin `float` function. 
+
+We have `many`, `some` and `choice` among others. The `many` and `some` combinators come in several flavours. Our architecture using two-ended cursors allows for combinators that flush the cursor and ones that don't. For example, if we're parsing a floating point number, we don't want to flush the cursor until we're sure that we capture the entire value, and then pass that part to the Python builtin `float` function.
 
 ## `sequence`
 
 ## `named_sequence` and `construct`
+
 The `named_sequence` is the dictionary backed alternative to `sequence`. Instead of a `list` of parsed items, this returns a `dict` containing the items named as arguments to `named_sequence`. Any keyword argument starting with an underscore is thrown away. We may combine a `named_sequence` with the `construct` function to easily build a hierarchy of dataclasses.
 
 ```python
@@ -94,6 +101,7 @@ gives `Point(x=1, y=2)` as output.
 
 ## `using_config` and `with_config`
 
+<!--
 # Mathematics
 
 Single dollars ($) are required for inline mathematics e.g. $f(x) = e^{\pi/x}$
@@ -121,6 +129,7 @@ If you want to cite a software repository URL (e.g. something on GitHub without 
 citation) then you can do it with the example BibTeX entry below for @fidgit.
 
 For a quick reference, the following citation commands can be used:
+
 - `@author:2001`  ->  "Author et al. (2001)"
 - `[@author:2001]` -> "(Author et al., 2001)"
 - `[@author1:2001; @author2:2001]` -> "(Author1 et al., 2001; Author2 et al., 2002)"
@@ -140,3 +149,4 @@ We acknowledge contributions from Brigitta Sipocz, Syrtis Major, and Semyeong
 Oh, and support from Kathryn Johnston during the genesis of this project.
 
 # References
+-->

@@ -173,6 +173,40 @@ parsed
    {'user': b'p.rodriguez-sanchez', 'host': b'esciencencenter.nl'}]
 ```
 
+### Parsing a csv
+
+Let's parse now something as:
+
+```python
+data = b"1;-2;3;-4\n 
+         5;-6.2;7;-8.1\n 
+         9;-10;11;-12"
+```
+
+We can first create a parser for a single line.
+
+```python
+csvline = sequence(
+            sep_by(scientific_number, text_literal(";")) >> push, 
+            many(eol), # Just check the eol exists. Don't store it
+            pop() # Return pushed content
+          )
+```
+
+And then combine multiple lines using the `some` combinator:
+
+```python
+csv = some(csvline)
+```
+
+Let's try it:
+
+```python
+parse_bytes(csv, data)
+
+> [[1, -2, 3, -4], [5, -6.2, 7, -8.1], [9, -10, 11, -12]]
+```
+
 <!-- Footnotes -->
 [^1]: Notice that we ignore the `"@"` by assigning it to the field `"_1"`.
 Why not use just `"_"`? Because we need these fields to be unique.

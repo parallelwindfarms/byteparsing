@@ -3,7 +3,7 @@
 # Generate the pdf version of the paper
 compile:
 	docker run --rm \
-	--volume ${PWD}:/data \
+	--volume ${PWD}:/data:z \
 	--user $(id -u):$(id -g) \
 	--env JOURNAL=joss openjournals/inara
 

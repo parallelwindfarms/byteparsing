@@ -53,9 +53,47 @@ The approach we take is:
 
 ## Functional parser combinators
 
+Writing functional parser combinators is a staple of functional languages like Haskell. The paper "Monadic Parsing in Haskell" [@hutton_meijer_1998] gives a complete tutorial on how to write a basic recursive descent parser. Most of what Hutton and Meijer teach carries over nicely to Python, once we take care of a few details. We've replaced some Haskell idioms by features that are considered more 'pythonic'.
+
+We explain the concept of a monadic parser in terms of taking `str` as input for simplicity. Later we will see that we need to make things a bit more complicated.
+
+The core idea of functional parsing is that a parser for some object is a function. This function takes in the input string, and (possibly) returns the parsed object together with the rest of the input. In Python typing parlance this could be written as
+
+```python
+T = TypeVar('T')
+Parser = Callable[[str], tuple[T, str]]
+```
+
+In this type definition we have not yet encoded the possibility that the parser may fail. In most functional languages the return type of the parser would be `tuple[Optional[T], str]`. However, this is where we make our first change: we use **exceptions**. Whenever a parser fails (planned or unplanned), we raise an exception.
+
+The magic of functional parser combinators happens when we start to combine small parsers into larger ones. To achieve this we need to define the `bind` operation that chains two parser together. We could chain two parsers as follows:
+
+```python
+def chain(p: Parser[T], q: Parser[U]) -> Parser[tuple[T,U]]:
+  def chained(inp: str) -> [tuple[T,U],str]:
+    (a, inp) = p(inp)
+    (b, inp) = q(inp)
+    return ((a,b), inp)
+  return chained
+```
+
+The `bind` operator does a slightly different thing. It takes the output of one parser and then passes it to a function that then creates the next parser. This way we can chain together any two parsers and forward the collected information as we like. The problem is that this idiom from Haskell (also known as a Monad), doesn't translate too well to Python.
+
+```python
+def bind(p: Parser[T], f: Callable[[T], Parser[U]]) -> Parser[U]
+  def bound(inp: str) -> tuple[U, str]
+    (a, inp) = p(inp)
+    return f(a)(inp)
+  return bound
+```
+
+The problem with using `bind` as central combinator in our scheme is two-fold: it won't perform well and Python doesn't have the nice syntax to work with `bind`. To explain: the `bind` function returns a new function that then calls more functions, so we're eating into stack space. This means we can never use `bind` to build loops. One way around that is to build a trampoline to evaluate function calls step-by-step, enabling a tail-recursion style of programming. In our opinion it is better to work around the problem and define looping constructs using Python primitives such as `for` and `while`.
+
+For the most part, we are forced to define a more opportune set of primitive parsers that we can use in a more pythonic setting. The most important primitives for combining or multiplexing parsers are: `named_sequence` parsing a set of `**kwarg` parsers to a `dict`, `many` for zero or more items, `some` for one or more items, and `choice` for any of a set of parsers. Further on in this paper, we show how these primitives can be used to build a larger parser.
+
 ## Cursor object
 
-Our parser works on top of a `Cursor` object that keeps track of two pointers within a buffer. These two pointers reference the beginning and the (exclusive) end of the currently selected range of data. Having a two-ended cursor object prevents a lot of back-tracking when parsing text that can also be captured by more primitive functions in Python, like standard string conversion routines (`float`, `int`, `datetime` functions), or regex matching.
+Instead of strings, our parser works on top of a `Cursor` object that keeps track of two pointers within a buffer. These two pointers reference the beginning and the (exclusive) end of the currently selected range of data. Having a two-ended cursor object prevents a lot of back-tracking when parsing text that can also be captured by more primitive functions in Python, like standard string conversion routines (`float`, `int`, `datetime` functions), or regex matching. Also, this helps us extract large binary blobs from the buffer more easily.
 
 Additionally, the `Cursor` class can be evaluated to a boolean. This boolean is always `True`, unless the buffer is fully consumed (i.e., both pointers coincide at the end of the buffer). This allows us to comfortably loop _"to the end of the data"_ using a `while` statement.
 
@@ -100,6 +138,7 @@ parse_bytes(point, "(1, 2)")
 gives `Point(x=1, y=2)` as output.
 
 ## `using_config` and `with_config`
+For our 
 
 ## Examples of usage
 

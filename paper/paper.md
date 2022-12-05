@@ -101,13 +101,17 @@ Additionally, the `Cursor` class can be evaluated to a boolean. This boolean is 
 
 # Parser grammar
 
-Because Python is not Haskell, that is to say, there is no nice syntax for monadic actions, we are bound to end up with a different grammar than we have in Haskell.
+This package is strongly based on Haskell's syntax and philosophy. But Python is obviously not Haskell. That is to say, there is no nice syntax for monadic actions. In order to solve this issue, we developed a similar grammar for Python. Below, we present a description of such a grammar.
 
 ## Combinators
 
-We have `many`, `some` and `choice` among others. The `many` and `some` combinators come in several flavours. Our architecture using two-ended cursors allows for combinators that flush the cursor and ones that don't. For example, if we're parsing a floating point number, we don't want to flush the cursor until we're sure that we capture the entire value, and then pass that part to the Python builtin `float` function.
+We have `many`, `some` and `choice` among others. The `many` and `some` combinators come in several flavours. Our architecture using two-ended cursors allows for combinators that flush the cursor and ones that don't.
+
+For example, if we're parsing a floating point number, we don't want to flush the cursor until we're sure that we capture the entire value, and then pass that part to the Python builtin `float` function.
 
 ## `sequence`
+
+`sequence` expects our parsed elements to be isomorphic with a list.
 
 ## `named_sequence` and `construct`
 
@@ -217,9 +221,7 @@ parsed
 Let's parse now something as:
 
 ```python
-data = b"1;-2;3;-4\n 
-         5;-6.2;7;-8.1\n 
-         9;-10;11;-12"
+data = b"1;-2;3;-4\n5;-6.2;7;-8.1\n9;-10;11;-12"
 ```
 
 We can first create a parser for a single line.

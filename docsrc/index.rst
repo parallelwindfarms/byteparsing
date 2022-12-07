@@ -27,12 +27,12 @@ When **not to use** `byteparsing`:
 
    Introduction <self>
    install
-   cursors
-   parsers
-   functional
    examples
    ppm
    ply
+   functional
+   cursors
+   parsers
    architecture
    api
 

@@ -325,6 +325,7 @@ parsed
    {'user': b'p.rodriguez-sanchez', 'host': b'esciencencenter.nl'}]
 ```
 
+<!-- 
 ### Parsing a csv
 
 Let's parse now something as:
@@ -356,6 +357,7 @@ parse_bytes(csv, data)
 
 > [[1, -2, 3, -4], [5, -6.2, 7, -8.1], [9, -10, 11, -12]]
 ```
+-->
 
 ### Binary example: PPM files
 To show how we can mix ASCII and binary data, we have an example where we parse Portable PixMap files (PPM). These files have a small ASCII header and the image itself in binary. The header looks something like this:

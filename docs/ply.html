@@ -401,25 +401,25 @@ end_header                 { delimits the end of the header }
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>from __future__ import annotations
-from typing import Optional
-from dataclasses import dataclass
-from functools import partial
-import numpy as np
-import pprint
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">annotations</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Optional</span>
+<span class="kn">from</span> <span class="nn">dataclasses</span> <span class="kn">import</span> <span class="n">dataclass</span>
+<span class="kn">from</span> <span class="nn">functools</span> <span class="kn">import</span> <span class="n">partial</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">pprint</span>
 
-from byteparsing import (parse_bytes, Parser, parser)
-from byteparsing.parsers import (
-    sequence, named_sequence, choice, optional, value, repeat_n,
-    text_literal, char, text_one_of, text_end_by,
-    byte_none_of, byte_one_of,
-    flush, flush_decode,
-    push, pop, char_pred,
-    many, some, many_char, some_char, many_char_0, some_char_0,
-    integer, scientific_number, array, binary_value,
-    fmap, construct)
+<span class="kn">from</span> <span class="nn">byteparsing</span> <span class="kn">import</span> <span class="p">(</span><span class="n">parse_bytes</span><span class="p">,</span> <span class="n">Parser</span><span class="p">,</span> <span class="n">parser</span><span class="p">)</span>
+<span class="kn">from</span> <span class="nn">byteparsing.parsers</span> <span class="kn">import</span> <span class="p">(</span>
+    <span class="n">sequence</span><span class="p">,</span> <span class="n">named_sequence</span><span class="p">,</span> <span class="n">choice</span><span class="p">,</span> <span class="n">optional</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="n">repeat_n</span><span class="p">,</span>
+    <span class="n">text_literal</span><span class="p">,</span> <span class="n">char</span><span class="p">,</span> <span class="n">text_one_of</span><span class="p">,</span> <span class="n">text_end_by</span><span class="p">,</span>
+    <span class="n">byte_none_of</span><span class="p">,</span> <span class="n">byte_one_of</span><span class="p">,</span>
+    <span class="n">flush</span><span class="p">,</span> <span class="n">flush_decode</span><span class="p">,</span>
+    <span class="n">push</span><span class="p">,</span> <span class="n">pop</span><span class="p">,</span> <span class="n">char_pred</span><span class="p">,</span>
+    <span class="n">many</span><span class="p">,</span> <span class="n">some</span><span class="p">,</span> <span class="n">many_char</span><span class="p">,</span> <span class="n">some_char</span><span class="p">,</span> <span class="n">many_char_0</span><span class="p">,</span> <span class="n">some_char_0</span><span class="p">,</span>
+    <span class="n">integer</span><span class="p">,</span> <span class="n">scientific_number</span><span class="p">,</span> <span class="n">array</span><span class="p">,</span> <span class="n">binary_value</span><span class="p">,</span>
+    <span class="n">fmap</span><span class="p">,</span> <span class="n">construct</span><span class="p">)</span>
 
-pp = pprint.PrettyPrinter(indent=2, width=80)
+<span class="n">pp</span> <span class="o">=</span> <span class="n">pprint</span><span class="o">.</span><span class="n">PrettyPrinter</span><span class="p">(</span><span class="n">indent</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="mi">80</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -430,8 +430,8 @@ pp = pprint.PrettyPrinter(indent=2, width=80)
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[9]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>eol = choice(text_literal(&quot;\n&quot;), text_literal(&quot;\n\r&quot;))
-ply_magic_number = sequence(text_literal(&quot;ply&quot;), eol)
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">eol</span> <span class="o">=</span> <span class="n">choice</span><span class="p">(</span><span class="n">text_literal</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">),</span> <span class="n">text_literal</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n\r</span><span class="s2">&quot;</span><span class="p">))</span>
+<span class="n">ply_magic_number</span> <span class="o">=</span> <span class="n">sequence</span><span class="p">(</span><span class="n">text_literal</span><span class="p">(</span><span class="s2">&quot;ply&quot;</span><span class="p">),</span> <span class="n">eol</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -440,23 +440,23 @@ ply_magic_number = sequence(text_literal(&quot;ply&quot;), eol)
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[14]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>from enum import Enum
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">enum</span> <span class="kn">import</span> <span class="n">Enum</span>
 
-class PlyFormat(Enum):
-    ASCII = 1
-    BINARY_LE = 2
-    BINARY_BE = 3
+<span class="k">class</span> <span class="nc">PlyFormat</span><span class="p">(</span><span class="n">Enum</span><span class="p">):</span>
+    <span class="n">ASCII</span> <span class="o">=</span> <span class="mi">1</span>
+    <span class="n">BINARY_LE</span> <span class="o">=</span> <span class="mi">2</span>
+    <span class="n">BINARY_BE</span> <span class="o">=</span> <span class="mi">3</span>
 
-    @staticmethod
-    def from_string(format_str: str) -&gt; PlyFormat:
-        if format_str == &quot;ascii&quot;:
-            return PlyFormat.ASCII
-        if format_str == &quot;binary_little_endian&quot;:
-            return PlyFormat.BINARY_LE
-        if format_str == &quot;binary_big_endian&quot;:
-            return PlyFormat.BINARY_BE
-        else:
-            raise ValueError(f&quot;Unrecognized format string: {s}&quot;)
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">from_string</span><span class="p">(</span><span class="n">format_str</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">PlyFormat</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">format_str</span> <span class="o">==</span> <span class="s2">&quot;ascii&quot;</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">PlyFormat</span><span class="o">.</span><span class="n">ASCII</span>
+        <span class="k">if</span> <span class="n">format_str</span> <span class="o">==</span> <span class="s2">&quot;binary_little_endian&quot;</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">PlyFormat</span><span class="o">.</span><span class="n">BINARY_LE</span>
+        <span class="k">if</span> <span class="n">format_str</span> <span class="o">==</span> <span class="s2">&quot;binary_big_endian&quot;</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">PlyFormat</span><span class="o">.</span><span class="n">BINARY_BE</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Unrecognized format string: </span><span class="si">{</span><span class="n">s</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -466,18 +466,18 @@ class PlyFormat(Enum):
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[15]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>ascii_alpha = char_pred(lambda c: 64 &lt; c &lt; 91 or 96 &lt; c &lt; 123)
-ascii_num = char_pred(lambda c: 48 &lt;= c &lt; 58)
-ascii_alpha_num = choice(ascii_alpha, ascii_num)
-ascii_underscore = char(95)
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">ascii_alpha</span> <span class="o">=</span> <span class="n">char_pred</span><span class="p">(</span><span class="k">lambda</span> <span class="n">c</span><span class="p">:</span> <span class="mi">64</span> <span class="o">&lt;</span> <span class="n">c</span> <span class="o">&lt;</span> <span class="mi">91</span> <span class="ow">or</span> <span class="mi">96</span> <span class="o">&lt;</span> <span class="n">c</span> <span class="o">&lt;</span> <span class="mi">123</span><span class="p">)</span>
+<span class="n">ascii_num</span> <span class="o">=</span> <span class="n">char_pred</span><span class="p">(</span><span class="k">lambda</span> <span class="n">c</span><span class="p">:</span> <span class="mi">48</span> <span class="o">&lt;=</span> <span class="n">c</span> <span class="o">&lt;</span> <span class="mi">58</span><span class="p">)</span>
+<span class="n">ascii_alpha_num</span> <span class="o">=</span> <span class="n">choice</span><span class="p">(</span><span class="n">ascii_alpha</span><span class="p">,</span> <span class="n">ascii_num</span><span class="p">)</span>
+<span class="n">ascii_underscore</span> <span class="o">=</span> <span class="n">char</span><span class="p">(</span><span class="mi">95</span><span class="p">)</span>
 
 
-def tokenize(p: Parser) -&gt; Parser:
-    return sequence(p &gt;&gt; push, many_char(text_one_of(&quot; &quot;)), pop())
+<span class="k">def</span> <span class="nf">tokenize</span><span class="p">(</span><span class="n">p</span><span class="p">:</span> <span class="n">Parser</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Parser</span><span class="p">:</span>
+    <span class="k">return</span> <span class="n">sequence</span><span class="p">(</span><span class="n">p</span> <span class="o">&gt;&gt;</span> <span class="n">push</span><span class="p">,</span> <span class="n">many_char</span><span class="p">(</span><span class="n">text_one_of</span><span class="p">(</span><span class="s2">&quot; &quot;</span><span class="p">)),</span> <span class="n">pop</span><span class="p">())</span>
 
-word = sequence(
-    flush(), ascii_alpha, many_char_0(choice(ascii_alpha_num, ascii_underscore)),
-    flush_decode())
+<span class="n">word</span> <span class="o">=</span> <span class="n">sequence</span><span class="p">(</span>
+    <span class="n">flush</span><span class="p">(),</span> <span class="n">ascii_alpha</span><span class="p">,</span> <span class="n">many_char_0</span><span class="p">(</span><span class="n">choice</span><span class="p">(</span><span class="n">ascii_alpha_num</span><span class="p">,</span> <span class="n">ascii_underscore</span><span class="p">)),</span>
+    <span class="n">flush_decode</span><span class="p">())</span>
 </pre></div>
 </div>
 </div>
@@ -486,11 +486,11 @@ word = sequence(
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[24]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>ply_format = named_sequence(
-    _1 = tokenize(text_literal(&quot;format&quot;)),
-    format_str = tokenize(word),
-    _2 = sequence(tokenize(text_literal(&quot;1.0&quot;)), eol)) \
-&gt;&gt; construct(PlyFormat.from_string)
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">ply_format</span> <span class="o">=</span> <span class="n">named_sequence</span><span class="p">(</span>
+    <span class="n">_1</span> <span class="o">=</span> <span class="n">tokenize</span><span class="p">(</span><span class="n">text_literal</span><span class="p">(</span><span class="s2">&quot;format&quot;</span><span class="p">)),</span>
+    <span class="n">format_str</span> <span class="o">=</span> <span class="n">tokenize</span><span class="p">(</span><span class="n">word</span><span class="p">),</span>
+    <span class="n">_2</span> <span class="o">=</span> <span class="n">sequence</span><span class="p">(</span><span class="n">tokenize</span><span class="p">(</span><span class="n">text_literal</span><span class="p">(</span><span class="s2">&quot;1.0&quot;</span><span class="p">)),</span> <span class="n">eol</span><span class="p">))</span> \
+<span class="o">&gt;&gt;</span> <span class="n">construct</span><span class="p">(</span><span class="n">PlyFormat</span><span class="o">.</span><span class="n">from_string</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -498,7 +498,7 @@ word = sequence(
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[25]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>parse_bytes(ply_format, b&quot;format binary_little_endian 1.0\n&quot;)
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">parse_bytes</span><span class="p">(</span><span class="n">ply_format</span><span class="p">,</span> <span class="sa">b</span><span class="s2">&quot;format binary_little_endian 1.0</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -516,9 +516,9 @@ word = sequence(
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[26]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>ply_comment = sequence(
-    tokenize(text_literal(&quot;comment&quot;)), flush(),
-    text_end_by(&quot;\n&quot;) &gt;&gt; push, optional(char(&quot;\r&quot;)), pop())
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">ply_comment</span> <span class="o">=</span> <span class="n">sequence</span><span class="p">(</span>
+    <span class="n">tokenize</span><span class="p">(</span><span class="n">text_literal</span><span class="p">(</span><span class="s2">&quot;comment&quot;</span><span class="p">)),</span> <span class="n">flush</span><span class="p">(),</span>
+    <span class="n">text_end_by</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span> <span class="o">&gt;&gt;</span> <span class="n">push</span><span class="p">,</span> <span class="n">optional</span><span class="p">(</span><span class="n">char</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\r</span><span class="s2">&quot;</span><span class="p">)),</span> <span class="n">pop</span><span class="p">())</span>
 </pre></div>
 </div>
 </div>
@@ -527,51 +527,51 @@ word = sequence(
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[27]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>ply_type_table = {
-    &quot;char&quot;: &quot;int8&quot;,
-    &quot;uchar&quot;: &quot;uint8&quot;,
-    &quot;short&quot;: &quot;int16&quot;,
-    &quot;ushort&quot;: &quot;uint16&quot;,
-    &quot;int&quot;: &quot;int32&quot;,
-    &quot;uint&quot;: &quot;uint32&quot;,
-    &quot;float&quot;: &quot;float32&quot;,
-    &quot;double&quot;: &quot;float64&quot;
-}
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">ply_type_table</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;char&quot;</span><span class="p">:</span> <span class="s2">&quot;int8&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;uchar&quot;</span><span class="p">:</span> <span class="s2">&quot;uint8&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;short&quot;</span><span class="p">:</span> <span class="s2">&quot;int16&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;ushort&quot;</span><span class="p">:</span> <span class="s2">&quot;uint16&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;int&quot;</span><span class="p">:</span> <span class="s2">&quot;int32&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;uint&quot;</span><span class="p">:</span> <span class="s2">&quot;uint32&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;float&quot;</span><span class="p">:</span> <span class="s2">&quot;float32&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;double&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span>
+<span class="p">}</span>
 
-class PlyType:
-    pass
+<span class="k">class</span> <span class="nc">PlyType</span><span class="p">:</span>
+    <span class="k">pass</span>
 
-@dataclass
-class PlyPrimitiveType(PlyType):
-    dtype: np.dtype
+<span class="nd">@dataclass</span>
+<span class="k">class</span> <span class="nc">PlyPrimitiveType</span><span class="p">(</span><span class="n">PlyType</span><span class="p">):</span>
+    <span class="n">dtype</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">dtype</span>
 
-    @staticmethod
-    def from_string(s: str) -&gt; PlyPrimitiveType:
-        sanitized_name = ply_type_table.get(s, s)
-        return PlyPrimitiveType(np.dtype(sanitized_name))
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">from_string</span><span class="p">(</span><span class="n">s</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">PlyPrimitiveType</span><span class="p">:</span>
+        <span class="n">sanitized_name</span> <span class="o">=</span> <span class="n">ply_type_table</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="n">s</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">PlyPrimitiveType</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">dtype</span><span class="p">(</span><span class="n">sanitized_name</span><span class="p">))</span>
 
-    @property
-    def byte_size(self) -&gt; int:
-        return self.dtype.itemsize
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">byte_size</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">dtype</span><span class="o">.</span><span class="n">itemsize</span>
 
-    def ascii(self) -&gt; Parser:
-        return sequence(
-            flush(), some_char_0(byte_none_of(b&quot;\n &quot;)),
-            many_char_0(byte_one_of(b&quot;\n &quot;)), flush(self.dtype.type))
+    <span class="k">def</span> <span class="nf">ascii</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Parser</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">sequence</span><span class="p">(</span>
+            <span class="n">flush</span><span class="p">(),</span> <span class="n">some_char_0</span><span class="p">(</span><span class="n">byte_none_of</span><span class="p">(</span><span class="sa">b</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2"> &quot;</span><span class="p">)),</span>
+            <span class="n">many_char_0</span><span class="p">(</span><span class="n">byte_one_of</span><span class="p">(</span><span class="sa">b</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2"> &quot;</span><span class="p">)),</span> <span class="n">flush</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">dtype</span><span class="o">.</span><span class="n">type</span><span class="p">))</span>
 
-    def binary(self) -&gt; Parser:
-        return binary_value(self.dtype)
+    <span class="k">def</span> <span class="nf">binary</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Parser</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">binary_value</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">dtype</span><span class="p">)</span>
 
-@dataclass
-class PlyListType(PlyType):
-    size_type: PlyPrimitiveType
-    value_type: PlyPrimitiveType
+<span class="nd">@dataclass</span>
+<span class="k">class</span> <span class="nc">PlyListType</span><span class="p">(</span><span class="n">PlyType</span><span class="p">):</span>
+    <span class="n">size_type</span><span class="p">:</span> <span class="n">PlyPrimitiveType</span>
+    <span class="n">value_type</span><span class="p">:</span> <span class="n">PlyPrimitiveType</span>
 
-    def ascii(self) -&gt; Parser:
-        return self.size_type.ascii() &gt;&gt; partial(repeat_n, self.value_type.ascii())
+    <span class="k">def</span> <span class="nf">ascii</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Parser</span><span class="p">:</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">size_type</span><span class="o">.</span><span class="n">ascii</span><span class="p">()</span> <span class="o">&gt;&gt;</span> <span class="n">partial</span><span class="p">(</span><span class="n">repeat_n</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">value_type</span><span class="o">.</span><span class="n">ascii</span><span class="p">())</span>
 
-    def binary(self) -&gt; Parser:
-        return binary_value(self.size_type.dtype) &gt;&gt; partial(array, self.value_type.dtype)
+    <span class="k">def</span> <span class="nf">binary</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Parser</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">binary_value</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">size_type</span><span class="o">.</span><span class="n">dtype</span><span class="p">)</span> <span class="o">&gt;&gt;</span> <span class="n">partial</span><span class="p">(</span><span class="n">array</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">value_type</span><span class="o">.</span><span class="n">dtype</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -579,14 +579,14 @@ class PlyListType(PlyType):
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[28]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>primitive_type = tokenize(word) &gt;&gt; fmap(PlyPrimitiveType.from_string)
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">primitive_type</span> <span class="o">=</span> <span class="n">tokenize</span><span class="p">(</span><span class="n">word</span><span class="p">)</span> <span class="o">&gt;&gt;</span> <span class="n">fmap</span><span class="p">(</span><span class="n">PlyPrimitiveType</span><span class="o">.</span><span class="n">from_string</span><span class="p">)</span>
 
-list_type = named_sequence(
-    _1=tokenize(text_literal(&quot;list&quot;)),
-    size_type=primitive_type,
-    value_type=primitive_type) &gt;&gt; construct(PlyListType)
+<span class="n">list_type</span> <span class="o">=</span> <span class="n">named_sequence</span><span class="p">(</span>
+    <span class="n">_1</span><span class="o">=</span><span class="n">tokenize</span><span class="p">(</span><span class="n">text_literal</span><span class="p">(</span><span class="s2">&quot;list&quot;</span><span class="p">)),</span>
+    <span class="n">size_type</span><span class="o">=</span><span class="n">primitive_type</span><span class="p">,</span>
+    <span class="n">value_type</span><span class="o">=</span><span class="n">primitive_type</span><span class="p">)</span> <span class="o">&gt;&gt;</span> <span class="n">construct</span><span class="p">(</span><span class="n">PlyListType</span><span class="p">)</span>
 
-ply_type = choice(list_type, primitive_type)
+<span class="n">ply_type</span> <span class="o">=</span> <span class="n">choice</span><span class="p">(</span><span class="n">list_type</span><span class="p">,</span> <span class="n">primitive_type</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -594,7 +594,7 @@ ply_type = choice(list_type, primitive_type)
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[29]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>parse_bytes(ply_type, b&quot;float float&quot;)
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">parse_bytes</span><span class="p">(</span><span class="n">ply_type</span><span class="p">,</span> <span class="sa">b</span><span class="s2">&quot;float float&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -611,7 +611,7 @@ PlyPrimitiveType(dtype=dtype(&#39;float32&#39;))
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[30]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>pp.pprint(parse_bytes(ply_type, b&quot;list uint8 float&quot;))
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">pp</span><span class="o">.</span><span class="n">pprint</span><span class="p">(</span><span class="n">parse_bytes</span><span class="p">(</span><span class="n">ply_type</span><span class="p">,</span> <span class="sa">b</span><span class="s2">&quot;list uint8 float&quot;</span><span class="p">))</span>
 </pre></div>
 </div>
 </div>
@@ -628,16 +628,16 @@ PlyListType(size_type=PlyPrimitiveType(dtype=dtype(&#39;uint8&#39;)),
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[31]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>@dataclass
-class PlyProperty:
-    dtype: PlyType
-    name: str
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nd">@dataclass</span>
+<span class="k">class</span> <span class="nc">PlyProperty</span><span class="p">:</span>
+    <span class="n">dtype</span><span class="p">:</span> <span class="n">PlyType</span>
+    <span class="n">name</span><span class="p">:</span> <span class="nb">str</span>
 
-ply_property = named_sequence(
-    _1=tokenize(text_literal(&quot;property&quot;)),
-    dtype=ply_type,
-    name=tokenize(word),
-    _2=eol) &gt;&gt; construct(PlyProperty)
+<span class="n">ply_property</span> <span class="o">=</span> <span class="n">named_sequence</span><span class="p">(</span>
+    <span class="n">_1</span><span class="o">=</span><span class="n">tokenize</span><span class="p">(</span><span class="n">text_literal</span><span class="p">(</span><span class="s2">&quot;property&quot;</span><span class="p">)),</span>
+    <span class="n">dtype</span><span class="o">=</span><span class="n">ply_type</span><span class="p">,</span>
+    <span class="n">name</span><span class="o">=</span><span class="n">tokenize</span><span class="p">(</span><span class="n">word</span><span class="p">),</span>
+    <span class="n">_2</span><span class="o">=</span><span class="n">eol</span><span class="p">)</span> <span class="o">&gt;&gt;</span> <span class="n">construct</span><span class="p">(</span><span class="n">PlyProperty</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -645,9 +645,9 @@ ply_property = named_sequence(
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[32]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>parse_bytes(
-    ply_property,
-    b&quot;property float x\n&quot;)
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">parse_bytes</span><span class="p">(</span>
+    <span class="n">ply_property</span><span class="p">,</span>
+    <span class="sa">b</span><span class="s2">&quot;property float x</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -664,7 +664,7 @@ PlyProperty(dtype=PlyPrimitiveType(dtype=dtype(&#39;float32&#39;)), name=&#39;x&
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[33]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>end_header = sequence(text_literal(&quot;end_header&quot;), eol)
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">end_header</span> <span class="o">=</span> <span class="n">sequence</span><span class="p">(</span><span class="n">text_literal</span><span class="p">(</span><span class="s2">&quot;end_header&quot;</span><span class="p">),</span> <span class="n">eol</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -672,38 +672,38 @@ PlyProperty(dtype=PlyPrimitiveType(dtype=dtype(&#39;float32&#39;)), name=&#39;x&
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[34]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>@dataclass
-class PlyElement:
-    name: str
-    size: int
-    properties: List[PlyProperty]
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nd">@dataclass</span>
+<span class="k">class</span> <span class="nc">PlyElement</span><span class="p">:</span>
+    <span class="n">name</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="n">size</span><span class="p">:</span> <span class="nb">int</span>
+    <span class="n">properties</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">PlyProperty</span><span class="p">]</span>
 
-    def ascii(self) -&gt; Parser:
-        single_item = named_sequence(
-            **{p.name: p.dtype.ascii() for p in self.properties})
-        return repeat_n(single_item, self.size)
+    <span class="k">def</span> <span class="nf">ascii</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Parser</span><span class="p">:</span>
+        <span class="n">single_item</span> <span class="o">=</span> <span class="n">named_sequence</span><span class="p">(</span>
+            <span class="o">**</span><span class="p">{</span><span class="n">p</span><span class="o">.</span><span class="n">name</span><span class="p">:</span> <span class="n">p</span><span class="o">.</span><span class="n">dtype</span><span class="o">.</span><span class="n">ascii</span><span class="p">()</span> <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">properties</span><span class="p">})</span>
+        <span class="k">return</span> <span class="n">repeat_n</span><span class="p">(</span><span class="n">single_item</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">size</span><span class="p">)</span>
 
-    @property
-    def afine(self) -&gt; bool:
-        return all(isinstance(p.dtype, PlyPrimitiveType)
-                   for p in self.properties)
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">afine</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+        <span class="k">return</span> <span class="nb">all</span><span class="p">(</span><span class="nb">isinstance</span><span class="p">(</span><span class="n">p</span><span class="o">.</span><span class="n">dtype</span><span class="p">,</span> <span class="n">PlyPrimitiveType</span><span class="p">)</span>
+                   <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">properties</span><span class="p">)</span>
 
-    def binary(self) -&gt; Parser:
-        if self.afine:
-            compound_type = [(p.name, p.dtype.dtype) for p in self.properties]
-            return array(compound_type, self.size)
-        else:
-            single_item = named_sequence(
-                **{p.name: p.dtype.binary() for p in self.properties})
-            return repeat_n(single_item, self.size)
+    <span class="k">def</span> <span class="nf">binary</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Parser</span><span class="p">:</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">afine</span><span class="p">:</span>
+            <span class="n">compound_type</span> <span class="o">=</span> <span class="p">[(</span><span class="n">p</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">p</span><span class="o">.</span><span class="n">dtype</span><span class="o">.</span><span class="n">dtype</span><span class="p">)</span> <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">properties</span><span class="p">]</span>
+            <span class="k">return</span> <span class="n">array</span><span class="p">(</span><span class="n">compound_type</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">size</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">single_item</span> <span class="o">=</span> <span class="n">named_sequence</span><span class="p">(</span>
+                <span class="o">**</span><span class="p">{</span><span class="n">p</span><span class="o">.</span><span class="n">name</span><span class="p">:</span> <span class="n">p</span><span class="o">.</span><span class="n">dtype</span><span class="o">.</span><span class="n">binary</span><span class="p">()</span> <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">properties</span><span class="p">})</span>
+            <span class="k">return</span> <span class="n">repeat_n</span><span class="p">(</span><span class="n">single_item</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">size</span><span class="p">)</span>
 
 
-ply_element = named_sequence(
-    _1=tokenize(text_literal(&quot;element&quot;)),
-    name=tokenize(word),
-    size=tokenize(integer),
-    _2=eol,
-    properties=some(ply_property)) &gt;&gt; construct(PlyElement)
+<span class="n">ply_element</span> <span class="o">=</span> <span class="n">named_sequence</span><span class="p">(</span>
+    <span class="n">_1</span><span class="o">=</span><span class="n">tokenize</span><span class="p">(</span><span class="n">text_literal</span><span class="p">(</span><span class="s2">&quot;element&quot;</span><span class="p">)),</span>
+    <span class="n">name</span><span class="o">=</span><span class="n">tokenize</span><span class="p">(</span><span class="n">word</span><span class="p">),</span>
+    <span class="n">size</span><span class="o">=</span><span class="n">tokenize</span><span class="p">(</span><span class="n">integer</span><span class="p">),</span>
+    <span class="n">_2</span><span class="o">=</span><span class="n">eol</span><span class="p">,</span>
+    <span class="n">properties</span><span class="o">=</span><span class="n">some</span><span class="p">(</span><span class="n">ply_property</span><span class="p">))</span> <span class="o">&gt;&gt;</span> <span class="n">construct</span><span class="p">(</span><span class="n">PlyElement</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -711,11 +711,11 @@ ply_element = named_sequence(
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[37]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>pp.pprint(
-    parse_bytes(
-        some(ply_element),
-        b&quot;element vertex 8\nproperty float x\nproperty float y\nproperty float z\n&quot; +
-        b&quot;element face 6\nproperty list uchar int vertex_index\n&quot;))
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">pp</span><span class="o">.</span><span class="n">pprint</span><span class="p">(</span>
+    <span class="n">parse_bytes</span><span class="p">(</span>
+        <span class="n">some</span><span class="p">(</span><span class="n">ply_element</span><span class="p">),</span>
+        <span class="sa">b</span><span class="s2">&quot;element vertex 8</span><span class="se">\n</span><span class="s2">property float x</span><span class="se">\n</span><span class="s2">property float y</span><span class="se">\n</span><span class="s2">property float z</span><span class="se">\n</span><span class="s2">&quot;</span> <span class="o">+</span>
+        <span class="sa">b</span><span class="s2">&quot;element face 6</span><span class="se">\n</span><span class="s2">property list uchar int vertex_index</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">))</span>
 </pre></div>
 </div>
 </div>
@@ -743,7 +743,7 @@ ply_element = named_sequence(
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[38]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>pp.pprint(parse_bytes(ply_element, b&quot;element face 6\nproperty list uchar int vertex_index\n&quot;))
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">pp</span><span class="o">.</span><span class="n">pprint</span><span class="p">(</span><span class="n">parse_bytes</span><span class="p">(</span><span class="n">ply_element</span><span class="p">,</span> <span class="sa">b</span><span class="s2">&quot;element face 6</span><span class="se">\n</span><span class="s2">property list uchar int vertex_index</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">))</span>
 </pre></div>
 </div>
 </div>
@@ -763,33 +763,33 @@ PlyElement(name=&#39;face&#39;,
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[39]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>@dataclass
-class PlyHeader:
-    format: PlyFormat
-    comment: List[str]
-    elements: List[PlyElement]
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nd">@dataclass</span>
+<span class="k">class</span> <span class="nc">PlyHeader</span><span class="p">:</span>
+    <span class="nb">format</span><span class="p">:</span> <span class="n">PlyFormat</span>
+    <span class="n">comment</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span>
+    <span class="n">elements</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">PlyElement</span><span class="p">]</span>
 
-    def parser(self) -&gt; Parser:
-        if self.format == PlyFormat.ASCII:
-            return named_sequence(
-                **{e.name: e.ascii() for e in self.elements})
-        if self.format == PlyFormat.BINARY_LE:
-            return named_sequence(
-                **{e.name: e.binary() for e in self.elements})
-        else:
-            raise NotImplementedError()
+    <span class="k">def</span> <span class="nf">parser</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Parser</span><span class="p">:</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">format</span> <span class="o">==</span> <span class="n">PlyFormat</span><span class="o">.</span><span class="n">ASCII</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">named_sequence</span><span class="p">(</span>
+                <span class="o">**</span><span class="p">{</span><span class="n">e</span><span class="o">.</span><span class="n">name</span><span class="p">:</span> <span class="n">e</span><span class="o">.</span><span class="n">ascii</span><span class="p">()</span> <span class="k">for</span> <span class="n">e</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">elements</span><span class="p">})</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">format</span> <span class="o">==</span> <span class="n">PlyFormat</span><span class="o">.</span><span class="n">BINARY_LE</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">named_sequence</span><span class="p">(</span>
+                <span class="o">**</span><span class="p">{</span><span class="n">e</span><span class="o">.</span><span class="n">name</span><span class="p">:</span> <span class="n">e</span><span class="o">.</span><span class="n">binary</span><span class="p">()</span> <span class="k">for</span> <span class="n">e</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">elements</span><span class="p">})</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">()</span>
 
-ply_header = named_sequence(
-    _1=ply_magic_number,
-    format=ply_format,
-    comment=many(ply_comment),
-    elements=some(ply_element),
-    _2=sequence(text_literal(&quot;end_header&quot;), eol)) &gt;&gt; construct(PlyHeader)
+<span class="n">ply_header</span> <span class="o">=</span> <span class="n">named_sequence</span><span class="p">(</span>
+    <span class="n">_1</span><span class="o">=</span><span class="n">ply_magic_number</span><span class="p">,</span>
+    <span class="nb">format</span><span class="o">=</span><span class="n">ply_format</span><span class="p">,</span>
+    <span class="n">comment</span><span class="o">=</span><span class="n">many</span><span class="p">(</span><span class="n">ply_comment</span><span class="p">),</span>
+    <span class="n">elements</span><span class="o">=</span><span class="n">some</span><span class="p">(</span><span class="n">ply_element</span><span class="p">),</span>
+    <span class="n">_2</span><span class="o">=</span><span class="n">sequence</span><span class="p">(</span><span class="n">text_literal</span><span class="p">(</span><span class="s2">&quot;end_header&quot;</span><span class="p">),</span> <span class="n">eol</span><span class="p">))</span> <span class="o">&gt;&gt;</span> <span class="n">construct</span><span class="p">(</span><span class="n">PlyHeader</span><span class="p">)</span>
 
-def ply_data(header):
-    return named_sequence(header=value(header), data=header.parser())
+<span class="k">def</span> <span class="nf">ply_data</span><span class="p">(</span><span class="n">header</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">named_sequence</span><span class="p">(</span><span class="n">header</span><span class="o">=</span><span class="n">value</span><span class="p">(</span><span class="n">header</span><span class="p">),</span> <span class="n">data</span><span class="o">=</span><span class="n">header</span><span class="o">.</span><span class="n">parser</span><span class="p">())</span>
 
-ply_file = ply_header &gt;&gt; ply_data
+<span class="n">ply_file</span> <span class="o">=</span> <span class="n">ply_header</span> <span class="o">&gt;&gt;</span> <span class="n">ply_data</span>
 </pre></div>
 </div>
 </div>
@@ -798,32 +798,32 @@ ply_file = ply_header &gt;&gt; ply_data
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[40]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>ascii_example = b&quot;&quot;&quot;ply
-format ascii 1.0
-comment made by Greg Turk
-comment this file is a cube
-element vertex 8
-property float x
-property float y
-property float z
-element face 6
-property list uchar int vertex_index
-end_header
-0 0 0
-0 0 1
-0 1 1
-0 1 0
-1 0 0
-1 0 1
-1 1 1
-1 1 0
-4 0 1 2 3
-4 7 6 5 4
-4 0 4 5 1
-4 1 5 6 2
-4 2 6 7 3
-4 3 7 4 0
-&quot;&quot;&quot;
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">ascii_example</span> <span class="o">=</span> <span class="sa">b</span><span class="s2">&quot;&quot;&quot;ply</span>
+<span class="s2">format ascii 1.0</span>
+<span class="s2">comment made by Greg Turk</span>
+<span class="s2">comment this file is a cube</span>
+<span class="s2">element vertex 8</span>
+<span class="s2">property float x</span>
+<span class="s2">property float y</span>
+<span class="s2">property float z</span>
+<span class="s2">element face 6</span>
+<span class="s2">property list uchar int vertex_index</span>
+<span class="s2">end_header</span>
+<span class="s2">0 0 0</span>
+<span class="s2">0 0 1</span>
+<span class="s2">0 1 1</span>
+<span class="s2">0 1 0</span>
+<span class="s2">1 0 0</span>
+<span class="s2">1 0 1</span>
+<span class="s2">1 1 1</span>
+<span class="s2">1 1 0</span>
+<span class="s2">4 0 1 2 3</span>
+<span class="s2">4 7 6 5 4</span>
+<span class="s2">4 0 4 5 1</span>
+<span class="s2">4 1 5 6 2</span>
+<span class="s2">4 2 6 7 3</span>
+<span class="s2">4 3 7 4 0</span>
+<span class="s2">&quot;&quot;&quot;</span>
 </pre></div>
 </div>
 </div>
@@ -831,7 +831,7 @@ end_header
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[41]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>pp.pprint(parse_bytes(ply_header, ascii_example))
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">pp</span><span class="o">.</span><span class="n">pprint</span><span class="p">(</span><span class="n">parse_bytes</span><span class="p">(</span><span class="n">ply_header</span><span class="p">,</span> <span class="n">ascii_example</span><span class="p">))</span>
 </pre></div>
 </div>
 </div>
@@ -862,7 +862,7 @@ PlyHeader(format=&lt;PlyFormat.ASCII: 1&gt;,
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[42]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>pp.pprint(parse_bytes(ply_file, ascii_example))
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">pp</span><span class="o">.</span><span class="n">pprint</span><span class="p">(</span><span class="n">parse_bytes</span><span class="p">(</span><span class="n">ply_file</span><span class="p">,</span> <span class="n">ascii_example</span><span class="p">))</span>
 </pre></div>
 </div>
 </div>
@@ -910,9 +910,9 @@ PlyHeader(format=&lt;PlyFormat.ASCII: 1&gt;,
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[22]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>from pathlib import Path
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="n">Path</span>
 
-bunny = parse_bytes(ply_file, Path(&quot;_static/stanford_bunny.ply&quot;).open(mode=&quot;rb&quot;).read())
+<span class="n">bunny</span> <span class="o">=</span> <span class="n">parse_bytes</span><span class="p">(</span><span class="n">ply_file</span><span class="p">,</span> <span class="n">Path</span><span class="p">(</span><span class="s2">&quot;_static/stanford_bunny.ply&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">mode</span><span class="o">=</span><span class="s2">&quot;rb&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">read</span><span class="p">())</span>
 </pre></div>
 </div>
 </div>
@@ -920,8 +920,8 @@ bunny = parse_bytes(ply_file, Path(&quot;_static/stanford_bunny.ply&quot;).open(
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[23]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>vertices = bunny[&quot;data&quot;][&quot;vertex&quot;].view((np.float32, 3))
-triangles = np.array([row[&quot;vertex_indices&quot;] for row in bunny[&quot;data&quot;][&quot;face&quot;]])
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">vertices</span> <span class="o">=</span> <span class="n">bunny</span><span class="p">[</span><span class="s2">&quot;data&quot;</span><span class="p">][</span><span class="s2">&quot;vertex&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">view</span><span class="p">((</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">,</span> <span class="mi">3</span><span class="p">))</span>
+<span class="n">triangles</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">row</span><span class="p">[</span><span class="s2">&quot;vertex_indices&quot;</span><span class="p">]</span> <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">bunny</span><span class="p">[</span><span class="s2">&quot;data&quot;</span><span class="p">][</span><span class="s2">&quot;face&quot;</span><span class="p">]])</span>
 </pre></div>
 </div>
 </div>
@@ -929,10 +929,10 @@ triangles = np.array([row[&quot;vertex_indices&quot;] for row in bunny[&quot;dat
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[24]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>from mpl_toolkits import mplot3d
-from matplotlib import pyplot as plt
-# For interactive use: install ipympl and run:
-# %matplotlib widget
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">mpl_toolkits</span> <span class="kn">import</span> <span class="n">mplot3d</span>
+<span class="kn">from</span> <span class="nn">matplotlib</span> <span class="kn">import</span> <span class="n">pyplot</span> <span class="k">as</span> <span class="n">plt</span>
+<span class="c1"># For interactive use: install ipympl and run:</span>
+<span class="c1"># %matplotlib widget</span>
 </pre></div>
 </div>
 </div>
@@ -940,11 +940,11 @@ from matplotlib import pyplot as plt
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[25]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>fig = plt.figure(figsize=(12,12))
-ax = plt.axes(projection=&quot;3d&quot;)
-ax.azim = -18
-ax.elev = 15
-ax.plot_trisurf(*vertices.T[[2,0,1]], triangles=triangles);
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">12</span><span class="p">,</span><span class="mi">12</span><span class="p">))</span>
+<span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">axes</span><span class="p">(</span><span class="n">projection</span><span class="o">=</span><span class="s2">&quot;3d&quot;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">azim</span> <span class="o">=</span> <span class="o">-</span><span class="mi">18</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">elev</span> <span class="o">=</span> <span class="mi">15</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">plot_trisurf</span><span class="p">(</span><span class="o">*</span><span class="n">vertices</span><span class="o">.</span><span class="n">T</span><span class="p">[[</span><span class="mi">2</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">]],</span> <span class="n">triangles</span><span class="o">=</span><span class="n">triangles</span><span class="p">);</span>
 </pre></div>
 </div>
 </div>

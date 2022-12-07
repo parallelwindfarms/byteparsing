@@ -382,7 +382,7 @@ div.rendered_html tbody tr:hover {
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>from byteparsing.parsers import *
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">byteparsing.parsers</span> <span class="kn">import</span> <span class="o">*</span>
 </pre></div>
 </div>
 </div>
@@ -409,21 +409,21 @@ div.rendered_html tbody tr:hover {
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span># First, we define what charachters are acceptable on an email (email-valid chars)
-email_char = choice(ascii_alpha_num, ascii_underscore, text_literal(&quot;.&quot;), text_literal(&quot;-&quot;))
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># First, we define what charachters are acceptable on an email (email-valid chars)</span>
+<span class="n">email_char</span> <span class="o">=</span> <span class="n">choice</span><span class="p">(</span><span class="n">ascii_alpha_num</span><span class="p">,</span> <span class="n">ascii_underscore</span><span class="p">,</span> <span class="n">text_literal</span><span class="p">(</span><span class="s2">&quot;.&quot;</span><span class="p">),</span> <span class="n">text_literal</span><span class="p">(</span><span class="s2">&quot;-&quot;</span><span class="p">))</span>
 
-# We abstract the information contained in an email as:
-# [username]@[host]
-email = named_sequence(
-            user=some_char(email_char), # Step 1
-            _1=text_literal(&quot;@&quot;),       # Step 2
-            host=some_char(email_char)  # Step 3
-        )
+<span class="c1"># We abstract the information contained in an email as:</span>
+<span class="c1"># [username]@[host]</span>
+<span class="n">email</span> <span class="o">=</span> <span class="n">named_sequence</span><span class="p">(</span>
+            <span class="n">user</span><span class="o">=</span><span class="n">some_char</span><span class="p">(</span><span class="n">email_char</span><span class="p">),</span> <span class="c1"># Step 1</span>
+            <span class="n">_1</span><span class="o">=</span><span class="n">text_literal</span><span class="p">(</span><span class="s2">&quot;@&quot;</span><span class="p">),</span>       <span class="c1"># Step 2</span>
+            <span class="n">host</span><span class="o">=</span><span class="n">some_char</span><span class="p">(</span><span class="n">email_char</span><span class="p">)</span>  <span class="c1"># Step 3</span>
+        <span class="p">)</span>
 
-# Notice that we ignore the &quot;@&quot; by assigning it to the field &quot;_1&quot;.
-# Why not use just &quot;_&quot;? Because we need these fields to be unique.
-# In case we had more than one ignored value, we recommend to use
-# _1, _2, and so on for the ignored fields.
+<span class="c1"># Notice that we ignore the &quot;@&quot; by assigning it to the field &quot;_1&quot;.</span>
+<span class="c1"># Why not use just &quot;_&quot;? Because we need these fields to be unique.</span>
+<span class="c1"># In case we had more than one ignored value, we recommend to use</span>
+<span class="c1"># _1, _2, and so on for the ignored fields.</span>
 </pre></div>
 </div>
 </div>
@@ -432,9 +432,9 @@ email = named_sequence(
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>parsed = parse_bytes(email, b&#39;p.rodriguez-sanchez@esciencecenter.nl&#39;)
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">parsed</span> <span class="o">=</span> <span class="n">parse_bytes</span><span class="p">(</span><span class="n">email</span><span class="p">,</span> <span class="sa">b</span><span class="s1">&#39;p.rodriguez-sanchez@esciencecenter.nl&#39;</span><span class="p">)</span>
 
-print(parsed)
+<span class="nb">print</span><span class="p">(</span><span class="n">parsed</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -465,7 +465,7 @@ print(parsed)
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[8]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>email_char = choice(ascii_alpha_num, ascii_underscore, text_literal(&quot;-&quot;))
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">email_char</span> <span class="o">=</span> <span class="n">choice</span><span class="p">(</span><span class="n">ascii_alpha_num</span><span class="p">,</span> <span class="n">ascii_underscore</span><span class="p">,</span> <span class="n">text_literal</span><span class="p">(</span><span class="s2">&quot;-&quot;</span><span class="p">))</span>
 </pre></div>
 </div>
 </div>
@@ -474,7 +474,7 @@ print(parsed)
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[9]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>email_component = sep_by(some_char(email_char, bytes.decode), text_literal(&quot;.&quot;))
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">email_component</span> <span class="o">=</span> <span class="n">sep_by</span><span class="p">(</span><span class="n">some_char</span><span class="p">(</span><span class="n">email_char</span><span class="p">,</span> <span class="nb">bytes</span><span class="o">.</span><span class="n">decode</span><span class="p">),</span> <span class="n">text_literal</span><span class="p">(</span><span class="s2">&quot;.&quot;</span><span class="p">))</span>
 </pre></div>
 </div>
 </div>
@@ -483,11 +483,11 @@ print(parsed)
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[10]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>better_email = named_sequence(
-                user=email_component,
-                _1=text_literal(&quot;@&quot;),
-                host=email_component
-                )
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">better_email</span> <span class="o">=</span> <span class="n">named_sequence</span><span class="p">(</span>
+                <span class="n">user</span><span class="o">=</span><span class="n">email_component</span><span class="p">,</span>
+                <span class="n">_1</span><span class="o">=</span><span class="n">text_literal</span><span class="p">(</span><span class="s2">&quot;@&quot;</span><span class="p">),</span>
+                <span class="n">host</span><span class="o">=</span><span class="n">email_component</span>
+                <span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -496,8 +496,8 @@ print(parsed)
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[11]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>my_email = parse_bytes(better_email,
-            b&quot;pablo.rodriguez-sanchez@esciencecenter.nl&quot;)
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">my_email</span> <span class="o">=</span> <span class="n">parse_bytes</span><span class="p">(</span><span class="n">better_email</span><span class="p">,</span>
+            <span class="sa">b</span><span class="s2">&quot;pablo.rodriguez-sanchez@esciencecenter.nl&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -506,7 +506,7 @@ print(parsed)
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[13]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>print(my_email)
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">my_email</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -526,21 +526,21 @@ print(parsed)
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[14]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>from dataclasses import dataclass
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">dataclasses</span> <span class="kn">import</span> <span class="n">dataclass</span>
 
-@dataclass
-class Email:
-    user: List[str]
-    host: List[str]
+<span class="nd">@dataclass</span>
+<span class="k">class</span> <span class="nc">Email</span><span class="p">:</span>
+    <span class="n">user</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span>
+    <span class="n">host</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span>
 
-    @property
-    def country(self):
-        &quot;&quot;&quot;Return the country code&quot;&quot;&quot;
-        return self.host[-1]
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">country</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Return the country code&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">host</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
 
-    def __str__(self):
-        &quot;&quot;&quot;Prints the email in a human-readable fashion&quot;&quot;&quot;
-        return &quot;.&quot;.join(self.user) + &quot;@&quot; + &quot;.&quot;.join(self.host)
+    <span class="k">def</span> <span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Prints the email in a human-readable fashion&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="s2">&quot;.&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">user</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot;@&quot;</span> <span class="o">+</span> <span class="s2">&quot;.&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">host</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -549,11 +549,11 @@ class Email:
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[15]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>even_better_email = named_sequence(
-                        user=email_component,
-                        _1=text_literal(&quot;@&quot;),
-                        host=email_component
-                    ) &gt;&gt; construct(Email)
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">even_better_email</span> <span class="o">=</span> <span class="n">named_sequence</span><span class="p">(</span>
+                        <span class="n">user</span><span class="o">=</span><span class="n">email_component</span><span class="p">,</span>
+                        <span class="n">_1</span><span class="o">=</span><span class="n">text_literal</span><span class="p">(</span><span class="s2">&quot;@&quot;</span><span class="p">),</span>
+                        <span class="n">host</span><span class="o">=</span><span class="n">email_component</span>
+                    <span class="p">)</span> <span class="o">&gt;&gt;</span> <span class="n">construct</span><span class="p">(</span><span class="n">Email</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -562,10 +562,10 @@ class Email:
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[16]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>my_email = parse_bytes(even_better_email,
-            b&quot;pablo.rodriguez-sanchez@esciencecenter.nl&quot;)
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">my_email</span> <span class="o">=</span> <span class="n">parse_bytes</span><span class="p">(</span><span class="n">even_better_email</span><span class="p">,</span>
+            <span class="sa">b</span><span class="s2">&quot;pablo.rodriguez-sanchez@esciencecenter.nl&quot;</span><span class="p">)</span>
 
-str(my_email)
+<span class="nb">str</span><span class="p">(</span><span class="n">my_email</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -583,7 +583,7 @@ str(my_email)
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[17]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>my_email
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">my_email</span>
 </pre></div>
 </div>
 </div>
@@ -601,7 +601,7 @@ Email(user=[&#39;pablo&#39;, &#39;rodriguez-sanchez&#39;], host=[&#39;esciencece
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[18]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>str(my_email)
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">str</span><span class="p">(</span><span class="n">my_email</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -618,7 +618,7 @@ Email(user=[&#39;pablo&#39;, &#39;rodriguez-sanchez&#39;], host=[&#39;esciencece
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[19]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>my_email.country
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">my_email</span><span class="o">.</span><span class="n">country</span>
 </pre></div>
 </div>
 </div>
@@ -640,8 +640,8 @@ Email(user=[&#39;pablo&#39;, &#39;rodriguez-sanchez&#39;], host=[&#39;esciencece
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[22]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>data = b&quot;j.hidding@esciencecenter.nl\np.rodriguez-sanchez@esciencencenter.nl&quot;
-print(data.decode())
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">data</span> <span class="o">=</span> <span class="sa">b</span><span class="s2">&quot;j.hidding@esciencecenter.nl</span><span class="se">\n</span><span class="s2">p.rodriguez-sanchez@esciencencenter.nl&quot;</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">decode</span><span class="p">())</span>
 </pre></div>
 </div>
 </div>
@@ -659,7 +659,7 @@ p.rodriguez-sanchez@esciencencenter.nl
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[23]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>eol = choice(text_literal(&quot;\n&quot;), text_literal(&quot;\n\r&quot;))
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">eol</span> <span class="o">=</span> <span class="n">choice</span><span class="p">(</span><span class="n">text_literal</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">),</span> <span class="n">text_literal</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n\r</span><span class="s2">&quot;</span><span class="p">))</span>
 </pre></div>
 </div>
 </div>
@@ -668,7 +668,7 @@ p.rodriguez-sanchez@esciencencenter.nl
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[24]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>list_of_emails = sep_by(even_better_email, eol)
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">list_of_emails</span> <span class="o">=</span> <span class="n">sep_by</span><span class="p">(</span><span class="n">even_better_email</span><span class="p">,</span> <span class="n">eol</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -677,7 +677,7 @@ p.rodriguez-sanchez@esciencencenter.nl
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[25]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>our_emails = parse_bytes(list_of_emails, data)
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">our_emails</span> <span class="o">=</span> <span class="n">parse_bytes</span><span class="p">(</span><span class="n">list_of_emails</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -686,7 +686,7 @@ p.rodriguez-sanchez@esciencencenter.nl
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[26]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>our_emails
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">our_emails</span>
 </pre></div>
 </div>
 </div>
@@ -705,9 +705,9 @@ p.rodriguez-sanchez@esciencencenter.nl
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[27]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>for email in our_emails:
-    print(email)
-    print(email.country)
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">for</span> <span class="n">email</span> <span class="ow">in</span> <span class="n">our_emails</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">email</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">email</span><span class="o">.</span><span class="n">country</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -742,10 +742,10 @@ nl
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[28]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>csvline = sequence(
-    sep_by(scientific_number, text_literal(&quot;;&quot;)) &gt;&gt; push,
-    many(eol), # Just check the eol exists. Don&#39;t store it
-    pop()) # Return pushed content
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">csvline</span> <span class="o">=</span> <span class="n">sequence</span><span class="p">(</span>
+    <span class="n">sep_by</span><span class="p">(</span><span class="n">scientific_number</span><span class="p">,</span> <span class="n">text_literal</span><span class="p">(</span><span class="s2">&quot;;&quot;</span><span class="p">))</span> <span class="o">&gt;&gt;</span> <span class="n">push</span><span class="p">,</span>
+    <span class="n">many</span><span class="p">(</span><span class="n">eol</span><span class="p">),</span> <span class="c1"># Just check the eol exists. Don&#39;t store it</span>
+    <span class="n">pop</span><span class="p">())</span> <span class="c1"># Return pushed content</span>
 </pre></div>
 </div>
 </div>
@@ -754,8 +754,8 @@ nl
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[29]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>data = b&quot;1;-2;3.14;-4/n&quot;
-parse_bytes(csvline, data)
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">data</span> <span class="o">=</span> <span class="sa">b</span><span class="s2">&quot;1;-2;3.14;-4/n&quot;</span>
+<span class="n">parse_bytes</span><span class="p">(</span><span class="n">csvline</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -773,7 +773,7 @@ parse_bytes(csvline, data)
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[30]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>csv = some(csvline) # A csv contains at least one line
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">csv</span> <span class="o">=</span> <span class="n">some</span><span class="p">(</span><span class="n">csvline</span><span class="p">)</span> <span class="c1"># A csv contains at least one line</span>
 </pre></div>
 </div>
 </div>
@@ -782,9 +782,9 @@ parse_bytes(csvline, data)
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[31]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>data = b&quot;1;-2;3;-4\n5;-6.2;7;-8.1\n9;-10;11;-12&quot;
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">data</span> <span class="o">=</span> <span class="sa">b</span><span class="s2">&quot;1;-2;3;-4</span><span class="se">\n</span><span class="s2">5;-6.2;7;-8.1</span><span class="se">\n</span><span class="s2">9;-10;11;-12&quot;</span>
 
-parse_bytes(csv, data)
+<span class="n">parse_bytes</span><span class="p">(</span><span class="n">csv</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>

@@ -212,7 +212,7 @@ point = named_sequence(
 The `point` parser then constructs `Point` objects, such that
 
 ```python
-parse_bytes(point, "(1, 2)")
+parse_bytes(point, b"(1, 2)")
 ```
 
 gives `Point(x=1, y=2)` as output.
@@ -346,6 +346,12 @@ Let's try it:
 parse_bytes(csv, data)
 
 > [[1, -2, 3, -4], [5, -6.2, 7, -8.1], [9, -10, 11, -12]]
+```
+
+### Binary example: PPM files
+To show how we can mix ASCII and binary data, we have an example where we parse Portable PixMap files (PPM). These files have a small ASCII header and the image itself in binary.
+
+```
 ```
 
 <!-- Footnotes -->

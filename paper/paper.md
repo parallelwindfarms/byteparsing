@@ -28,26 +28,30 @@ bibliography: paper.bib
 # aas-journal: Astrophysical Journal <- The name of the AAS journal.
 ---
 
+<!-- TODO: consider this title:
+byteparsing: a Haskell-flavoured parser for Python -->
 # Summary
 
 # Statement of need
 
-In research there are many software packages that use non-standard data containers for their input and output. This can be a problem when we need to do post-processing, or when we want to embed such a package in a larger data pipeline. In many cases, these non-standard formats have header information in plain text, while the bulk of the data is saved in binary. For these cases, there are only few accessible options for parsing and manipulating data in Python.
+In research there are many software packages that use non-standard data containers for their input and output. This can be a problem when we need to do post-processing, or when we want to embed such a package in a larger data pipeline. In many cases, these non-standard formats have header information in plain text, while the bulk of the data is saved in binary <!-- TODO: cite a couple of examples -->. For these cases, there are only few accessible options for parsing and manipulating data in Python.
 
 Here are some Python modules for parsing that one could consider:
 
 - `pyparsing` is the _de facto_ standard for text parsing in Python. It seems to have no features for dealing with binary data though.
-- `construct` deals mostly with pure binary data
-- `Kaitai Struct`
-- `antlr` requires a large time investment to learn
+- `construct` deals mostly with pure binary data.
+- `Kaitai Struct` <!-- TODO: comment or remove -->
+- `antlr` requires a large time investment to learn.
 
-The major downside of the other binary parser packages in Python that we could find, is that they focus mostly on parsing network traffic, or data structures that can be described in a fixed declarative language.
+The major downside of the remaining binary parser packages in Python we could find is that they focus mostly either on parsing network traffic or on data structures that can be described in a fixed declarative language.
 
-The approach we take is:
+We were thus forced to write our own parser, with this list of requirements:
 
 - Easy to program, using concepts similar to those found in other functional parser combinators like `pyparsing`.
+- Flexible enough, so this was not a problem-tailored solution.
 - Deals transparently with Python objects that support the buffer protocol (_e.g._: memory mapped file access is trivially supported).
 - Performant enough, considering the use case where we have small ASCII headers and large contiguous blocks of floating point data.
+- And last but not least, compliant with best practices such as automated unit testing and thorough documentation.
 
 # Architecture
 

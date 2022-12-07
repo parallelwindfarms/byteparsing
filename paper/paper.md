@@ -52,7 +52,7 @@ The major downside of the remaining binary parser packages in Python we could fi
 We were thus forced to write our own parser, with this list of requirements:
 
 - Easy to program, using concepts similar to those found in other functional parser combinators like `pyparsing`.
-- Flexible enough, so this was not a problem-tailored solution.
+- Composable and testable at all levels of complexity.
 - Deals transparently with Python objects that support the buffer protocol (_e.g._: memory mapped file access is trivially supported).
 - Performant enough, considering the use case where we have small ASCII headers and large contiguous blocks of floating point data.
 <!-- - And last but not least, bloggy languange -->

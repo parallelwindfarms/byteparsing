@@ -101,6 +101,8 @@ Most parsers should, when successful, *flush* the cursor to a state where the be
 
 Additionally, the `Cursor` class can be evaluated to a boolean. This boolean is always `True`, unless the buffer is fully consumed (i.e., both pointers coincide at the end of the buffer). This allows us to comfortably loop _"to the end of the data"_ using a `while` statement.
 
+The `Cursor` object has a text encoding set, so that we can interact seamlessly with strings.
+
 ## Auxiliary state
 The parsers in our design also carry an auxiliary state variable, that can be used to temporarily store intermediate results. The variable is forwarded through every parser call. The full type of a parser then becomes:
 
@@ -116,6 +118,47 @@ We define two helper functions to make use of the auxiliary state: `push` and `p
 The `Cursor` object acts on top of any object in Python that conforms to the buffer interface. This can be a `bytes` or `bytearray` object, but also `mmap`. This means we can parse memory mapped data directly to buffered numpy arrays (using `numpy.frombuffer`). Changes made to such an array are then directly reflected on the filesystem.
 
 # Parser grammar
+
+## Primitives
+
+The boundary between what we consider *primitives* and derived parsers can become a bit vague, nevertheless here is a selection of the most important primitive parsers.
+
+`value(x)`
+: Always succeeds, doesn't consume input, returns `x`
+
+`fail(msg)`
+: Always fails, raises an exception with `msg` as text.
+
+`item`
+: Get a single byte from the stream.
+
+`literal(str)`
+: Succeeds if the next characters in the stream exactly match `str`.
+
+`char_pred(pred)`
+: Advances the end of the cursor if `pred` succeeds.
+
+`push(x)`
+: Push a value on the auxiliary stack.
+
+`pop()`
+: Pop a value from the auxiliary stack.
+
+We also defined some derived parsers that should be useful in most contexts.
+
+`whitespace`
+: Matches tabs spaces and newlines.
+
+`eol`
+: Matches either `\n` or `\n\r`.
+
+`integer`
+: Matches an integer value.
+
+`scientific_number`
+: Matches a floating point number, possibly in scientific notation.
+
+## Combinators
 
 <!-- This package is strongly based on Haskell's syntax and philosophy. But Python is obviously not Haskell. That is to say, there is no nice syntax for monadic actions. In order to solve this issue, we developed a similar grammar for Python. Below, we present a description of such a grammar. -->
 We already saw that we defined some primitive parsers. The next question is how can we combine them? We already listed the main combinators briefly, here we go into a little more detail.

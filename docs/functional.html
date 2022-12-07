@@ -1,41 +1,104 @@
-
 <!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
-<html>
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Introduction to Functional Parsing in Python &#8212; byteparsing 0.1.0 documentation</title>
-    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
-    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
-    <link rel="stylesheet" href="_static/theme_overrides.css" type="text/css" />
-    <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
-    <script src="_static/jquery.js"></script>
-    <script src="_static/underscore.js"></script>
-    <script src="_static/doctools.js"></script>
-    <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
-    <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
-    <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true, "ignoreClass": "document", "processClass": "math|output_area"}})</script>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Introduction to Functional Parsing in Python &mdash; byteparsing 0.1.2 documentation</title>
+      <link rel="stylesheet" href="_static/theme_overrides.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/sphinx_highlight.js"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+        <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+        <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="Examples of usage" href="examples.html" />
-    <link rel="prev" title="Parsers" href="parsers.html" />
-   
-  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
-  
-  
-  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+    <link rel="prev" title="Parsers" href="parsers.html" /> 
+</head>
 
-  </head><body>
-  
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="index.html" class="icon icon-home"> byteparsing
+          </a>
+              <div class="version">
+                0.1.2
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="index.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="install.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cursors.html">Cursors</a></li>
+<li class="toctree-l1"><a class="reference internal" href="parsers.html">Parsers</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Introduction to Functional Parsing in Python</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#First-parsers">First parsers</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#Failures">Failures</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#Many-and-some">Many and some</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#Choices">Choices</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#Nested-structures">Nested structures</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#Sequencing">Sequencing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#Trampolines">Trampolines</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#The-full-parser">The full parser</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#Cursor">Cursor</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#Auxiliary-state">Auxiliary state</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#Hide-trace-backs">Hide trace backs</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="examples.html">Examples of usage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ppm.html">Parsing PPM files</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ply.html">Advanced example: parsing PLY files</a></li>
+<li class="toctree-l1"><a class="reference internal" href="architecture.html">Architecture</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api.html">API Documentation</a></li>
+</ul>
 
-    <div class="document">
-      <div class="documentwrapper">
-        <div class="bodywrapper">
-          
+        </div>
+      </div>
+    </nav>
 
-          <div class="body" role="main">
-            
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">byteparsing</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home"></a></li>
+      <li class="breadcrumb-item active">Introduction to Functional Parsing in Python</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/functional.ipynb.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
   
 <style>
 /* CSS for nbsphinx extension */
@@ -146,10 +209,11 @@ div.nboutput.container div.prompt > div {
     }
 }
 
-/* disable scrollbars on prompts */
+/* disable scrollbars and line breaks on prompts */
 div.nbinput.container div.prompt pre,
 div.nboutput.container div.prompt pre {
     overflow: hidden;
+    white-space: pre;
 }
 
 /* input/output area */
@@ -246,11 +310,12 @@ div.nboutput.container div.output_area > div[class^='highlight']{
 }
 
 /* hide copybtn icon on prompts (needed for 'sphinx_copybutton') */
-.prompt a.copybtn {
+.prompt .copybtn {
     display: none;
 }
 
 /* Some additional styling taken form the Jupyter notebook CSS */
+.jp-RenderedHTMLCommon table,
 div.rendered_html table {
   border: none;
   border-collapse: collapse;
@@ -259,10 +324,14 @@ div.rendered_html table {
   font-size: 12px;
   table-layout: fixed;
 }
+.jp-RenderedHTMLCommon thead,
 div.rendered_html thead {
   border-bottom: 1px solid black;
   vertical-align: bottom;
 }
+.jp-RenderedHTMLCommon tr,
+.jp-RenderedHTMLCommon th,
+.jp-RenderedHTMLCommon td,
 div.rendered_html tr,
 div.rendered_html th,
 div.rendered_html td {
@@ -274,18 +343,43 @@ div.rendered_html td {
   max-width: none;
   border: none;
 }
+.jp-RenderedHTMLCommon th,
 div.rendered_html th {
   font-weight: bold;
 }
+.jp-RenderedHTMLCommon tbody tr:nth-child(odd),
 div.rendered_html tbody tr:nth-child(odd) {
   background: #f5f5f5;
 }
+.jp-RenderedHTMLCommon tbody tr:hover,
 div.rendered_html tbody tr:hover {
   background: rgba(66, 165, 245, 0.2);
 }
+
+/* CSS overrides for sphinx_rtd_theme */
+
+/* 24px margin */
+.nbinput.nblast.container,
+.nboutput.nblast.container {
+    margin-bottom: 19px;  /* padding has already 5px */
+}
+
+/* ... except between code cells! */
+.nblast.container + .nbinput.container {
+    margin-top: -19px;
+}
+
+.admonition > p:before {
+    margin-right: 4px;  /* make room for the exclamation icon */
+}
+
+/* Fix math alignment, see https://github.com/rtfd/sphinx_rtd_theme/pull/686 */
+.math {
+    text-align: unset;
+}
 </style>
-<div class="section" id="Introduction-to-Functional-Parsing-in-Python">
-<h1>Introduction to Functional Parsing in Python<a class="headerlink" href="#Introduction-to-Functional-Parsing-in-Python" title="Permalink to this headline">¶</a></h1>
+<section id="Introduction-to-Functional-Parsing-in-Python">
+<h1>Introduction to Functional Parsing in Python<a class="headerlink" href="#Introduction-to-Functional-Parsing-in-Python" title="Permalink to this heading"></a></h1>
 <p>First of all, I should tell you why parsers are so beautifully expressed in a functional framework: a lot of grammars have an inherently recursive structure. Take as an example a structure of nested lists:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">a</span><span class="p">,[</span><span class="n">b</span><span class="p">,</span><span class="n">c</span><span class="p">],</span><span class="n">d</span><span class="p">,[[</span><span class="n">e</span><span class="p">]]]</span>
 </pre></div>
@@ -329,50 +423,48 @@ parsers often have definitions that lie closer to the BNF notation shown above. 
 </div>
 </div></blockquote>
 <p>The optional part in our case means: may throw an exception instead.</p>
-<div class="section" id="First-parsers">
-<h2>First parsers<a class="headerlink" href="#First-parsers" title="Permalink to this headline">¶</a></h2>
+<section id="First-parsers">
+<h2>First parsers<a class="headerlink" href="#First-parsers" title="Permalink to this heading"></a></h2>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[13]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Union</span><span class="p">,</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">Any</span><span class="p">,</span> <span class="n">TypeVar</span><span class="p">,</span> <span class="n">Generic</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>from typing import Optional, Union, Callable, Any, TypeVar, Generic
 
-<span class="n">T</span> <span class="o">=</span> <span class="n">TypeVar</span><span class="p">(</span><span class="s2">&quot;T&quot;</span><span class="p">)</span>
-<span class="n">Parser</span> <span class="o">=</span> <span class="n">Callable</span><span class="p">[[</span><span class="nb">str</span><span class="p">],</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">T</span><span class="p">,</span> <span class="nb">str</span><span class="p">]]</span>
+T = TypeVar(&quot;T&quot;)
+Parser = Callable[[str], tuple[T, str]]
 </pre></div>
 </div>
 </div>
-<div class="section" id="Failures">
-<h3>Failures<a class="headerlink" href="#Failures" title="Permalink to this headline">¶</a></h3>
+<section id="Failures">
+<h3>Failures<a class="headerlink" href="#Failures" title="Permalink to this heading"></a></h3>
 <p>If the parser fails, a <code class="docutils literal notranslate"><span class="pre">Failure</span></code> is raised.</p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[14]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="kn">from</span> <span class="nn">dataclasses</span> <span class="kn">import</span> <span class="n">dataclass</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>from dataclasses import dataclass
 
-<span class="k">class</span> <span class="nc">Failure</span><span class="p">(</span><span class="ne">Exception</span><span class="p">):</span>
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">msg</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">msg</span> <span class="o">=</span> <span class="n">msg</span>
+class Failure(Exception):
+    def __init__(self, msg: str):
+        self.msg = msg
 
-    <span class="k">def</span> <span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">msg</span>
-
-
-<span class="k">class</span> <span class="nc">EndOfInput</span><span class="p">(</span><span class="n">Failure</span><span class="p">):</span>
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="s2">&quot;End of input.&quot;</span><span class="p">)</span>
+    def __str__(self):
+        return self.msg
 
 
-<span class="k">class</span> <span class="nc">Expected</span><span class="p">(</span><span class="n">Failure</span><span class="p">):</span>
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">inp</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">msg</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">msg</span> <span class="o">=</span> <span class="n">msg</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">inp</span> <span class="o">=</span> <span class="n">inp</span>
+class EndOfInput(Failure):
+    def __init__(self):
+        super().__init__(&quot;End of input.&quot;)
 
-    <span class="k">def</span> <span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">msg</span><span class="si">}</span><span class="s2">, got: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">inp</span><span class="si">}</span><span class="s2">&quot;</span>
+
+class Expected(Failure):
+    def __init__(self, inp: str, msg: str):
+        self.msg = msg
+        self.inp = inp
+
+    def __str__(self):
+        return f&quot;{self.msg}, got: {self.inp}&quot;
 </pre></div>
 </div>
 </div>
@@ -381,16 +473,15 @@ parsers often have definitions that lie closer to the BNF notation shown above. 
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[15]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="kn">import</span> <span class="nn">re</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>import re
 
-<span class="k">def</span> <span class="nf">integer</span><span class="p">(</span><span class="n">inp</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">str</span><span class="p">]:</span>
-    <span class="k">if</span> <span class="n">m</span> <span class="o">:=</span> <span class="n">re</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="s2">&quot;[0-9]+&quot;</span><span class="p">,</span> <span class="n">inp</span><span class="p">):</span>
-        <span class="n">result</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">m</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
-        <span class="n">rest</span> <span class="o">=</span> <span class="n">inp</span><span class="p">[</span><span class="n">m</span><span class="o">.</span><span class="n">end</span><span class="p">(</span><span class="mi">0</span><span class="p">):]</span>
-        <span class="k">return</span> <span class="p">(</span><span class="n">result</span><span class="p">,</span> <span class="n">rest</span><span class="p">)</span>
-    <span class="k">else</span><span class="p">:</span>
-        <span class="k">raise</span> <span class="n">Expected</span><span class="p">(</span><span class="n">inp</span><span class="p">,</span> <span class="s2">&quot;a number&quot;</span><span class="p">)</span>
+def integer(inp: str) -&gt; tuple[int, str]:
+    if m := re.match(&quot;[0-9]+&quot;, inp):
+        result = int(m[0])
+        rest = inp[m.end(0):]
+        return (result, rest)
+    else:
+        raise Expected(inp, &quot;a number&quot;)
 </pre></div>
 </div>
 </div>
@@ -399,8 +490,7 @@ parsers often have definitions that lie closer to the BNF notation shown above. 
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[16]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="n">integer</span><span class="p">(</span><span class="s2">&quot;42&quot;</span><span class="p">)</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>integer(&quot;42&quot;)
 </pre></div>
 </div>
 </div>
@@ -418,8 +508,7 @@ parsers often have definitions that lie closer to the BNF notation shown above. 
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[17]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="n">integer</span><span class="p">(</span><span class="s2">&quot;89, 20, 40&quot;</span><span class="p">)</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>integer(&quot;89, 20, 40&quot;)
 </pre></div>
 </div>
 </div>
@@ -436,8 +525,7 @@ parsers often have definitions that lie closer to the BNF notation shown above. 
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[18]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="n">integer</span><span class="p">(</span><span class="s2">&quot;hello&quot;</span><span class="p">)</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>integer(&quot;hello&quot;)
 </pre></div>
 </div>
 </div>
@@ -454,12 +542,11 @@ Expected: a number, got: hello
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[19]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="k">def</span> <span class="nf">whitespace</span><span class="p">(</span><span class="n">inp</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]:</span>
-    <span class="n">m</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="s2">&quot;\s+&quot;</span><span class="p">,</span> <span class="n">inp</span><span class="p">)</span>
-    <span class="k">if</span> <span class="ow">not</span> <span class="n">m</span><span class="p">:</span>
-        <span class="k">raise</span> <span class="n">Expected</span><span class="p">(</span><span class="n">inp</span><span class="p">,</span> <span class="s2">&quot;whitespace&quot;</span><span class="p">)</span>
-    <span class="k">return</span> <span class="p">(</span><span class="n">m</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">inp</span><span class="p">[</span><span class="n">m</span><span class="o">.</span><span class="n">end</span><span class="p">(</span><span class="mi">0</span><span class="p">):])</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>def whitespace(inp: str) -&gt; tuple[str, str]:
+    m = re.match(&quot;\s+&quot;, inp)
+    if not m:
+        raise Expected(inp, &quot;whitespace&quot;)
+    return (m[0], inp[m.end(0):])
 </pre></div>
 </div>
 </div>
@@ -467,8 +554,7 @@ Expected: a number, got: hello
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[20]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="n">whitespace</span><span class="p">(</span><span class="s2">&quot;    abcd&quot;</span><span class="p">)</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>whitespace(&quot;    abcd&quot;)
 </pre></div>
 </div>
 </div>
@@ -485,8 +571,7 @@ Expected: a number, got: hello
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[21]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="n">whitespace</span><span class="p">(</span><span class="s2">&quot;abcd&quot;</span><span class="p">)</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>whitespace(&quot;abcd&quot;)
 </pre></div>
 </div>
 </div>
@@ -503,15 +588,14 @@ Expected: whitespace, got: abcd
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[22]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="k">def</span> <span class="nf">optional</span><span class="p">(</span><span class="n">p</span><span class="p">:</span> <span class="n">Parser</span><span class="p">[</span><span class="n">T</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">Parser</span><span class="p">[</span><span class="n">Optional</span><span class="p">[</span><span class="n">T</span><span class="p">]]:</span>
-    <span class="k">def</span> <span class="nf">optional_p</span><span class="p">(</span><span class="n">inp</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">Optional</span><span class="p">[</span><span class="n">T</span><span class="p">],</span> <span class="nb">str</span><span class="p">]:</span>
-        <span class="k">try</span><span class="p">:</span>
-            <span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">inp</span><span class="p">)</span> <span class="o">=</span> <span class="n">p</span><span class="p">(</span><span class="n">inp</span><span class="p">)</span>
-        <span class="k">except</span> <span class="n">Failure</span><span class="p">:</span>
-            <span class="k">return</span> <span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="n">inp</span><span class="p">)</span>
-        <span class="k">return</span> <span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">inp</span><span class="p">)</span>
-    <span class="k">return</span> <span class="n">optional_p</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>def optional(p: Parser[T]) -&gt; Parser[Optional[T]]:
+    def optional_p(inp: str) -&gt; tuple[Optional[T], str]:
+        try:
+            (x, inp) = p(inp)
+        except Failure:
+            return (None, inp)
+        return (x, inp)
+    return optional_p
 </pre></div>
 </div>
 </div>
@@ -519,8 +603,7 @@ Expected: whitespace, got: abcd
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[23]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="n">optional</span><span class="p">(</span><span class="n">whitespace</span><span class="p">)(</span><span class="s2">&quot;abcd&quot;</span><span class="p">)</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>optional(whitespace)(&quot;abcd&quot;)
 </pre></div>
 </div>
 </div>
@@ -538,14 +621,13 @@ Expected: whitespace, got: abcd
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[24]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="k">def</span> <span class="nf">twice</span><span class="p">(</span><span class="n">p</span><span class="p">:</span> <span class="n">Parser</span><span class="p">[</span><span class="n">T</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">Parser</span><span class="p">[</span><span class="nb">tuple</span><span class="p">[</span><span class="n">T</span><span class="p">,</span> <span class="n">T</span><span class="p">]]:</span>
-    <span class="k">def</span> <span class="nf">twiced</span><span class="p">(</span><span class="n">inp</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">tuple</span><span class="p">[</span><span class="n">T</span><span class="p">,</span> <span class="n">T</span><span class="p">],</span> <span class="nb">str</span><span class="p">]:</span>
-        <span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">inp</span><span class="p">)</span> <span class="o">=</span> <span class="n">p</span><span class="p">(</span><span class="n">inp</span><span class="p">)</span>
-        <span class="p">(</span><span class="n">_</span><span class="p">,</span> <span class="n">inp</span><span class="p">)</span> <span class="o">=</span> <span class="n">whitespace</span><span class="p">(</span><span class="n">inp</span><span class="p">)</span>
-        <span class="p">(</span><span class="n">b</span><span class="p">,</span> <span class="n">inp</span><span class="p">)</span> <span class="o">=</span> <span class="n">p</span><span class="p">(</span><span class="n">inp</span><span class="p">)</span>
-        <span class="k">return</span> <span class="p">((</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">),</span> <span class="n">inp</span><span class="p">)</span>
-    <span class="k">return</span> <span class="n">twiced</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>def twice(p: Parser[T]) -&gt; Parser[tuple[T, T]]:
+    def twiced(inp: str) -&gt; tuple[tuple[T, T], str]:
+        (a, inp) = p(inp)
+        (_, inp) = whitespace(inp)
+        (b, inp) = p(inp)
+        return ((a, b), inp)
+    return twiced
 </pre></div>
 </div>
 </div>
@@ -553,8 +635,7 @@ Expected: whitespace, got: abcd
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[25]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="n">twice</span><span class="p">(</span><span class="n">integer</span><span class="p">)(</span><span class="s2">&quot;1 2 3 4&quot;</span><span class="p">)</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>twice(integer)(&quot;1 2 3 4&quot;)
 </pre></div>
 </div>
 </div>
@@ -572,13 +653,12 @@ Expected: whitespace, got: abcd
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[26]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="k">def</span> <span class="nf">char</span><span class="p">(</span><span class="n">allowed</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Parser</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
-    <span class="k">def</span> <span class="nf">char_p</span><span class="p">(</span><span class="n">inp</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]:</span>
-        <span class="k">if</span> <span class="ow">not</span> <span class="n">inp</span> <span class="ow">or</span> <span class="n">inp</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">allowed</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="n">Expected</span><span class="p">(</span><span class="n">inp</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;one of </span><span class="se">\&quot;</span><span class="si">{</span><span class="n">allowed</span><span class="si">}</span><span class="se">\&quot;</span><span class="s2">&quot;</span><span class="p">)</span>
-        <span class="k">return</span> <span class="p">(</span><span class="n">inp</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">inp</span><span class="p">[</span><span class="mi">1</span><span class="p">:])</span>
-    <span class="k">return</span> <span class="n">char_p</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>def char(allowed: str) -&gt; Parser[str]:
+    def char_p(inp: str) -&gt; tuple[str, str]:
+        if not inp or inp[0] not in allowed:
+            raise Expected(inp, f&quot;one of \&quot;{allowed}\&quot;&quot;)
+        return (inp[0], inp[1:])
+    return char_p
 </pre></div>
 </div>
 </div>
@@ -586,8 +666,7 @@ Expected: whitespace, got: abcd
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[27]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="n">char</span><span class="p">(</span><span class="s2">&quot;abc&quot;</span><span class="p">)(</span><span class="s2">&quot;abbcaabd&quot;</span><span class="p">)</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>char(&quot;abc&quot;)(&quot;abbcaabd&quot;)
 </pre></div>
 </div>
 </div>
@@ -604,8 +683,7 @@ Expected: whitespace, got: abcd
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[28]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="n">char</span><span class="p">(</span><span class="s2">&quot;abc&quot;</span><span class="p">)(</span><span class="s2">&quot;d&quot;</span><span class="p">)</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>char(&quot;abc&quot;)(&quot;d&quot;)
 </pre></div>
 </div>
 </div>
@@ -621,9 +699,8 @@ Expected: one of &#34;abc&#34;, got: d
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[29]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="n">comma</span> <span class="o">=</span> <span class="n">char</span><span class="p">(</span><span class="s2">&quot;,&quot;</span><span class="p">)</span>
-<span class="n">comma</span><span class="p">(</span><span class="s2">&quot;, 20, 40&quot;</span><span class="p">)</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>comma = char(&quot;,&quot;)
+comma(&quot;, 20, 40&quot;)
 </pre></div>
 </div>
 </div>
@@ -640,8 +717,7 @@ Expected: one of &#34;abc&#34;, got: d
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[30]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="n">comma</span><span class="p">(</span><span class="s2">&quot;89, 20, 40&quot;</span><span class="p">)</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>comma(&quot;89, 20, 40&quot;)
 </pre></div>
 </div>
 </div>
@@ -658,13 +734,12 @@ Expected: one of &#34;,&#34;, got: 89, 20, 40
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[31]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="k">def</span> <span class="nf">tokenize</span><span class="p">(</span><span class="n">p</span><span class="p">:</span> <span class="n">Parser</span><span class="p">[</span><span class="n">T</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">Parser</span><span class="p">[</span><span class="n">T</span><span class="p">]:</span>
-    <span class="k">def</span> <span class="nf">tokenized</span><span class="p">(</span><span class="n">inp</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">T</span><span class="p">,</span> <span class="nb">str</span><span class="p">]:</span>
-        <span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">inp</span><span class="p">)</span> <span class="o">=</span> <span class="n">p</span><span class="p">(</span><span class="n">inp</span><span class="p">)</span>
-        <span class="p">(</span><span class="n">_</span><span class="p">,</span> <span class="n">inp</span><span class="p">)</span> <span class="o">=</span> <span class="n">optional</span><span class="p">(</span><span class="n">whitespace</span><span class="p">)(</span><span class="n">inp</span><span class="p">)</span>
-        <span class="k">return</span> <span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">inp</span><span class="p">)</span>
-    <span class="k">return</span> <span class="n">tokenized</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>def tokenize(p: Parser[T]) -&gt; Parser[T]:
+    def tokenized(inp: str) -&gt; tuple[T, str]:
+        (x, inp) = p(inp)
+        (_, inp) = optional(whitespace)(inp)
+        return (x, inp)
+    return tokenized
 </pre></div>
 </div>
 </div>
@@ -673,9 +748,8 @@ Expected: one of &#34;,&#34;, got: 89, 20, 40
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[32]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="n">comma</span> <span class="o">=</span> <span class="n">tokenize</span><span class="p">(</span><span class="n">char</span><span class="p">(</span><span class="s2">&quot;,&quot;</span><span class="p">))</span>
-<span class="n">comma</span><span class="p">(</span><span class="s2">&quot;,     ######&quot;</span><span class="p">)</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>comma = tokenize(char(&quot;,&quot;))
+comma(&quot;,     ######&quot;)
 </pre></div>
 </div>
 </div>
@@ -693,22 +767,21 @@ Expected: one of &#34;,&#34;, got: 89, 20, 40
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[33]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="n">U</span> <span class="o">=</span> <span class="n">TypeVar</span><span class="p">(</span><span class="s2">&quot;U&quot;</span><span class="p">)</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>U = TypeVar(&quot;U&quot;)
 
-<span class="k">def</span> <span class="nf">sep_by</span><span class="p">(</span><span class="n">p</span><span class="p">:</span> <span class="n">Parser</span><span class="p">[</span><span class="n">T</span><span class="p">],</span> <span class="n">sep</span><span class="p">:</span> <span class="n">Parser</span><span class="p">[</span><span class="n">U</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">Parser</span><span class="p">[</span><span class="nb">list</span><span class="p">[</span><span class="n">T</span><span class="p">]]:</span>
-    <span class="k">def</span> <span class="nf">sep_byed</span><span class="p">(</span><span class="n">inp</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">list</span><span class="p">[</span><span class="n">T</span><span class="p">],</span> <span class="nb">str</span><span class="p">]:</span>
-        <span class="c1"># parse an integer</span>
-        <span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">inp</span><span class="p">)</span> <span class="o">=</span> <span class="n">p</span><span class="p">(</span><span class="n">inp</span><span class="p">)</span>
-        <span class="k">try</span><span class="p">:</span>
-            <span class="c1"># parse a comma</span>
-            <span class="p">(</span><span class="n">_</span><span class="p">,</span> <span class="n">_inp</span><span class="p">)</span> <span class="o">=</span> <span class="n">sep</span><span class="p">(</span><span class="n">inp</span><span class="p">)</span>
-            <span class="c1"># parse the rest of the list</span>
-            <span class="p">(</span><span class="n">rest</span><span class="p">,</span> <span class="n">inp</span><span class="p">)</span> <span class="o">=</span> <span class="n">sep_byed</span><span class="p">(</span><span class="n">_inp</span><span class="p">)</span>
-        <span class="k">except</span> <span class="n">Failure</span><span class="p">:</span>
-            <span class="k">return</span> <span class="p">([</span><span class="n">x</span><span class="p">],</span> <span class="n">inp</span><span class="p">)</span>
-        <span class="k">return</span> <span class="p">([</span><span class="n">x</span><span class="p">]</span> <span class="o">+</span> <span class="n">rest</span><span class="p">,</span> <span class="n">inp</span><span class="p">)</span>
-    <span class="k">return</span> <span class="n">sep_byed</span>
+def sep_by(p: Parser[T], sep: Parser[U]) -&gt; Parser[list[T]]:
+    def sep_byed(inp: str) -&gt; tuple[list[T], str]:
+        # parse an integer
+        (x, inp) = p(inp)
+        try:
+            # parse a comma
+            (_, _inp) = sep(inp)
+            # parse the rest of the list
+            (rest, inp) = sep_byed(_inp)
+        except Failure:
+            return ([x], inp)
+        return ([x] + rest, inp)
+    return sep_byed
 </pre></div>
 </div>
 </div>
@@ -716,8 +789,7 @@ Expected: one of &#34;,&#34;, got: 89, 20, 40
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[34]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="n">sep_by</span><span class="p">(</span><span class="n">integer</span><span class="p">,</span> <span class="n">comma</span><span class="p">)(</span><span class="s2">&quot;1, 2, 3, 4, abcde&quot;</span><span class="p">)</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>sep_by(integer, comma)(&quot;1, 2, 3, 4, abcde&quot;)
 </pre></div>
 </div>
 </div>
@@ -735,19 +807,18 @@ Expected: one of &#34;,&#34;, got: 89, 20, 40
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[35]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="k">def</span> <span class="nf">sep_by</span><span class="p">(</span><span class="n">p</span><span class="p">:</span> <span class="n">Parser</span><span class="p">[</span><span class="n">T</span><span class="p">],</span> <span class="n">sep</span><span class="p">:</span> <span class="n">Parser</span><span class="p">[</span><span class="n">U</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">Parser</span><span class="p">[</span><span class="nb">list</span><span class="p">[</span><span class="n">T</span><span class="p">]]:</span>
-    <span class="k">def</span> <span class="nf">sep_byed</span><span class="p">(</span><span class="n">inp</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">list</span><span class="p">[</span><span class="n">T</span><span class="p">],</span> <span class="nb">str</span><span class="p">]:</span>
-        <span class="n">result</span> <span class="o">=</span> <span class="p">[]</span>
-        <span class="n">inp_bc</span> <span class="o">=</span> <span class="n">inp</span>
-        <span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
-            <span class="k">try</span><span class="p">:</span>
-                <span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">inp_bc</span><span class="p">)</span> <span class="o">=</span> <span class="n">p</span><span class="p">(</span><span class="n">inp</span><span class="p">)</span>
-                <span class="n">result</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
-                <span class="p">(</span><span class="n">_</span><span class="p">,</span> <span class="n">inp</span><span class="p">)</span> <span class="o">=</span> <span class="n">sep</span><span class="p">(</span><span class="n">inp_bc</span><span class="p">)</span>
-            <span class="k">except</span> <span class="n">Failure</span><span class="p">:</span>
-                <span class="k">return</span> <span class="p">(</span><span class="n">result</span><span class="p">,</span> <span class="n">inp_bc</span><span class="p">)</span>
-    <span class="k">return</span> <span class="n">sep_byed</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>def sep_by(p: Parser[T], sep: Parser[U]) -&gt; Parser[list[T]]:
+    def sep_byed(inp: str) -&gt; tuple[list[T], str]:
+        result = []
+        inp_bc = inp
+        while True:
+            try:
+                (x, inp_bc) = p(inp)
+                result.append(x)
+                (_, inp) = sep(inp_bc)
+            except Failure:
+                return (result, inp_bc)
+    return sep_byed
 </pre></div>
 </div>
 </div>
@@ -755,8 +826,7 @@ Expected: one of &#34;,&#34;, got: 89, 20, 40
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[36]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="n">sep_by</span><span class="p">(</span><span class="n">integer</span><span class="p">,</span> <span class="n">comma</span><span class="p">)(</span><span class="s2">&quot;1, 2, 3, 4, abcde&quot;</span><span class="p">)</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>sep_by(integer, comma)(&quot;1, 2, 3, 4, abcde&quot;)
 </pre></div>
 </div>
 </div>
@@ -769,25 +839,24 @@ Expected: one of &#34;,&#34;, got: 89, 20, 40
 ([1, 2, 3, 4], &#39;, abcde&#39;)
 </pre></div></div>
 </div>
-</div>
-<div class="section" id="Many-and-some">
-<h3>Many and some<a class="headerlink" href="#Many-and-some" title="Permalink to this headline">¶</a></h3>
+</section>
+<section id="Many-and-some">
+<h3>Many and some<a class="headerlink" href="#Many-and-some" title="Permalink to this heading"></a></h3>
 <p><code class="docutils literal notranslate"><span class="pre">many</span></code> and <code class="docutils literal notranslate"><span class="pre">some</span></code> are bread and butter of parser combinators. An important fact to note here is that <code class="docutils literal notranslate"><span class="pre">many</span></code> will always succeed. Having nested <code class="docutils literal notranslate"><span class="pre">many</span></code> parsers may result in infinite loops.</p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[37]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="k">def</span> <span class="nf">many</span><span class="p">(</span><span class="n">p</span><span class="p">:</span> <span class="n">Parser</span><span class="p">[</span><span class="n">T</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">Parser</span><span class="p">[</span><span class="nb">list</span><span class="p">[</span><span class="n">T</span><span class="p">]]:</span>
-    <span class="k">def</span> <span class="nf">manied</span><span class="p">(</span><span class="n">inp</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">list</span><span class="p">[</span><span class="n">T</span><span class="p">],</span> <span class="nb">str</span><span class="p">]:</span>
-        <span class="n">result</span> <span class="o">=</span> <span class="p">[]</span>
-        <span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
-            <span class="k">try</span><span class="p">:</span>
-                <span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">inp</span><span class="p">)</span> <span class="o">=</span> <span class="n">p</span><span class="p">(</span><span class="n">inp</span><span class="p">)</span>
-                <span class="n">result</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
-            <span class="k">except</span> <span class="n">Failure</span><span class="p">:</span>
-                <span class="k">return</span> <span class="p">(</span><span class="n">result</span><span class="p">,</span> <span class="n">inp</span><span class="p">)</span>
-    <span class="k">return</span> <span class="n">manied</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>def many(p: Parser[T]) -&gt; Parser[list[T]]:
+    def manied(inp: str) -&gt; tuple[list[T], str]:
+        result = []
+        while True:
+            try:
+                (x, inp) = p(inp)
+                result.append(x)
+            except Failure:
+                return (result, inp)
+    return manied
 </pre></div>
 </div>
 </div>
@@ -795,13 +864,12 @@ Expected: one of &#34;,&#34;, got: 89, 20, 40
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[38]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="k">def</span> <span class="nf">some</span><span class="p">(</span><span class="n">p</span><span class="p">:</span> <span class="n">Parser</span><span class="p">[</span><span class="n">T</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">Parser</span><span class="p">[</span><span class="nb">list</span><span class="p">[</span><span class="n">T</span><span class="p">]]:</span>
-    <span class="k">def</span> <span class="nf">somed</span><span class="p">(</span><span class="n">inp</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">list</span><span class="p">[</span><span class="n">T</span><span class="p">],</span> <span class="nb">str</span><span class="p">]:</span>
-        <span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">inp</span><span class="p">)</span> <span class="o">=</span> <span class="n">p</span><span class="p">(</span><span class="n">inp</span><span class="p">)</span>
-        <span class="p">(</span><span class="n">rest</span><span class="p">,</span> <span class="n">inp</span><span class="p">)</span> <span class="o">=</span> <span class="n">many</span><span class="p">(</span><span class="n">p</span><span class="p">)(</span><span class="n">inp</span><span class="p">)</span>
-        <span class="k">return</span> <span class="p">([</span><span class="n">x</span><span class="p">]</span> <span class="o">+</span> <span class="n">rest</span><span class="p">,</span> <span class="n">inp</span><span class="p">)</span>
-    <span class="k">return</span> <span class="n">somed</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>def some(p: Parser[T]) -&gt; Parser[list[T]]:
+    def somed(inp: str) -&gt; tuple[list[T], str]:
+        (x, inp) = p(inp)
+        (rest, inp) = many(p)(inp)
+        return ([x] + rest, inp)
+    return somed
 </pre></div>
 </div>
 </div>
@@ -810,14 +878,13 @@ Expected: one of &#34;,&#34;, got: 89, 20, 40
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[39]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="k">def</span> <span class="nf">list_of</span><span class="p">(</span><span class="n">p</span><span class="p">:</span> <span class="n">Parser</span><span class="p">[</span><span class="n">T</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">Parser</span><span class="p">[</span><span class="nb">list</span><span class="p">[</span><span class="n">T</span><span class="p">]]:</span>
-    <span class="k">def</span> <span class="nf">listed</span><span class="p">(</span><span class="n">inp</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">list</span><span class="p">[</span><span class="n">T</span><span class="p">],</span> <span class="nb">str</span><span class="p">]:</span>
-        <span class="p">(</span><span class="n">_</span><span class="p">,</span> <span class="n">inp</span><span class="p">)</span> <span class="o">=</span> <span class="n">tokenize</span><span class="p">(</span><span class="n">char</span><span class="p">(</span><span class="s2">&quot;(&quot;</span><span class="p">))(</span><span class="n">inp</span><span class="p">)</span>
-        <span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">inp</span><span class="p">)</span> <span class="o">=</span> <span class="n">many</span><span class="p">(</span><span class="n">p</span><span class="p">)(</span><span class="n">inp</span><span class="p">)</span>
-        <span class="p">(</span><span class="n">_</span><span class="p">,</span> <span class="n">inp</span><span class="p">)</span> <span class="o">=</span> <span class="n">tokenize</span><span class="p">(</span><span class="n">char</span><span class="p">(</span><span class="s2">&quot;)&quot;</span><span class="p">))(</span><span class="n">inp</span><span class="p">)</span>
-        <span class="k">return</span> <span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">inp</span><span class="p">)</span>
-    <span class="k">return</span> <span class="n">listed</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>def list_of(p: Parser[T]) -&gt; Parser[list[T]]:
+    def listed(inp: str) -&gt; tuple[list[T], str]:
+        (_, inp) = tokenize(char(&quot;(&quot;))(inp)
+        (x, inp) = many(p)(inp)
+        (_, inp) = tokenize(char(&quot;)&quot;))(inp)
+        return (x, inp)
+    return listed
 </pre></div>
 </div>
 </div>
@@ -825,8 +892,7 @@ Expected: one of &#34;,&#34;, got: 89, 20, 40
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[40]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="n">list_of</span><span class="p">(</span><span class="n">tokenize</span><span class="p">(</span><span class="n">integer</span><span class="p">))(</span><span class="s2">&quot;(1 2 3)&quot;</span><span class="p">)</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>list_of(tokenize(integer))(&quot;(1 2 3)&quot;)
 </pre></div>
 </div>
 </div>
@@ -839,38 +905,37 @@ Expected: one of &#34;,&#34;, got: 89, 20, 40
 ([1, 2, 3], &#39;&#39;)
 </pre></div></div>
 </div>
-</div>
-<div class="section" id="Choices">
-<h3>Choices<a class="headerlink" href="#Choices" title="Permalink to this headline">¶</a></h3>
+</section>
+<section id="Choices">
+<h3>Choices<a class="headerlink" href="#Choices" title="Permalink to this heading"></a></h3>
 <p>Another common pattern is when we have several options to parse. For the <code class="docutils literal notranslate"><span class="pre">choice</span></code> parser we need a new type of <code class="docutils literal notranslate"><span class="pre">Failure</span></code>, namely one that outlines the different expectations and why they all failed. The <code class="docutils literal notranslate"><span class="pre">choice</span></code> parser tries each parser in the order they were given; the first parser to succeed gets the go-ahead.</p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[41]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="k">class</span> <span class="nc">ChoiceFailure</span><span class="p">(</span><span class="n">Expected</span><span class="p">):</span>
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">inp</span><span class="p">,</span> <span class="n">failures</span><span class="p">):</span>
-        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">inp</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">failures</span> <span class="o">=</span> <span class="n">failures</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>class ChoiceFailure(Expected):
+    def __init__(self, inp, failures):
+        super().__init__(inp, &quot;&quot;)
+        self.failures = failures
 
-    <span class="k">def</span> <span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">return</span> <span class="s2">&quot;All options failed:</span><span class="se">\n</span><span class="s2">&quot;</span> <span class="o">+</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span>
-            <span class="s2">&quot;    | &quot;</span> <span class="o">+</span> <span class="n">f</span><span class="o">.</span><span class="n">msg</span> <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">failures</span><span class="p">)</span> <span class="o">+</span> \
-            <span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">got: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">inp</span><span class="si">}</span><span class="s2">&quot;</span>
+    def __str__(self):
+        return &quot;All options failed:\n&quot; + &quot;\n&quot;.join(
+            &quot;    | &quot; + f.msg for f in self.failures) + \
+            f&quot;\ngot: {self.inp}&quot;
 
-<span class="k">def</span> <span class="nf">choice</span><span class="p">(</span><span class="o">*</span><span class="n">ps</span><span class="p">:</span> <span class="n">Parser</span><span class="p">[</span><span class="n">T</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">Parser</span><span class="p">[</span><span class="n">T</span><span class="p">]:</span>
-    <span class="k">def</span> <span class="nf">choiced</span><span class="p">(</span><span class="n">inp</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">T</span><span class="p">,</span> <span class="nb">str</span><span class="p">]:</span>
-        <span class="n">failures</span> <span class="o">=</span> <span class="p">[]</span>
-        <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">ps</span><span class="p">:</span>
-            <span class="k">try</span><span class="p">:</span>
-                <span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">inp</span><span class="p">)</span> <span class="o">=</span> <span class="n">p</span><span class="p">(</span><span class="n">inp</span><span class="p">)</span>
-            <span class="k">except</span> <span class="n">Failure</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
-                <span class="n">failures</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
-                <span class="k">continue</span>
-            <span class="k">else</span><span class="p">:</span>
-                <span class="k">return</span> <span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">inp</span><span class="p">)</span>
-        <span class="k">raise</span> <span class="n">ChoiceFailure</span><span class="p">(</span><span class="n">inp</span><span class="p">,</span> <span class="n">failures</span><span class="p">)</span>
-    <span class="k">return</span> <span class="n">choiced</span>
+def choice(*ps: Parser[T]) -&gt; Parser[T]:
+    def choiced(inp: str) -&gt; tuple[T, str]:
+        failures = []
+        for p in ps:
+            try:
+                (x, inp) = p(inp)
+            except Failure as f:
+                failures.append(f)
+                continue
+            else:
+                return (x, inp)
+        raise ChoiceFailure(inp, failures)
+    return choiced
 </pre></div>
 </div>
 </div>
@@ -878,8 +943,7 @@ Expected: one of &#34;,&#34;, got: 89, 20, 40
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[42]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="n">many</span><span class="p">(</span><span class="n">choice</span><span class="p">(</span><span class="n">char</span><span class="p">(</span><span class="s2">&quot;abc&quot;</span><span class="p">),</span> <span class="n">char</span><span class="p">(</span><span class="s2">&quot;123&quot;</span><span class="p">)))(</span><span class="s2">&quot;12ab3#$*&amp;(*&amp;@&quot;</span><span class="p">)</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>many(choice(char(&quot;abc&quot;), char(&quot;123&quot;)))(&quot;12ab3#$*&amp;(*&amp;@&quot;)
 </pre></div>
 </div>
 </div>
@@ -896,8 +960,7 @@ Expected: one of &#34;,&#34;, got: 89, 20, 40
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[43]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="n">some</span><span class="p">(</span><span class="n">choice</span><span class="p">(</span><span class="n">char</span><span class="p">(</span><span class="s2">&quot;abc&quot;</span><span class="p">),</span> <span class="n">char</span><span class="p">(</span><span class="s2">&quot;123&quot;</span><span class="p">),</span> <span class="n">whitespace</span><span class="p">))(</span><span class="s2">&quot;#&amp;*(&amp;@&quot;</span><span class="p">)</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>some(choice(char(&quot;abc&quot;), char(&quot;123&quot;), whitespace))(&quot;#&amp;*(&amp;@&quot;)
 </pre></div>
 </div>
 </div>
@@ -913,19 +976,18 @@ ChoiceFailure: All options failed:
 got: #&amp;*(&amp;@
 </pre></div></div>
 </div>
-</div>
-<div class="section" id="Nested-structures">
-<h3>Nested structures<a class="headerlink" href="#Nested-structures" title="Permalink to this headline">¶</a></h3>
+</section>
+<section id="Nested-structures">
+<h3>Nested structures<a class="headerlink" href="#Nested-structures" title="Permalink to this heading"></a></h3>
 <p>We are now ready to parse a nested list structure. Note that the only reason why we put this parser in a function explicitely is to allow the recursion.</p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[44]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="k">def</span> <span class="nf">nested_list</span><span class="p">(</span><span class="n">p</span><span class="p">:</span> <span class="n">Parser</span><span class="p">[</span><span class="n">T</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">Parser</span><span class="p">[</span><span class="n">Any</span><span class="p">]:</span>
-    <span class="k">def</span> <span class="nf">nested_listed</span><span class="p">(</span><span class="n">inp</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">Any</span><span class="p">,</span> <span class="nb">str</span><span class="p">]:</span>
-        <span class="k">return</span> <span class="n">choice</span><span class="p">(</span><span class="n">p</span><span class="p">,</span> <span class="n">list_of</span><span class="p">(</span><span class="n">nested_list</span><span class="p">(</span><span class="n">p</span><span class="p">)))(</span><span class="n">inp</span><span class="p">)</span>
-    <span class="k">return</span> <span class="n">nested_listed</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>def nested_list(p: Parser[T]) -&gt; Parser[Any]:
+    def nested_listed(inp: str) -&gt; tuple[Any, str]:
+        return choice(p, list_of(nested_list(p)))(inp)
+    return nested_listed
 </pre></div>
 </div>
 </div>
@@ -933,8 +995,7 @@ got: #&amp;*(&amp;@
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[45]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="n">nested_list</span><span class="p">(</span><span class="n">tokenize</span><span class="p">(</span><span class="n">integer</span><span class="p">))(</span><span class="s2">&quot;(1 2 (3 4  )5 (() (6)))&quot;</span><span class="p">)</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>nested_list(tokenize(integer))(&quot;(1 2 (3 4  )5 (() (6)))&quot;)
 </pre></div>
 </div>
 </div>
@@ -948,22 +1009,21 @@ got: #&amp;*(&amp;@
 </pre></div></div>
 </div>
 <p>This concludes the basic introduction to parser combinators. What is left is finding ways of writing down parsers in a nicer way. First we’ll have to deal with the pesky problem of recursion.</p>
-</div>
-</div>
-<div class="section" id="Sequencing">
-<h2>Sequencing<a class="headerlink" href="#Sequencing" title="Permalink to this headline">¶</a></h2>
+</section>
+</section>
+<section id="Sequencing">
+<h2>Sequencing<a class="headerlink" href="#Sequencing" title="Permalink to this heading"></a></h2>
 <p>We have seen several instances where we had to sequence <code class="docutils literal notranslate"><span class="pre">(x,</span> <span class="pre">inp)</span> <span class="pre">=</span> <span class="pre">parse(inp)</span></code>. It would be nice if we could combine parsers in a smarter way, and have them plug together. In other words: we can make these parsers more composable. Suppose we want a function <code class="docutils literal notranslate"><span class="pre">sequence(*ps)</span></code> that parses each argument in order, and returns the result of the last parser. An imperative solution looks as follows:</p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="k">def</span> <span class="nf">sequence</span><span class="p">(</span><span class="o">*</span><span class="n">ps</span><span class="p">:</span> <span class="n">Parser</span><span class="p">[</span><span class="n">Any</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">Parser</span><span class="p">[</span><span class="n">Any</span><span class="p">]:</span>
-    <span class="k">def</span> <span class="nf">sequenced</span><span class="p">(</span><span class="n">inp</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">Any</span><span class="p">,</span> <span class="nb">str</span><span class="p">]:</span>
-        <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">ps</span><span class="p">:</span>
-            <span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">inp</span><span class="p">)</span> <span class="o">=</span> <span class="n">p</span><span class="p">(</span><span class="n">inp</span><span class="p">)</span>
-        <span class="k">return</span> <span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">inp</span><span class="p">)</span>
-    <span class="k">return</span> <span class="n">sequenced</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>def sequence(*ps: Parser[Any]) -&gt; Parser[Any]:
+    def sequenced(inp: str) -&gt; tuple[Any, str]:
+        for p in ps:
+            (x, inp) = p(inp)
+        return (x, inp)
+    return sequenced
 </pre></div>
 </div>
 </div>
@@ -972,9 +1032,8 @@ got: #&amp;*(&amp;@
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[60]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="k">def</span> <span class="nf">list_of</span><span class="p">(</span><span class="n">p</span><span class="p">:</span> <span class="n">Parser</span><span class="p">[</span><span class="n">T</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">Parser</span><span class="p">[</span><span class="nb">list</span><span class="p">[</span><span class="n">T</span><span class="p">]]:</span>
-    <span class="k">return</span> <span class="n">sequence</span><span class="p">(</span><span class="n">char</span><span class="p">(</span><span class="s2">&quot;(&quot;</span><span class="p">),</span> <span class="n">closed_by</span><span class="p">(</span><span class="n">many</span><span class="p">(</span><span class="n">p</span><span class="p">),</span> <span class="n">char</span><span class="p">(</span><span class="s2">&quot;)&quot;</span><span class="p">)))</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>def list_of(p: Parser[T]) -&gt; Parser[list[T]]:
+    return sequence(char(&quot;(&quot;), closed_by(many(p), char(&quot;)&quot;)))
 </pre></div>
 </div>
 </div>
@@ -983,13 +1042,12 @@ got: #&amp;*(&amp;@
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[61]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="k">def</span> <span class="nf">closed_by</span><span class="p">(</span><span class="n">p1</span><span class="p">:</span> <span class="n">Parser</span><span class="p">[</span><span class="n">T</span><span class="p">],</span> <span class="n">p2</span><span class="p">:</span> <span class="n">Parser</span><span class="p">[</span><span class="n">U</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">Parser</span><span class="p">[</span><span class="n">T</span><span class="p">]:</span>
-    <span class="k">def</span> <span class="nf">closed_byed</span><span class="p">(</span><span class="n">inp</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">T</span><span class="p">,</span> <span class="nb">str</span><span class="p">]:</span>
-        <span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">inp</span><span class="p">)</span> <span class="o">=</span> <span class="n">p1</span><span class="p">(</span><span class="n">inp</span><span class="p">)</span>
-        <span class="p">(</span><span class="n">_</span><span class="p">,</span> <span class="n">inp</span><span class="p">)</span> <span class="o">=</span> <span class="n">p2</span><span class="p">(</span><span class="n">inp</span><span class="p">)</span>
-        <span class="k">return</span> <span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">inp</span><span class="p">)</span>
-    <span class="k">return</span> <span class="n">closed_byed</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>def closed_by(p1: Parser[T], p2: Parser[U]) -&gt; Parser[T]:
+    def closed_byed(inp: str) -&gt; tuple[T, str]:
+        (x, inp) = p1(inp)
+        (_, inp) = p2(inp)
+        return (x, inp)
+    return closed_byed
 </pre></div>
 </div>
 </div>
@@ -997,15 +1055,14 @@ got: #&amp;*(&amp;@
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[65]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="k">def</span> <span class="nf">value</span><span class="p">(</span><span class="n">x</span><span class="p">:</span> <span class="n">T</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Parser</span><span class="p">[</span><span class="n">T</span><span class="p">]:</span>
-    <span class="k">def</span> <span class="nf">valued</span><span class="p">(</span><span class="n">inp</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">T</span><span class="p">,</span> <span class="nb">str</span><span class="p">]:</span>
-        <span class="k">return</span> <span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">inp</span><span class="p">)</span>
-    <span class="k">return</span> <span class="n">valued</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>def value(x: T) -&gt; Parser[T]:
+    def valued(inp: str) -&gt; tuple[T, str]:
+        return (x, inp)
+    return valued
 
-<span class="k">def</span> <span class="nf">closed_by</span><span class="p">(</span><span class="n">p1</span><span class="p">:</span> <span class="n">Parser</span><span class="p">[</span><span class="n">T</span><span class="p">],</span> <span class="n">p2</span><span class="p">:</span> <span class="n">Parser</span><span class="p">[</span><span class="n">U</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">Parser</span><span class="p">[</span><span class="n">T</span><span class="p">]:</span>
-    <span class="c1"># return bind(p1, lambda x: bind(p2, lambda _: value(x)))</span>
-    <span class="k">return</span> <span class="n">p1</span> <span class="o">&gt;&gt;</span> <span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">p2</span> <span class="o">&gt;&gt;</span> <span class="p">(</span><span class="k">lambda</span> <span class="n">_</span><span class="p">:</span> <span class="n">value</span><span class="p">(</span><span class="n">x</span><span class="p">)))</span>
+def closed_by(p1: Parser[T], p2: Parser[U]) -&gt; Parser[T]:
+    # return bind(p1, lambda x: bind(p2, lambda _: value(x)))
+    return p1 &gt;&gt; (lambda x: p2 &gt;&gt; (lambda _: value(x)))
 </pre></div>
 </div>
 </div>
@@ -1013,47 +1070,45 @@ got: #&amp;*(&amp;@
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="k">def</span> <span class="nf">sequence_recur</span><span class="p">(</span><span class="n">p</span><span class="p">:</span> <span class="n">Parser</span><span class="p">[</span><span class="n">Any</span><span class="p">],</span> <span class="o">*</span><span class="n">ps</span><span class="p">:</span> <span class="n">Parser</span><span class="p">[</span><span class="n">Any</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">Parser</span><span class="p">[</span><span class="n">Any</span><span class="p">]:</span>
-    <span class="k">def</span> <span class="nf">sequenced</span><span class="p">(</span><span class="n">inp</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">Any</span><span class="p">,</span> <span class="nb">str</span><span class="p">]:</span>
-        <span class="p">(</span><span class="n">_</span><span class="p">,</span> <span class="n">inp</span><span class="p">)</span> <span class="o">=</span> <span class="n">p</span><span class="p">(</span><span class="n">inp</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">sequence_recur</span><span class="p">(</span><span class="o">*</span><span class="n">ps</span><span class="p">)(</span><span class="n">inp</span><span class="p">)</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>def sequence_recur(p: Parser[Any], *ps: Parser[Any]) -&gt; Parser[Any]:
+    def sequenced(inp: str) -&gt; tuple[Any, str]:
+        (_, inp) = p(inp)
+        return sequence_recur(*ps)(inp)
 
-    <span class="k">if</span> <span class="n">ps</span><span class="p">:</span>
-        <span class="k">return</span> <span class="n">sequenced</span>
-    <span class="k">else</span><span class="p">:</span>
-        <span class="k">return</span> <span class="n">p</span>
-
-
-<span class="k">def</span> <span class="nf">bind</span><span class="p">(</span><span class="n">p</span><span class="p">:</span> <span class="n">Parser</span><span class="p">[</span><span class="n">T</span><span class="p">],</span> <span class="n">f</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[(</span><span class="n">T</span><span class="p">,),</span> <span class="n">Parser</span><span class="p">[</span><span class="n">U</span><span class="p">]])</span> <span class="o">-&gt;</span> <span class="n">Parser</span><span class="p">[</span><span class="n">U</span><span class="p">]:</span>
-    <span class="k">def</span> <span class="nf">bound</span><span class="p">(</span><span class="n">inp</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">U</span><span class="p">,</span> <span class="nb">str</span><span class="p">]</span>
-        <span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">inp</span><span class="p">)</span> <span class="o">=</span> <span class="n">p</span><span class="p">(</span><span class="n">inp</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">f</span><span class="p">(</span><span class="n">x</span><span class="p">)(</span><span class="n">inp</span><span class="p">)</span>
-    <span class="k">return</span> <span class="n">bound</span>
+    if ps:
+        return sequenced
+    else:
+        return p
 
 
-<span class="k">def</span> <span class="nf">sequence_bind</span><span class="p">(</span><span class="n">p</span><span class="p">:</span> <span class="n">Parser</span><span class="p">[</span><span class="n">Any</span><span class="p">],</span> <span class="o">*</span><span class="n">ps</span><span class="p">:</span> <span class="n">Parser</span><span class="p">[</span><span class="n">Any</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">Parser</span><span class="p">[</span><span class="n">Any</span><span class="p">]:</span>
-    <span class="k">if</span> <span class="n">ps</span><span class="p">:</span>
-        <span class="k">return</span> <span class="n">bind</span><span class="p">(</span><span class="n">p</span><span class="p">,</span> <span class="k">lambda</span> <span class="n">_</span><span class="p">:</span> <span class="n">sequence_bind</span><span class="p">(</span><span class="o">*</span><span class="n">ps</span><span class="p">))</span>
-    <span class="k">else</span>
-        <span class="k">return</span> <span class="n">p</span>
+def bind(p: Parser[T], f: Callable[(T,), Parser[U]]) -&gt; Parser[U]:
+    def bound(inp: str) -&gt; tuple[U, str]
+        (x, inp) = p(inp)
+        return f(x)(inp)
+    return bound
+
+
+def sequence_bind(p: Parser[Any], *ps: Parser[Any]) -&gt; Parser[Any]:
+    if ps:
+        return bind(p, lambda _: sequence_bind(*ps))
+    else
+        return p
 </pre></div>
 </div>
 </div>
-</div>
-<div class="section" id="Trampolines">
-<h2>Trampolines<a class="headerlink" href="#Trampolines" title="Permalink to this headline">¶</a></h2>
+</section>
+<section id="Trampolines">
+<h2>Trampolines<a class="headerlink" href="#Trampolines" title="Permalink to this heading"></a></h2>
 <p>Trampolines can be a bit tricky to understand, so we first explain them using the example of a <code class="docutils literal notranslate"><span class="pre">factorial</span></code> function. The factorial of <span class="math notranslate nohighlight">\(n\)</span>, noted <span class="math notranslate nohighlight">\(n! := n (n - 1)!\)</span>, also <span class="math notranslate nohighlight">\(0! := 1\)</span>.</p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[46]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="k">def</span> <span class="nf">factorial</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
-    <span class="k">if</span> <span class="n">n</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
-        <span class="k">return</span> <span class="mi">1</span>
-    <span class="k">else</span><span class="p">:</span>
-        <span class="k">return</span> <span class="n">n</span> <span class="o">*</span> <span class="n">factorial</span><span class="p">(</span><span class="n">n</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>def factorial(n):
+    if n == 0:
+        return 1
+    else:
+        return n * factorial(n - 1)
 </pre></div>
 </div>
 </div>
@@ -1061,8 +1116,7 @@ got: #&amp;*(&amp;@
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[47]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="n">factorial</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>factorial(10)
 </pre></div>
 </div>
 </div>
@@ -1079,8 +1133,7 @@ got: #&amp;*(&amp;@
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[48]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="n">factorial</span><span class="p">(</span><span class="mi">10000</span><span class="p">)</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>factorial(10000)
 </pre></div>
 </div>
 </div>
@@ -1097,12 +1150,11 @@ RecursionError: maximum recursion depth exceeded in comparison
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[49]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="k">def</span> <span class="nf">factorial</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">acc</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
-    <span class="k">if</span> <span class="n">n</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
-        <span class="k">return</span> <span class="n">acc</span>
-    <span class="k">else</span><span class="p">:</span>
-        <span class="k">return</span> <span class="n">factorial</span><span class="p">(</span><span class="n">n</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="n">acc</span><span class="o">*</span><span class="n">n</span><span class="p">)</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>def factorial(n, acc=1):
+    if n == 0:
+        return acc
+    else:
+        return factorial(n-1, acc*n)
 </pre></div>
 </div>
 </div>
@@ -1113,25 +1165,24 @@ RecursionError: maximum recursion depth exceeded in comparison
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[50]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="k">class</span> <span class="nc">Trampoline</span><span class="p">:</span>
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">func</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">func</span> <span class="o">=</span> <span class="n">func</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">args</span> <span class="o">=</span> <span class="n">args</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">kwargs</span> <span class="o">=</span> <span class="n">kwargs</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>class Trampoline:
+    def __init__(self, func, *args, **kwargs):
+        self.func = func
+        self.args = args
+        self.kwargs = kwargs
 
-    <span class="k">def</span> <span class="nf">compute</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="n">cont</span> <span class="o">=</span> <span class="bp">self</span>
-        <span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
-            <span class="n">cont</span> <span class="o">=</span> <span class="n">cont</span><span class="o">.</span><span class="n">func</span><span class="p">(</span><span class="o">*</span><span class="n">cont</span><span class="o">.</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">cont</span><span class="o">.</span><span class="n">kwargs</span><span class="p">)</span>
-            <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">cont</span><span class="p">,</span> <span class="n">Trampoline</span><span class="p">):</span>
-                <span class="k">return</span> <span class="n">cont</span>
+    def compute(self):
+        cont = self
+        while True:
+            cont = cont.func(*cont.args, **cont.kwargs)
+            if not isinstance(cont, Trampoline):
+                return cont
 
-<span class="k">def</span> <span class="nf">factorial</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">acc</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
-    <span class="k">if</span> <span class="n">n</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
-        <span class="k">return</span> <span class="n">acc</span>
-    <span class="k">else</span><span class="p">:</span>
-        <span class="k">return</span> <span class="n">Trampoline</span><span class="p">(</span><span class="n">factorial</span><span class="p">,</span> <span class="n">n</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="n">acc</span><span class="o">*</span><span class="n">n</span><span class="p">)</span>
+def factorial(n, acc=1):
+    if n == 0:
+        return acc
+    else:
+        return Trampoline(factorial, n-1, acc*n)
 </pre></div>
 </div>
 </div>
@@ -1139,9 +1190,8 @@ RecursionError: maximum recursion depth exceeded in comparison
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[51]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="kn">from</span> <span class="nn">math</span> <span class="kn">import</span> <span class="n">log10</span>
-<span class="n">log10</span><span class="p">(</span><span class="n">factorial</span><span class="p">(</span><span class="mi">10000</span><span class="p">)</span><span class="o">.</span><span class="n">compute</span><span class="p">())</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>from math import log10
+log10(factorial(10000).compute())
 </pre></div>
 </div>
 </div>
@@ -1159,11 +1209,10 @@ RecursionError: maximum recursion depth exceeded in comparison
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[52]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="kn">from</span> <span class="nn">functools</span> <span class="kn">import</span> <span class="p">(</span><span class="n">wraps</span><span class="p">,</span> <span class="n">partial</span><span class="p">)</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>from functools import (wraps, partial)
 
-<span class="k">def</span> <span class="nf">trampoline</span><span class="p">(</span><span class="n">f</span><span class="p">):</span>
-    <span class="k">return</span> <span class="n">wraps</span><span class="p">(</span><span class="n">f</span><span class="p">)(</span><span class="n">partial</span><span class="p">(</span><span class="n">Trampoline</span><span class="p">,</span> <span class="n">f</span><span class="p">))</span>
+def trampoline(f):
+    return wraps(f)(partial(Trampoline, f))
 </pre></div>
 </div>
 </div>
@@ -1172,13 +1221,12 @@ RecursionError: maximum recursion depth exceeded in comparison
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[53]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="nd">@trampoline</span>
-<span class="k">def</span> <span class="nf">factorial</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">acc</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
-    <span class="k">if</span> <span class="n">n</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
-        <span class="k">return</span> <span class="n">acc</span>
-    <span class="k">else</span><span class="p">:</span>
-        <span class="k">return</span> <span class="n">factorial</span><span class="p">(</span><span class="n">n</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="n">acc</span><span class="o">*</span><span class="n">n</span><span class="p">)</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>@trampoline
+def factorial(n, acc=1):
+    if n == 0:
+        return acc
+    else:
+        return factorial(n-1, acc*n)
 </pre></div>
 </div>
 </div>
@@ -1186,8 +1234,7 @@ RecursionError: maximum recursion depth exceeded in comparison
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[54]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="n">log10</span><span class="p">(</span><span class="n">factorial</span><span class="p">(</span><span class="mi">10000</span><span class="p">)</span><span class="o">.</span><span class="n">compute</span><span class="p">())</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>log10(factorial(10000).compute())
 </pre></div>
 </div>
 </div>
@@ -1200,51 +1247,49 @@ RecursionError: maximum recursion depth exceeded in comparison
 35659.45427452078
 </pre></div></div>
 </div>
-</div>
-<div class="section" id="The-full-parser">
-<h2>The full parser<a class="headerlink" href="#The-full-parser" title="Permalink to this headline">¶</a></h2>
+</section>
+<section id="The-full-parser">
+<h2>The full parser<a class="headerlink" href="#The-full-parser" title="Permalink to this heading"></a></h2>
 <p>These parsers had us chain several <code class="docutils literal notranslate"><span class="pre">(x,</span> <span class="pre">inp)</span> <span class="pre">=</span> <span class="pre">some_parser(inp)</span></code> together. It would be cool if we had a better syntax to write that. To do this however, we need to wrap our parser functions in a class. Then the question is also: how do we propagate the return value <code class="docutils literal notranslate"><span class="pre">x</span></code> through this chain? In Haskell this problem is solved with monads. We can try to do the same in Python, especially now that we have trampolines.</p>
 <p>There will be two more additions to the scheme outlined above: the <strong>cursor</strong> and the <strong>auxiliary state</strong> object.</p>
-<div class="section" id="Cursor">
-<h3>Cursor<a class="headerlink" href="#Cursor" title="Permalink to this headline">¶</a></h3>
+<section id="Cursor">
+<h3>Cursor<a class="headerlink" href="#Cursor" title="Permalink to this heading"></a></h3>
 <p>When parsing larger files it can be inefficient to parse a text character by character. Often, we need to pass a certain amount of text to a secondary function that then converts the string into a value for us. Instead of working directly with strings we can use a <code class="docutils literal notranslate"><span class="pre">Cursor</span></code> class.</p>
 <p>In normal parsing mode, we need only to know the position of the cursor within the text; however, on many occasion it is useful to have a cursor object that spans a selection of text being parsed.</p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[55]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="nd">@dataclass</span>
-<span class="k">class</span> <span class="nc">Cursor</span><span class="p">:</span>
-    <span class="n">data</span><span class="p">:</span> <span class="nb">bytes</span>
-    <span class="n">begin</span><span class="p">:</span> <span class="nb">int</span>
-    <span class="n">end</span><span class="p">:</span> <span class="nb">int</span>
-    <span class="n">encoding</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;utf-8&quot;</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>@dataclass
+class Cursor:
+    data: bytes
+    begin: int
+    end: int
+    encoding: str = &quot;utf-8&quot;
 
-    <span class="k">def</span> <span class="fm">__len__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Length of selection.&quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">end</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">begin</span>
+    def __len__(self):
+        &quot;&quot;&quot;Length of selection.&quot;&quot;&quot;
+        return self.end - self.begin
 
-    <span class="k">def</span> <span class="fm">__bool__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Returns `True` if there is more input to parse, `False` otherwise.&quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">end</span> <span class="o">&lt;</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">)</span>
+    def __bool__(self):
+        &quot;&quot;&quot;Returns `True` if there is more input to parse, `False` otherwise.&quot;&quot;&quot;
+        return self.end &lt; len(self.data)
 
-    <span class="o">...</span>
+    ...
 </pre></div>
 </div>
 </div>
 <p>For the full definition, see the corresponding API documentation.</p>
-</div>
-<div class="section" id="Auxiliary-state">
-<h3>Auxiliary state<a class="headerlink" href="#Auxiliary-state" title="Permalink to this headline">¶</a></h3>
+</section>
+<section id="Auxiliary-state">
+<h3>Auxiliary state<a class="headerlink" href="#Auxiliary-state" title="Permalink to this heading"></a></h3>
 <p>The same way we pass the cursor state through all the parser calls, we can track auxiliary state. The complete function signature of a parser then looks like this:</p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[56]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="k">def</span> <span class="nf">some_parser</span><span class="p">(</span><span class="n">cursor</span><span class="p">:</span> <span class="n">Cursor</span><span class="p">,</span> <span class="n">aux</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">T</span><span class="p">,</span> <span class="n">Cursor</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
-    <span class="k">pass</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>def some_parser(cursor: Cursor, aux: Any) -&gt; tuple[T, Cursor, Any]:
+    pass
 </pre></div>
 </div>
 </div>
@@ -1253,10 +1298,9 @@ RecursionError: maximum recursion depth exceeded in comparison
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[57]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="kn">from</span> <span class="nn">byteparsing</span> <span class="kn">import</span> <span class="n">sequence</span><span class="p">,</span> <span class="n">push</span><span class="p">,</span> <span class="n">pop</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>from byteparsing import sequence, push, pop
 
-<span class="n">sequence</span><span class="p">(</span><span class="n">push</span><span class="p">(</span><span class="mi">42</span><span class="p">),</span> <span class="n">pop</span><span class="p">())</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="sa">b</span><span class="s2">&quot;&quot;</span><span class="p">)</span>
+sequence(push(42), pop()).parse(b&quot;&quot;)
 </pre></div>
 </div>
 </div>
@@ -1273,14 +1317,13 @@ RecursionError: maximum recursion depth exceeded in comparison
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[58]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="kn">from</span> <span class="nn">byteparsing</span> <span class="kn">import</span> <span class="n">many_char_0</span><span class="p">,</span> <span class="n">flush_decode</span><span class="p">,</span> <span class="n">char</span><span class="p">,</span> <span class="n">ascii_alpha</span><span class="p">,</span> <span class="n">flush</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>from byteparsing import many_char_0, flush_decode, char, ascii_alpha, flush
 
-<span class="n">sequence</span><span class="p">(</span><span class="n">char</span><span class="p">(</span><span class="s2">&quot;(&quot;</span><span class="p">),</span> <span class="n">flush</span><span class="p">(),</span>
-         <span class="n">many_char_0</span><span class="p">(</span><span class="n">ascii_alpha</span><span class="p">),</span>
-         <span class="n">flush_decode</span><span class="p">()</span> <span class="o">&gt;&gt;</span> <span class="n">push</span><span class="p">,</span>
-         <span class="n">char</span><span class="p">(</span><span class="s2">&quot;)&quot;</span><span class="p">),</span>
-         <span class="n">pop</span><span class="p">(</span><span class="nb">str</span><span class="o">.</span><span class="n">upper</span><span class="p">))</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="sa">b</span><span class="s2">&quot;(hello)&quot;</span><span class="p">)</span>
+sequence(char(&quot;(&quot;), flush(),
+         many_char_0(ascii_alpha),
+         flush_decode() &gt;&gt; push,
+         char(&quot;)&quot;),
+         pop(str.upper)).parse(b&quot;(hello)&quot;)
 </pre></div>
 </div>
 </div>
@@ -1293,23 +1336,22 @@ RecursionError: maximum recursion depth exceeded in comparison
 &#39;HELLO&#39;
 </pre></div></div>
 </div>
-</div>
-</div>
-<div class="section" id="Hide-trace-backs">
-<h2>Hide trace backs<a class="headerlink" href="#Hide-trace-backs" title="Permalink to this headline">¶</a></h2>
+</section>
+</section>
+<section id="Hide-trace-backs">
+<h2>Hide trace backs<a class="headerlink" href="#Hide-trace-backs" title="Permalink to this heading"></a></h2>
 <p>For the purpose of this notebook it was better to hide tracebacks on exceptions. Run this cell first, then the rest.</p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[59]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="kn">import</span> <span class="nn">sys</span>
-<span class="n">ipython</span> <span class="o">=</span> <span class="n">get_ipython</span><span class="p">()</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>import sys
+ipython = get_ipython()
 
-<span class="k">def</span> <span class="nf">exception_handler</span><span class="p">(</span><span class="n">exception_type</span><span class="p">,</span> <span class="n">exception</span><span class="p">,</span> <span class="n">traceback</span><span class="p">):</span>
-    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%s</span><span class="s2">: </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">exception_type</span><span class="o">.</span><span class="vm">__name__</span><span class="p">,</span> <span class="n">exception</span><span class="p">),</span> <span class="n">file</span><span class="o">=</span><span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="p">)</span>
+def exception_handler(exception_type, exception, traceback):
+    print(&quot;%s: %s&quot; % (exception_type.__name__, exception), file=sys.stderr)
 
-<span class="n">ipython</span><span class="o">.</span><span class="n">_showtraceback</span> <span class="o">=</span> <span class="n">exception_handler</span>
+ipython._showtraceback = exception_handler
 </pre></div>
 </div>
 </div>
@@ -1317,8 +1359,7 @@ RecursionError: maximum recursion depth exceeded in comparison
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>
 </pre></div>
 </div>
 </div>
@@ -1326,57 +1367,42 @@ RecursionError: maximum recursion depth exceeded in comparison
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>
 </pre></div>
 </div>
 </div>
-</div>
-</div>
+</section>
+</section>
 
 
+           </div>
           </div>
-          
-        </div>
-      </div>
-      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
-        <div class="sphinxsidebarwrapper"><div class="relations">
-<h3>Related Topics</h3>
-<ul>
-  <li><a href="index.html">Documentation overview</a><ul>
-      <li>Previous: <a href="parsers.html" title="previous chapter">Parsers</a></li>
-      <li>Next: <a href="examples.html" title="next chapter">Examples of usage</a></li>
-  </ul></li>
-</ul>
-</div>
-<div id="searchbox" style="display: none" role="search">
-  <h3 id="searchlabel">Quick search</h3>
-    <div class="searchformwrapper">
-    <form class="search" action="search.html" method="get">
-      <input type="text" name="q" aria-labelledby="searchlabel" />
-      <input type="submit" value="Go" />
-    </form>
-    </div>
-</div>
-<script>$('#searchbox').show(0);</script>
-        </div>
-      </div>
-      <div class="clearer"></div>
-    </div>
-    <div class="footer">
-      &copy;2019, Netherlands eScience Center, University of Groningen.
-      
-      |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 3.4.3</a>
-      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
-      
-      |
-      <a href="_sources/functional.ipynb.txt"
-          rel="nofollow">Page source</a>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="parsers.html" class="btn btn-neutral float-left" title="Parsers" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="examples.html" class="btn btn-neutral float-right" title="Examples of usage" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
-    
+  <hr/>
 
-    
-  </body>
+  <div role="contentinfo">
+    <p>&#169; Copyright 2019, Netherlands eScience Center, University of Groningen.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
 </html>

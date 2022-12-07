@@ -32,6 +32,8 @@ bibliography: paper.bib
 byteparsing: a Haskell-flavoured parser for Python -->
 # Summary
 
+In addition to the basic parser architecture, the `byteparsing` package contains a parser for both ASCII and binary OpenFOAM files.
+
 # Statement of need
 
 In research there are many software packages that use non-standard data containers for their input and output. This can be a problem when we need to do post-processing, or when we want to embed such a package in a larger data pipeline. In many cases, these non-standard formats have header information in plain text, while the bulk of the data is saved in binary <!-- TODO: cite a couple of examples -->. For these cases, there are only few accessible options for parsing and manipulating data in Python.
@@ -141,6 +143,9 @@ The boundary between what we consider *primitives* and derived parsers can becom
 
 `char_pred(pred)`
 : Advances the end of the cursor if `pred` succeeds.
+
+`text_end_by(char)`
+: Advances the end of the cursor as until `char` is found.
 
 `push(x)`
 : Push a value on the auxiliary stack.
@@ -353,9 +358,67 @@ parse_bytes(csv, data)
 ```
 
 ### Binary example: PPM files
-To show how we can mix ASCII and binary data, we have an example where we parse Portable PixMap files (PPM). These files have a small ASCII header and the image itself in binary.
+To show how we can mix ASCII and binary data, we have an example where we parse Portable PixMap files (PPM). These files have a small ASCII header and the image itself in binary. The header looks something like this:
 
 ```
+P6   # this marks the file type in the Netpbm family
+640 480
+256
+<<binary rgb values: 3*w*h bytes>>
+```
+
+This example has the following imports:
+
+```python
+import numpy as np
+from dataclasses import dataclass
+from byteparsing import parse_bytes
+from byteparsing.parsers import (
+    text_literal, integer, eol, named_sequence, sequence, construct,
+    tokenize, item, array,  fmap, text_end_by, optional)
+```
+
+The header of the PPM may contain a comment on the first line.
+
+```python
+comment = sequence(text_literal("#"), text_end_by("\n"))
+```
+
+We define a class that should contain all the data in the header.
+
+```python
+@dataclass
+class Header:
+  width: int
+  height: int
+  maxint: int
+```
+
+Then we can construct a parser for this header, like we have seen, using `named_sequence` and `construct`.
+
+```python
+header = named_sequence(
+  _1 = tokenize(text_literal("P6")),
+  _2 = optional(comment),
+  width = tokenize(integer),
+  height = tokenize(integer),
+  maxint = integer,
+  _3 = item) >> construct(Header)
+```
+
+We'll have to pass on the header information to the parser for the binary blob somehow, so we define a function.
+
+```python
+def image_bytes(header: Header):
+    shape = (header.height, header.width, 3)
+    size = header.height * header.width * 3
+    return array(np.uint8, size) >> fmap(lambda a: a.reshape(shape))
+```
+
+Now, the entire parser for a PPM file is one more line.
+
+```python
+ppm_image = header >> image_bytes
 ```
 
 <!-- Footnotes -->

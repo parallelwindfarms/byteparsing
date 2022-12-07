@@ -1,5 +1,5 @@
 ---
-title: 'byteparser: a functional parser for binary and ASCII'
+title: 'byteparser: a functional parser combinator for mixed ASCII/binary data'
 tags:
   - Python
   - parsing
@@ -29,21 +29,23 @@ bibliography: paper.bib
 ---
 
 <!-- TODO: consider this title:
-byteparsing: a Haskell-flavoured parser for Python -->
+byteparsing: a Haskell-flavoured parser for Python 
+  JH: I've changed the current title slightly, but I don't think we should advertise a Haskell origin. -->
 # Summary
+
+<!-- TODO: write summary -->
 
 In addition to the basic parser architecture, the `byteparsing` package contains a parser for both ASCII and binary OpenFOAM files.
 
 # Statement of need
 
-In research there are many software packages that use non-standard data containers for their input and output. This can be a problem when we need to do post-processing, or when we want to embed such a package in a larger data pipeline. In many cases, these non-standard formats have header information in plain text, while the bulk of the data is saved in binary <!-- TODO: cite a couple of examples -->. For these cases, there are only few accessible options for parsing and manipulating data in Python.
+In research there are many software packages that use non-standard data containers for their input and output. This can be a problem when we need to do post-processing, or when we want to embed such a package in a larger data pipeline. In many cases, these non-standard formats have header information in plain text, while the bulk of the data is saved in binary. Chief and motivating example is the OpenFOAM data format. Other more common formats include PLY triangle data or PPM images. For these cases, there are only few accessible options for parsing and manipulating data in Python.
 
 Here are some Python modules for parsing that one could consider:
 
 - `pyparsing` is the _de facto_ standard for text parsing in Python. It seems to have no features for dealing with binary data though.
 - `construct` deals mostly with pure binary data.
-- `Kaitai Struct` <!-- TODO: comment or remove -->
-- `antlr` requires a large time investment to learn.
+- `Kaitai Struct`, `Antlr` both require a large time investment to learn.
 
 The major downside of the remaining binary parser packages in Python we could find is that they focus mostly either on parsing network traffic or on data structures that can be described in a fixed declarative language.
 
@@ -53,7 +55,8 @@ We were thus forced to write our own parser, with this list of requirements:
 - Flexible enough, so this was not a problem-tailored solution.
 - Deals transparently with Python objects that support the buffer protocol (_e.g._: memory mapped file access is trivially supported).
 - Performant enough, considering the use case where we have small ASCII headers and large contiguous blocks of floating point data.
-- And last but not least, compliant with best practices such as automated unit testing and thorough documentation.
+<!-- - And last but not least, bloggy languange -->
+- Compliant with best practices such as automated unit testing and thorough documentation.
 
 # Architecture
 
@@ -61,7 +64,7 @@ We were thus forced to write our own parser, with this list of requirements:
 
 Writing functional parser combinators is a staple of functional languages like Haskell. The paper "Monadic Parsing in Haskell" [@hutton_meijer_1998] gives a complete tutorial on how to write a basic recursive descent parser. Most of what Hutton and Meijer teach carries over nicely to Python, once we take care of a few details. We've replaced some Haskell idioms by features that are considered more 'pythonic'.
 
-We explain the concept of a monadic parser in terms of taking `str` as input for simplicity. Later we will see that we need to make things a bit more complicated.
+We explain the concept of a functional parser combinator in terms of taking `str` as input for simplicity. Later we will see that we need to make things a bit more complicated.
 
 The core idea of functional parsing is that a parser for some object is a function. This function takes in the input string, and (possibly) returns the parsed object together with the rest of the input. In Python typing parlance this could be written as
 
@@ -85,7 +88,7 @@ def chain(p: Parser[T], q: Parser[U]) -> Parser[tuple[T,U]]:
   return chained
 ```
 
-The `bind` operator does a slightly different thing. It takes the output of one parser and then passes it to a function that then creates the next parser. This way we can chain together any two parsers and forward the collected information as we like. The problem is that this idiom from Haskell (also known as a Monad), doesn't translate too well to Python. We can still define the `bind` function:
+The `bind` operator does a slightly different thing. It takes the output of one parser and then passes it to a function that then creates the next parser. This way we can chain together any two parsers and forward the collected information as we like. The problem is that this idiom from Haskell (also known as a monad), doesn't translate too well to Python. We can still define the `bind` function:
 
 ```python
 def bind(p: Parser[T], f: Callable[[T], Parser[U]]) -> Parser[U]
@@ -284,11 +287,8 @@ email = named_sequence(
 Now we are ready to parse:
 
 ```python
-parsed = parse_bytes(email, b'p.rodriguez-sanchez@esciencecenter.nl')
-
-print(parsed)
-
-> {'user': b'p.rodriguez-sanchez', 'host': b'esciencecenter.nl'}
+parse_bytes(email, b'p.rodriguez-sanchez@esciencecenter.nl')
+# returns {'user': b'p.rodriguez-sanchez', 'host': b'esciencecenter.nl'}
 ```
 
 Notice that the parser created and populated a dictionary for us.
@@ -296,71 +296,28 @@ Notice that the parser created and populated a dictionary for us.
 ### Parsing a list of e-mail addresses
 
 We can use parser composition to easily reuse what we learned in the previous section and apply it to a list of emails.
-Imagine the list of emails is stored as:
+Imagine the list of emails is stored as a newline-separated list:
 
 ```python
 data = b"j.hidding@esciencecenter.nl\np.rodriguez-sanchez@esciencencenter.nl"
 ```
 
-We'll want to identify and end-of-line character.
-Keep in mind that they may differ per OS:
+We'll want to identify and end-of-line character. Keep in mind that they may differ per OS:
 
 ```python
-eol = choice(text_literal("\n"), text_literal("\n\r"))
+eol = choice(text_literal("\n\r"), text_literal("\n"))
 ```
 
-Our parser is now simply generated by:
+Our parser is now generated by:
 
 ```python
 list_of_emails = sep_by(email, eol)
 ```
 
-Let's try it:
-
-```python
-parsed = parse_bytes(list_of_emails, data)
-
-parsed
-> [{'user': b'j.hidding', 'host': b'esciencecenter.nl'},
-   {'user': b'p.rodriguez-sanchez', 'host': b'esciencencenter.nl'}]
-```
-
-<!-- 
-### Parsing a csv
-
-Let's parse now something as:
-
-```python
-data = b"1;-2;3;-4\n5;-6.2;7;-8.1\n9;-10;11;-12"
-```
-
-We can first create a parser for a single line.
-
-```python
-csvline = sequence(
-            sep_by(scientific_number, text_literal(";")) >> push, 
-            many(eol), # Just check the eol exists. Don't store it
-            pop() # Return pushed content
-          )
-```
-
-And then combine multiple lines using the `some` combinator:
-
-```python
-csv = some(csvline)
-```
-
-Let's try it:
-
-```python
-parse_bytes(csv, data)
-
-> [[1, -2, 3, -4], [5, -6.2, 7, -8.1], [9, -10, 11, -12]]
-```
--->
+This shows how we can slowly compose small and testable parsers to form larger more complicated ones. This composability and testability of each step is what make parser combinators such a powerful tool.
 
 ### Binary example: PPM files
-To show how we can mix ASCII and binary data, we have an example where we parse Portable PixMap files (PPM). These files have a small ASCII header and the image itself in binary. The header looks something like this:
+As a final example, we show how we can mix ASCII and binary data. Here we parse Portable PixMap files (PPM). These files have a small ASCII header and the image itself in binary. The header looks something like this:
 
 ```
 P6   # this marks the file type in the Netpbm family
@@ -422,6 +379,8 @@ Now, the entire parser for a PPM file is one more line.
 ```python
 ppm_image = header >> image_bytes
 ```
+
+<!-- TODO: add concluding remarks -->
 
 <!-- Footnotes -->
 [^1]: Notice that we ignore the `"@"` by assigning it to the field `"_1"`.

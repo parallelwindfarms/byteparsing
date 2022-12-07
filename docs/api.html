@@ -1,44 +1,187 @@
-
 <!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
-<html>
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>API Documentation &#8212; byteparsing 0.1.0 documentation</title>
-    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
-    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
-    <link rel="stylesheet" href="_static/theme_overrides.css" type="text/css" />
-    <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
-    <script src="_static/jquery.js"></script>
-    <script src="_static/underscore.js"></script>
-    <script src="_static/doctools.js"></script>
-    <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
-    <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
-    <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true, "ignoreClass": "document", "processClass": "math|output_area"}})</script>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>API Documentation &mdash; byteparsing 0.1.2 documentation</title>
+      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/sphinx_highlight.js"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="prev" title="Architecture" href="architecture.html" />
-   
-  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
-  
-  
-  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+    <link rel="prev" title="Architecture" href="architecture.html" /> 
+</head>
 
-  </head><body>
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="index.html" class="icon icon-home"> byteparsing
+          </a>
+              <div class="version">
+                0.1.2
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="index.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="install.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cursors.html">Cursors</a></li>
+<li class="toctree-l1"><a class="reference internal" href="parsers.html">Parsers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="functional.html">Introduction to Functional Parsing in Python</a></li>
+<li class="toctree-l1"><a class="reference internal" href="examples.html">Examples of usage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ppm.html">Parsing PPM files</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ply.html">Advanced example: parsing PLY files</a></li>
+<li class="toctree-l1"><a class="reference internal" href="architecture.html">Architecture</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">API Documentation</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#cursors">Cursors</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#byteparsing.cursor.Buffer"><code class="docutils literal notranslate"><span class="pre">Buffer</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#byteparsing.cursor.Cursor"><code class="docutils literal notranslate"><span class="pre">Cursor</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#byteparsing.cursor.Cursor.at"><code class="docutils literal notranslate"><span class="pre">Cursor.at</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#byteparsing.cursor.Cursor.content"><code class="docutils literal notranslate"><span class="pre">Cursor.content</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#byteparsing.cursor.Cursor.content_str"><code class="docutils literal notranslate"><span class="pre">Cursor.content_str</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#byteparsing.cursor.Cursor.find"><code class="docutils literal notranslate"><span class="pre">Cursor.find()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#byteparsing.cursor.Cursor.flush"><code class="docutils literal notranslate"><span class="pre">Cursor.flush()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#byteparsing.cursor.Cursor.from_bytes"><code class="docutils literal notranslate"><span class="pre">Cursor.from_bytes()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#byteparsing.cursor.Cursor.increment"><code class="docutils literal notranslate"><span class="pre">Cursor.increment()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#byteparsing.cursor.Cursor.look_ahead"><code class="docutils literal notranslate"><span class="pre">Cursor.look_ahead()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#exceptions">Exceptions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#byteparsing.failure.EndOfInput"><code class="docutils literal notranslate"><span class="pre">EndOfInput</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#byteparsing.failure.Expected"><code class="docutils literal notranslate"><span class="pre">Expected</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#byteparsing.failure.Failure"><code class="docutils literal notranslate"><span class="pre">Failure</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#byteparsing.failure.MultipleFailures"><code class="docutils literal notranslate"><span class="pre">MultipleFailures</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#parsers">Parsers</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#tokenize"><cite>tokenize</cite></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#char-variants-of-many-and-some"><cite>char</cite> variants of <cite>many</cite> and <cite>some</cite></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#auxiliary-stack">Auxiliary stack</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#config-variable">Config variable</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id1">Parsers</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#byteparsing.parsers.array"><code class="docutils literal notranslate"><span class="pre">array()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#byteparsing.parsers.binary_value"><code class="docutils literal notranslate"><span class="pre">binary_value()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#byteparsing.parsers.byte_none_of"><code class="docutils literal notranslate"><span class="pre">byte_none_of()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#byteparsing.parsers.char"><code class="docutils literal notranslate"><span class="pre">char()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#byteparsing.parsers.char_pred"><code class="docutils literal notranslate"><span class="pre">char_pred()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#byteparsing.parsers.check_size"><code class="docutils literal notranslate"><span class="pre">check_size()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#byteparsing.parsers.choice"><code class="docutils literal notranslate"><span class="pre">choice()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#byteparsing.parsers.construct"><code class="docutils literal notranslate"><span class="pre">construct()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#byteparsing.parsers.fail"><code class="docutils literal notranslate"><span class="pre">fail()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#byteparsing.parsers.flush"><code class="docutils literal notranslate"><span class="pre">flush()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#byteparsing.parsers.flush_decode"><code class="docutils literal notranslate"><span class="pre">flush_decode()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#byteparsing.parsers.fmap"><code class="docutils literal notranslate"><span class="pre">fmap()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#byteparsing.parsers.get_aux"><code class="docutils literal notranslate"><span class="pre">get_aux()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#byteparsing.parsers.ignore"><code class="docutils literal notranslate"><span class="pre">ignore()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#byteparsing.parsers.literal"><code class="docutils literal notranslate"><span class="pre">literal()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#byteparsing.parsers.many"><code class="docutils literal notranslate"><span class="pre">many()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#byteparsing.parsers.many_char"><code class="docutils literal notranslate"><span class="pre">many_char()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#byteparsing.parsers.named_sequence"><code class="docutils literal notranslate"><span class="pre">named_sequence()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#byteparsing.parsers.optional"><code class="docutils literal notranslate"><span class="pre">optional()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#byteparsing.parsers.parse_bytes"><code class="docutils literal notranslate"><span class="pre">parse_bytes()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#byteparsing.parsers.pop"><code class="docutils literal notranslate"><span class="pre">pop()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#byteparsing.parsers.push"><code class="docutils literal notranslate"><span class="pre">push()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#byteparsing.parsers.quoted_string"><code class="docutils literal notranslate"><span class="pre">quoted_string()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#byteparsing.parsers.sep_by"><code class="docutils literal notranslate"><span class="pre">sep_by()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#byteparsing.parsers.sequence"><code class="docutils literal notranslate"><span class="pre">sequence()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#byteparsing.parsers.set_aux"><code class="docutils literal notranslate"><span class="pre">set_aux()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#byteparsing.parsers.some"><code class="docutils literal notranslate"><span class="pre">some()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#byteparsing.parsers.some_char"><code class="docutils literal notranslate"><span class="pre">some_char()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#byteparsing.parsers.some_char_0"><code class="docutils literal notranslate"><span class="pre">some_char_0()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#byteparsing.parsers.text_literal"><code class="docutils literal notranslate"><span class="pre">text_literal()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#byteparsing.parsers.text_one_of"><code class="docutils literal notranslate"><span class="pre">text_one_of()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#byteparsing.parsers.tokenize"><code class="docutils literal notranslate"><span class="pre">tokenize()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#byteparsing.parsers.using_config"><code class="docutils literal notranslate"><span class="pre">using_config()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#byteparsing.parsers.value"><code class="docutils literal notranslate"><span class="pre">value()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#byteparsing.parsers.with_config"><code class="docutils literal notranslate"><span class="pre">with_config()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#trampoline">Trampoline</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#byteparsing.trampoline.Call"><code class="docutils literal notranslate"><span class="pre">Call</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#byteparsing.trampoline.Parser"><code class="docutils literal notranslate"><span class="pre">Parser</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#byteparsing.trampoline.Trampoline"><code class="docutils literal notranslate"><span class="pre">Trampoline</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#byteparsing.trampoline.Trampoline.invoke"><code class="docutils literal notranslate"><span class="pre">Trampoline.invoke()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#byteparsing.trampoline.bind"><code class="docutils literal notranslate"><span class="pre">bind()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#byteparsing.trampoline.parser"><code class="docutils literal notranslate"><span class="pre">parser()</span></code></a></li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">byteparsing</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home"></a></li>
+      <li class="breadcrumb-item active">API Documentation</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/api.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
   
+<style>
+/* CSS overrides for sphinx_rtd_theme */
 
-    <div class="document">
-      <div class="documentwrapper">
-        <div class="bodywrapper">
-          
+/* 24px margin */
+.nbinput.nblast.container,
+.nboutput.nblast.container {
+    margin-bottom: 19px;  /* padding has already 5px */
+}
 
-          <div class="body" role="main">
-            
-  <div class="section" id="module-byteparsing.cursor">
-<span id="api-documentation"></span><h1>API Documentation<a class="headerlink" href="#module-byteparsing.cursor" title="Permalink to this headline">¶</a></h1>
-<div class="section" id="cursors">
-<h2>Cursors<a class="headerlink" href="#cursors" title="Permalink to this headline">¶</a></h2>
+/* ... except between code cells! */
+.nblast.container + .nbinput.container {
+    margin-top: -19px;
+}
+
+.admonition > p:before {
+    margin-right: 4px;  /* make room for the exclamation icon */
+}
+
+/* Fix math alignment, see https://github.com/rtfd/sphinx_rtd_theme/pull/686 */
+.math {
+    text-align: unset;
+}
+</style>
+<section id="module-byteparsing.cursor">
+<span id="api-documentation"></span><h1>API Documentation<a class="headerlink" href="#module-byteparsing.cursor" title="Permalink to this heading"></a></h1>
+<section id="cursors">
+<h2>Cursors<a class="headerlink" href="#cursors" title="Permalink to this heading"></a></h2>
 <p>A <cite>Cursor</cite> object contains a reference to the buffer (<cite>bytes</cite>, <cite>bytearray</cite> or
 <cite>mmap</cite>), together with a <cite>begin</cite> and <cite>end</cite> pointer. While parsing, usually only
 the <cite>end</cite> pointer is updated. Certain parsers first lex the input, i.e. find
@@ -52,114 +195,114 @@ the part that we think represents a floating-point number can be passed to the
 <cite>float</cite> function. This saves us the bother of coding floating point conversion
 manually.</p>
 <dl class="py data">
-<dt id="byteparsing.cursor.Buffer">
-<code class="sig-prename descclassname">byteparsing.cursor.</code><code class="sig-name descname">Buffer</code><a class="headerlink" href="#byteparsing.cursor.Buffer" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="byteparsing.cursor.Buffer">
+<span class="sig-prename descclassname"><span class="pre">byteparsing.cursor.</span></span><span class="sig-name descname"><span class="pre">Buffer</span></span><a class="headerlink" href="#byteparsing.cursor.Buffer" title="Permalink to this definition"></a></dt>
 <dd><p>Type for the buffer. One of: <cite>bytes</cite>, <cite>bytearray</cite>, <cite>mmap.mmap</cite>.</p>
 </dd></dl>
 
+</section>
 <dl class="py class">
-<dt id="byteparsing.cursor.Cursor">
-<em class="property">class </em><code class="sig-prename descclassname">byteparsing.cursor.</code><code class="sig-name descname">Cursor</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">data</span><span class="p">:</span> <span class="n">Union<span class="p">[</span>bytes<span class="p">, </span>bytearray<span class="p">, </span>mmap.mmap<span class="p">]</span></span></em>, <em class="sig-param"><span class="n">begin</span><span class="p">:</span> <span class="n">int</span> <span class="o">=</span> <span class="default_value">0</span></em>, <em class="sig-param"><span class="n">end</span><span class="p">:</span> <span class="n">int</span> <span class="o">=</span> <span class="default_value">0</span></em>, <em class="sig-param"><span class="n">encoding</span><span class="p">:</span> <span class="n">str</span> <span class="o">=</span> <span class="default_value">'utf-8'</span></em><span class="sig-paren">)</span><a class="headerlink" href="#byteparsing.cursor.Cursor" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="byteparsing.cursor.Cursor">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">byteparsing.cursor.</span></span><span class="sig-name descname"><span class="pre">Cursor</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">bytes</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">bytearray</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">mmap</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">begin</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">end</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">encoding</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'utf-8'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#byteparsing.cursor.Cursor" title="Permalink to this definition"></a></dt>
 <dd><p>Encapsulates a byte string and two offsets to reference the input
 data.</p>
-<dl class="py method">
-<dt id="byteparsing.cursor.Cursor.at">
-<em class="property">property </em><code class="sig-name descname">at</code><a class="headerlink" href="#byteparsing.cursor.Cursor.at" title="Permalink to this definition">¶</a></dt>
+<dl class="py property">
+<dt class="sig sig-object py" id="byteparsing.cursor.Cursor.at">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">at</span></span><a class="headerlink" href="#byteparsing.cursor.Cursor.at" title="Permalink to this definition"></a></dt>
 <dd><p>Next byte (at end location).</p>
 </dd></dl>
 
-<dl class="py method">
-<dt id="byteparsing.cursor.Cursor.content">
-<em class="property">property </em><code class="sig-name descname">content</code><a class="headerlink" href="#byteparsing.cursor.Cursor.content" title="Permalink to this definition">¶</a></dt>
+<dl class="py property">
+<dt class="sig sig-object py" id="byteparsing.cursor.Cursor.content">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">content</span></span><a class="headerlink" href="#byteparsing.cursor.Cursor.content" title="Permalink to this definition"></a></dt>
 <dd><p>Byte content of current selection.</p>
 </dd></dl>
 
-<dl class="py method">
-<dt id="byteparsing.cursor.Cursor.content_str">
-<em class="property">property </em><code class="sig-name descname">content_str</code><a class="headerlink" href="#byteparsing.cursor.Cursor.content_str" title="Permalink to this definition">¶</a></dt>
+<dl class="py property">
+<dt class="sig sig-object py" id="byteparsing.cursor.Cursor.content_str">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">content_str</span></span><a class="headerlink" href="#byteparsing.cursor.Cursor.content_str" title="Permalink to this definition"></a></dt>
 <dd><p>Decoded string content of current selection.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt id="byteparsing.cursor.Cursor.find">
-<code class="sig-name descname">find</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">x</span><span class="p">:</span> <span class="n">bytes</span></em><span class="sig-paren">)</span><a class="headerlink" href="#byteparsing.cursor.Cursor.find" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="byteparsing.cursor.Cursor.find">
+<span class="sig-name descname"><span class="pre">find</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bytes</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#byteparsing.cursor.Cursor.find" title="Permalink to this definition"></a></dt>
 <dd><p>Get a cursor where the <cite>end</cite> position is shifted to the next
 location where <cite>x</cite> is found.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt id="byteparsing.cursor.Cursor.flush">
-<code class="sig-name descname">flush</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#byteparsing.cursor.Cursor.flush" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="byteparsing.cursor.Cursor.flush">
+<span class="sig-name descname"><span class="pre">flush</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#byteparsing.cursor.Cursor.flush" title="Permalink to this definition"></a></dt>
 <dd><p>Creates new cursor where begin is flushed to end location.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt id="byteparsing.cursor.Cursor.from_bytes">
-<em class="property">static </em><code class="sig-name descname">from_bytes</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">data</span></em><span class="sig-paren">)</span><a class="headerlink" href="#byteparsing.cursor.Cursor.from_bytes" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="byteparsing.cursor.Cursor.from_bytes">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">from_bytes</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#byteparsing.cursor.Cursor.from_bytes" title="Permalink to this definition"></a></dt>
 <dd><p>Constructs a <cite>Cursor</cite> object from a byte string. Initialises <cite>begin</cite>
 and <cite>end</cite> fields at 0.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt id="byteparsing.cursor.Cursor.increment">
-<code class="sig-name descname">increment</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">n</span><span class="p">:</span> <span class="n">int</span> <span class="o">=</span> <span class="default_value">1</span></em><span class="sig-paren">)</span><a class="headerlink" href="#byteparsing.cursor.Cursor.increment" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="byteparsing.cursor.Cursor.increment">
+<span class="sig-name descname"><span class="pre">increment</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#byteparsing.cursor.Cursor.increment" title="Permalink to this definition"></a></dt>
 <dd><p>Creates new cursor where end is incremented by <cite>n</cite>.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt id="byteparsing.cursor.Cursor.look_ahead">
-<code class="sig-name descname">look_ahead</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">n</span><span class="p">:</span> <span class="n">int</span> <span class="o">=</span> <span class="default_value">1</span></em><span class="sig-paren">)</span><a class="headerlink" href="#byteparsing.cursor.Cursor.look_ahead" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="byteparsing.cursor.Cursor.look_ahead">
+<span class="sig-name descname"><span class="pre">look_ahead</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#byteparsing.cursor.Cursor.look_ahead" title="Permalink to this definition"></a></dt>
 <dd><p>Get the next <cite>n</cite> bytes.</p>
 </dd></dl>
 
 </dd></dl>
 
-</div>
-<span class="target" id="module-byteparsing.failure"></span><div class="section" id="exceptions">
-<h2>Exceptions<a class="headerlink" href="#exceptions" title="Permalink to this headline">¶</a></h2>
+<span class="target" id="module-byteparsing.failure"></span><section id="exceptions">
+<h2>Exceptions<a class="headerlink" href="#exceptions" title="Permalink to this heading"></a></h2>
 <p>A parser can indicate a failure to parse by raising a <cite>Failure</cite>. Most of the
 time such a <cite>Failure</cite> is not fatal, since it would be part of a range of parser
 choices.  Say we want to parse a number that is either an <cite>int</cite> or a <cite>float</cite>.
 First we would try to parse using the <cite>int</cite> parser. If that fails we can try
 for a floating point number instead.</p>
+</section>
 <dl class="py exception">
-<dt id="byteparsing.failure.EndOfInput">
-<em class="property">exception </em><code class="sig-prename descclassname">byteparsing.failure.</code><code class="sig-name descname">EndOfInput</code><a class="headerlink" href="#byteparsing.failure.EndOfInput" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="byteparsing.failure.EndOfInput">
+<em class="property"><span class="pre">exception</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">byteparsing.failure.</span></span><span class="sig-name descname"><span class="pre">EndOfInput</span></span><a class="headerlink" href="#byteparsing.failure.EndOfInput" title="Permalink to this definition"></a></dt>
 <dd><p>Raised when parser reaches end of input.</p>
 </dd></dl>
 
 <dl class="py exception">
-<dt id="byteparsing.failure.Expected">
-<em class="property">exception </em><code class="sig-prename descclassname">byteparsing.failure.</code><code class="sig-name descname">Expected</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">x</span></em>, <em class="sig-param"><span class="o">*</span><span class="n">irritants</span></em><span class="sig-paren">)</span><a class="headerlink" href="#byteparsing.failure.Expected" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="byteparsing.failure.Expected">
+<em class="property"><span class="pre">exception</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">byteparsing.failure.</span></span><span class="sig-name descname"><span class="pre">Expected</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">irritants</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#byteparsing.failure.Expected" title="Permalink to this definition"></a></dt>
 <dd><p>Raised to indicate different expectations by a parser.</p>
 </dd></dl>
 
 <dl class="py exception">
-<dt id="byteparsing.failure.Failure">
-<em class="property">exception </em><code class="sig-prename descclassname">byteparsing.failure.</code><code class="sig-name descname">Failure</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">description</span></em><span class="sig-paren">)</span><a class="headerlink" href="#byteparsing.failure.Failure" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="byteparsing.failure.Failure">
+<em class="property"><span class="pre">exception</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">byteparsing.failure.</span></span><span class="sig-name descname"><span class="pre">Failure</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">description</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#byteparsing.failure.Failure" title="Permalink to this definition"></a></dt>
 <dd><p>Base class for all parser failures.
 Indicates a failure to parse the input by a specific parser.</p>
 </dd></dl>
 
 <dl class="py exception">
-<dt id="byteparsing.failure.MultipleFailures">
-<em class="property">exception </em><code class="sig-prename descclassname">byteparsing.failure.</code><code class="sig-name descname">MultipleFailures</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">*</span><span class="n">x</span></em><span class="sig-paren">)</span><a class="headerlink" href="#byteparsing.failure.MultipleFailures" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="byteparsing.failure.MultipleFailures">
+<em class="property"><span class="pre">exception</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">byteparsing.failure.</span></span><span class="sig-name descname"><span class="pre">MultipleFailures</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">x</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#byteparsing.failure.MultipleFailures" title="Permalink to this definition"></a></dt>
 <dd><p>Raised by the <cite>choice</cite> parser if all options fail.</p>
 </dd></dl>
 
-</div>
-<span class="target" id="module-byteparsing.parsers"></span><div class="section" id="parsers">
-<h2>Parsers<a class="headerlink" href="#parsers" title="Permalink to this headline">¶</a></h2>
+<span class="target" id="module-byteparsing.parsers"></span><section id="parsers">
+<h2>Parsers<a class="headerlink" href="#parsers" title="Permalink to this heading"></a></h2>
 <p>Some general remarks:</p>
-<div class="section" id="tokenize">
-<h3><cite>tokenize</cite><a class="headerlink" href="#tokenize" title="Permalink to this headline">¶</a></h3>
+<section id="tokenize">
+<h3><cite>tokenize</cite><a class="headerlink" href="#tokenize" title="Permalink to this heading"></a></h3>
 <p>The <cite>tokenize</cite> function is an important tool to deal with whitespace. A
 tokenized parser first parses whatever it is supposed to, and then whitespace
 of some kind (could also include comments). Note however that <cite>tokenize</cite> only
 strips <em>trailing</em> whitespace.</p>
-</div>
-<div class="section" id="char-variants-of-many-and-some">
-<h3><cite>char</cite> variants of <cite>many</cite> and <cite>some</cite><a class="headerlink" href="#char-variants-of-many-and-some" title="Permalink to this headline">¶</a></h3>
+</section>
+<section id="char-variants-of-many-and-some">
+<h3><cite>char</cite> variants of <cite>many</cite> and <cite>some</cite><a class="headerlink" href="#char-variants-of-many-and-some" title="Permalink to this heading"></a></h3>
 <p>The parsers <cite>many</cite> and <cite>some</cite> take a parser and use it many times to generate a
 list of objects.</p>
 <p>Say we have a tokenized parser that parses integers called <cite>integer</cite>, then:</p>
@@ -187,9 +330,9 @@ flushed and the resulting content returned.</p>
 cursor selection, you should use <cite>many_char_0</cite>. This does the same as
 <cite>many_char</cite> without flushing. As a consequence <cite>many_char_0</cite> <em>only</em> moves the
 cursor, it doesn’t return anything.</p>
-</div>
-<div class="section" id="auxiliary-stack">
-<h3>Auxiliary stack<a class="headerlink" href="#auxiliary-stack" title="Permalink to this headline">¶</a></h3>
+</section>
+<section id="auxiliary-stack">
+<h3>Auxiliary stack<a class="headerlink" href="#auxiliary-stack" title="Permalink to this heading"></a></h3>
 <p>An auxilary stack variable is threaded through to keep bits of information. A
 parser may <cite>push</cite> or <cite>pop</cite> values to this stack. The most common use case for
 this is to retrieve values from the middle of a sequence.</p>
@@ -210,9 +353,9 @@ it at the end.</p>
 </pre></div>
 </div>
 <p>This is not the pretiest thing, but it works.</p>
-</div>
-<div class="section" id="config-variable">
-<h3>Config variable<a class="headerlink" href="#config-variable" title="Permalink to this headline">¶</a></h3>
+</section>
+<section id="config-variable">
+<h3>Config variable<a class="headerlink" href="#config-variable" title="Permalink to this heading"></a></h3>
 <p>We may use the auxiliary stack to store a config variable that can be accessed
 from any parser. To make this use a bit more user friendly, we define two
 functions: <a class="reference internal" href="#byteparsing.parsers.with_config" title="byteparsing.parsers.with_config"><code class="xref py py-func docutils literal notranslate"><span class="pre">with_config()</span></code></a> and the <code class="xref py py-func docutils literal notranslate"><span class="pre">use_config()</span></code> decorator.</p>
@@ -239,55 +382,57 @@ the number is 1:</p>
     <span class="sa">b</span><span class="s1">&#39;1hello&#39;</span><span class="p">)</span> <span class="o">==</span> <span class="s2">&quot;HELLO&quot;</span>
 </pre></div>
 </div>
-</div>
-<div class="section" id="id1">
-<h3>Parsers<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h3>
+</section>
+<section id="id1">
+<h3>Parsers<a class="headerlink" href="#id1" title="Permalink to this heading"></a></h3>
+</section>
+</section>
 <dl class="py function">
-<dt id="byteparsing.parsers.array">
-<code class="sig-prename descclassname">byteparsing.parsers.</code><code class="sig-name descname">array</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">dtype</span><span class="p">:</span> <span class="n">numpy.dtype</span></em>, <em class="sig-param"><span class="n">size</span><span class="p">:</span> <span class="n">int</span></em><span class="sig-paren">)</span> &#x2192; <a class="reference internal" href="#byteparsing.trampoline.Parser" title="byteparsing.trampoline.Parser">byteparsing.trampoline.Parser</a><a class="headerlink" href="#byteparsing.parsers.array" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="byteparsing.parsers.array">
+<span class="sig-prename descclassname"><span class="pre">byteparsing.parsers.</span></span><span class="sig-name descname"><span class="pre">array</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dtype</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dtype</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">size</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#byteparsing.trampoline.Parser" title="byteparsing.trampoline.Parser"><span class="pre">Parser</span></a></span></span><a class="headerlink" href="#byteparsing.parsers.array" title="Permalink to this definition"></a></dt>
 <dd><p>Reads the next <cite>sizeof(dtype) * product(shape)</cite> bytes from the
 cursor and interprets them as numeric binary data.</p>
 </dd></dl>
 
 <dl class="py function">
-<dt id="byteparsing.parsers.binary_value">
-<code class="sig-prename descclassname">byteparsing.parsers.</code><code class="sig-name descname">binary_value</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">dtype</span><span class="p">:</span> <span class="n">numpy.dtype</span></em><span class="sig-paren">)</span><a class="headerlink" href="#byteparsing.parsers.binary_value" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="byteparsing.parsers.binary_value">
+<span class="sig-prename descclassname"><span class="pre">byteparsing.parsers.</span></span><span class="sig-name descname"><span class="pre">binary_value</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dtype</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dtype</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#byteparsing.parsers.binary_value" title="Permalink to this definition"></a></dt>
 <dd><p>Parses a single binary value of the given <cite>dtype</cite>.</p>
 </dd></dl>
 
 <dl class="py function">
-<dt id="byteparsing.parsers.byte_none_of">
-<code class="sig-prename descclassname">byteparsing.parsers.</code><code class="sig-name descname">byte_none_of</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">x</span><span class="p">:</span> <span class="n">bytes</span></em><span class="sig-paren">)</span> &#x2192; <a class="reference internal" href="#byteparsing.trampoline.Parser" title="byteparsing.trampoline.Parser">byteparsing.trampoline.Parser</a><a class="headerlink" href="#byteparsing.parsers.byte_none_of" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="byteparsing.parsers.byte_none_of">
+<span class="sig-prename descclassname"><span class="pre">byteparsing.parsers.</span></span><span class="sig-name descname"><span class="pre">byte_none_of</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bytes</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#byteparsing.trampoline.Parser" title="byteparsing.trampoline.Parser"><span class="pre">Parser</span></a></span></span><a class="headerlink" href="#byteparsing.parsers.byte_none_of" title="Permalink to this definition"></a></dt>
 <dd><p>Parses none of the characters in <cite>x</cite>.</p>
 </dd></dl>
 
 <dl class="py function">
-<dt id="byteparsing.parsers.char">
-<code class="sig-prename descclassname">byteparsing.parsers.</code><code class="sig-name descname">char</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">c</span><span class="p">:</span> <span class="n">Union<span class="p">[</span>str<span class="p">, </span>int<span class="p">]</span></span></em><span class="sig-paren">)</span> &#x2192; <a class="reference internal" href="#byteparsing.trampoline.Parser" title="byteparsing.trampoline.Parser">byteparsing.trampoline.Parser</a><a class="headerlink" href="#byteparsing.parsers.char" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="byteparsing.parsers.char">
+<span class="sig-prename descclassname"><span class="pre">byteparsing.parsers.</span></span><span class="sig-name descname"><span class="pre">char</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">c</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#byteparsing.trampoline.Parser" title="byteparsing.trampoline.Parser"><span class="pre">Parser</span></a></span></span><a class="headerlink" href="#byteparsing.parsers.char" title="Permalink to this definition"></a></dt>
 <dd><p>Parses a single character maching <cite>c</cite>.</p>
 </dd></dl>
 
 <dl class="py function">
-<dt id="byteparsing.parsers.char_pred">
-<code class="sig-prename descclassname">byteparsing.parsers.</code><code class="sig-name descname">char_pred</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">pred</span><span class="p">:</span> <span class="n">Callable<span class="p">[</span><span class="p">[</span>int<span class="p">]</span><span class="p">, </span>bool<span class="p">]</span></span></em><span class="sig-paren">)</span> &#x2192; <a class="reference internal" href="#byteparsing.trampoline.Parser" title="byteparsing.trampoline.Parser">byteparsing.trampoline.Parser</a><a class="headerlink" href="#byteparsing.parsers.char_pred" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="byteparsing.parsers.char_pred">
+<span class="sig-prename descclassname"><span class="pre">byteparsing.parsers.</span></span><span class="sig-name descname"><span class="pre">char_pred</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pred</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Callable</span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">bool</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#byteparsing.trampoline.Parser" title="byteparsing.trampoline.Parser"><span class="pre">Parser</span></a></span></span><a class="headerlink" href="#byteparsing.parsers.char_pred" title="Permalink to this definition"></a></dt>
 <dd><p>Parses a single character passing a given predicate.</p>
 </dd></dl>
 
 <dl class="py function">
-<dt id="byteparsing.parsers.check_size">
-<code class="sig-prename descclassname">byteparsing.parsers.</code><code class="sig-name descname">check_size</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">n</span><span class="p">:</span> <span class="n">int</span></em><span class="sig-paren">)</span> &#x2192; Callable<a class="headerlink" href="#byteparsing.parsers.check_size" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="byteparsing.parsers.check_size">
+<span class="sig-prename descclassname"><span class="pre">byteparsing.parsers.</span></span><span class="sig-name descname"><span class="pre">check_size</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Callable</span></span></span><a class="headerlink" href="#byteparsing.parsers.check_size" title="Permalink to this definition"></a></dt>
 <dd><p>Raises an exception if size is not n.</p>
 </dd></dl>
 
 <dl class="py function">
-<dt id="byteparsing.parsers.choice">
-<code class="sig-prename descclassname">byteparsing.parsers.</code><code class="sig-name descname">choice</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">*</span><span class="n">ps</span><span class="p">:</span> <span class="n"><a class="reference internal" href="#byteparsing.trampoline.Parser" title="byteparsing.trampoline.Parser">byteparsing.trampoline.Parser</a></span></em><span class="sig-paren">)</span> &#x2192; <a class="reference internal" href="#byteparsing.trampoline.Parser" title="byteparsing.trampoline.Parser">byteparsing.trampoline.Parser</a><a class="headerlink" href="#byteparsing.parsers.choice" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="byteparsing.parsers.choice">
+<span class="sig-prename descclassname"><span class="pre">byteparsing.parsers.</span></span><span class="sig-name descname"><span class="pre">choice</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">ps</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#byteparsing.trampoline.Parser" title="byteparsing.trampoline.Parser"><span class="pre">Parser</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#byteparsing.trampoline.Parser" title="byteparsing.trampoline.Parser"><span class="pre">Parser</span></a></span></span><a class="headerlink" href="#byteparsing.parsers.choice" title="Permalink to this definition"></a></dt>
 <dd><p>Parses using the first parser in <cite>ps</cite> that succeeds.</p>
 </dd></dl>
 
 <dl class="py function">
-<dt id="byteparsing.parsers.construct">
-<code class="sig-prename descclassname">byteparsing.parsers.</code><code class="sig-name descname">construct</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">f</span></em><span class="sig-paren">)</span><a class="headerlink" href="#byteparsing.parsers.construct" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="byteparsing.parsers.construct">
+<span class="sig-prename descclassname"><span class="pre">byteparsing.parsers.</span></span><span class="sig-name descname"><span class="pre">construct</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">f</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#byteparsing.parsers.construct" title="Permalink to this definition"></a></dt>
 <dd><p>Construct an object <cite>f</cite> by passing a dictionary as keyword arguments. Use this
 in conjunction with <cite>named_sequence</cite>.</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nd">@dataclass</span>
@@ -312,28 +457,28 @@ in conjunction with <cite>named_sequence</cite>.</p>
 </dd></dl>
 
 <dl class="py function">
-<dt id="byteparsing.parsers.fail">
-<code class="sig-prename descclassname">byteparsing.parsers.</code><code class="sig-name descname">fail</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">msg</span><span class="p">:</span> <span class="n">str</span></em><span class="sig-paren">)</span> &#x2192; <a class="reference internal" href="#byteparsing.trampoline.Parser" title="byteparsing.trampoline.Parser">byteparsing.trampoline.Parser</a><a class="headerlink" href="#byteparsing.parsers.fail" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="byteparsing.parsers.fail">
+<span class="sig-prename descclassname"><span class="pre">byteparsing.parsers.</span></span><span class="sig-name descname"><span class="pre">fail</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">msg</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#byteparsing.trampoline.Parser" title="byteparsing.trampoline.Parser"><span class="pre">Parser</span></a></span></span><a class="headerlink" href="#byteparsing.parsers.fail" title="Permalink to this definition"></a></dt>
 <dd><p>A parser that always fails with the given message.</p>
 </dd></dl>
 
 <dl class="py function">
-<dt id="byteparsing.parsers.flush">
-<code class="sig-prename descclassname">byteparsing.parsers.</code><code class="sig-name descname">flush</code><span class="sig-paren">(</span><em class="sig-param">transfer=&lt;function &lt;lambda&gt;&gt;</em><span class="sig-paren">)</span><a class="headerlink" href="#byteparsing.parsers.flush" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="byteparsing.parsers.flush">
+<span class="sig-prename descclassname"><span class="pre">byteparsing.parsers.</span></span><span class="sig-name descname"><span class="pre">flush</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">transfer=&lt;function</span> <span class="pre">&lt;lambda&gt;&gt;</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#byteparsing.parsers.flush" title="Permalink to this definition"></a></dt>
 <dd><p>Flush the cursor and return the underlying data. The return
 value can be mapped by the optional <cite>transfer</cite> function.</p>
 </dd></dl>
 
 <dl class="py function">
-<dt id="byteparsing.parsers.flush_decode">
-<code class="sig-prename descclassname">byteparsing.parsers.</code><code class="sig-name descname">flush_decode</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#byteparsing.parsers.flush_decode" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="byteparsing.parsers.flush_decode">
+<span class="sig-prename descclassname"><span class="pre">byteparsing.parsers.</span></span><span class="sig-name descname"><span class="pre">flush_decode</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#byteparsing.parsers.flush_decode" title="Permalink to this definition"></a></dt>
 <dd><p>Flush the cursor and return the underlying data as a decoded
 string.</p>
 </dd></dl>
 
 <dl class="py function">
-<dt id="byteparsing.parsers.fmap">
-<code class="sig-prename descclassname">byteparsing.parsers.</code><code class="sig-name descname">fmap</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">f</span></em><span class="sig-paren">)</span><a class="headerlink" href="#byteparsing.parsers.fmap" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="byteparsing.parsers.fmap">
+<span class="sig-prename descclassname"><span class="pre">byteparsing.parsers.</span></span><span class="sig-name descname"><span class="pre">fmap</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">f</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#byteparsing.parsers.fmap" title="Permalink to this definition"></a></dt>
 <dd><p>Maps a parsed value by a function <cite>f</cite>.</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">parse_bytes</span><span class="p">(</span><span class="n">text_literal</span><span class="p">(</span><span class="s2">&quot;hello&quot;</span><span class="p">)</span> <span class="o">&gt;&gt;</span> <span class="n">fmap</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="o">.</span><span class="n">upper</span><span class="p">()),</span> <span class="sa">b</span><span class="s2">&quot;hello&quot;</span><span class="p">)</span>
 <span class="go">&quot;HELLO&quot;</span>
@@ -342,188 +487,187 @@ string.</p>
 </dd></dl>
 
 <dl class="py function">
-<dt id="byteparsing.parsers.get_aux">
-<code class="sig-prename descclassname">byteparsing.parsers.</code><code class="sig-name descname">get_aux</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#byteparsing.parsers.get_aux" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="byteparsing.parsers.get_aux">
+<span class="sig-prename descclassname"><span class="pre">byteparsing.parsers.</span></span><span class="sig-name descname"><span class="pre">get_aux</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#byteparsing.parsers.get_aux" title="Permalink to this definition"></a></dt>
 <dd><p>Get the entire auxiliary stack. Not commonly used.</p>
 </dd></dl>
 
 <dl class="py function">
-<dt id="byteparsing.parsers.ignore">
-<code class="sig-prename descclassname">byteparsing.parsers.</code><code class="sig-name descname">ignore</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">p</span><span class="p">:</span> <span class="n"><a class="reference internal" href="#byteparsing.trampoline.Parser" title="byteparsing.trampoline.Parser">byteparsing.trampoline.Parser</a></span></em><span class="sig-paren">)</span><a class="headerlink" href="#byteparsing.parsers.ignore" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="byteparsing.parsers.ignore">
+<span class="sig-prename descclassname"><span class="pre">byteparsing.parsers.</span></span><span class="sig-name descname"><span class="pre">ignore</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">p</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#byteparsing.trampoline.Parser" title="byteparsing.trampoline.Parser"><span class="pre">Parser</span></a></span></em><span class="sig-paren">)</span><a class="headerlink" href="#byteparsing.parsers.ignore" title="Permalink to this definition"></a></dt>
 <dd><p>Runs the given parser, but doesn’t mutate the stack.</p>
 </dd></dl>
 
 <dl class="py function">
-<dt id="byteparsing.parsers.literal">
-<code class="sig-prename descclassname">byteparsing.parsers.</code><code class="sig-name descname">literal</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">x</span><span class="p">:</span> <span class="n">bytes</span></em><span class="sig-paren">)</span> &#x2192; <a class="reference internal" href="#byteparsing.trampoline.Parser" title="byteparsing.trampoline.Parser">byteparsing.trampoline.Parser</a><a class="headerlink" href="#byteparsing.parsers.literal" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="byteparsing.parsers.literal">
+<span class="sig-prename descclassname"><span class="pre">byteparsing.parsers.</span></span><span class="sig-name descname"><span class="pre">literal</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bytes</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#byteparsing.trampoline.Parser" title="byteparsing.trampoline.Parser"><span class="pre">Parser</span></a></span></span><a class="headerlink" href="#byteparsing.parsers.literal" title="Permalink to this definition"></a></dt>
 <dd><p>Parses the exact sequence of bytes given in <cite>x</cite>.</p>
 </dd></dl>
 
 <dl class="py function">
-<dt id="byteparsing.parsers.many">
-<code class="sig-prename descclassname">byteparsing.parsers.</code><code class="sig-name descname">many</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">p</span><span class="p">:</span> <span class="n"><a class="reference internal" href="#byteparsing.trampoline.Parser" title="byteparsing.trampoline.Parser">byteparsing.trampoline.Parser</a></span></em>, <em class="sig-param"><span class="n">init</span><span class="p">:</span> <span class="n">Optional<span class="p">[</span>List<span class="p">[</span>Any<span class="p">]</span><span class="p">]</span></span> <span class="o">=</span> <span class="default_value">None</span></em><span class="sig-paren">)</span> &#x2192; <a class="reference internal" href="#byteparsing.trampoline.Parser" title="byteparsing.trampoline.Parser">byteparsing.trampoline.Parser</a><a class="headerlink" href="#byteparsing.parsers.many" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="byteparsing.parsers.many">
+<span class="sig-prename descclassname"><span class="pre">byteparsing.parsers.</span></span><span class="sig-name descname"><span class="pre">many</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">p</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#byteparsing.trampoline.Parser" title="byteparsing.trampoline.Parser"><span class="pre">Parser</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">init</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#byteparsing.trampoline.Parser" title="byteparsing.trampoline.Parser"><span class="pre">Parser</span></a></span></span><a class="headerlink" href="#byteparsing.parsers.many" title="Permalink to this definition"></a></dt>
 <dd><p>Parse <cite>p</cite> any number of times.</p>
 </dd></dl>
 
 <dl class="py function">
-<dt id="byteparsing.parsers.many_char">
-<code class="sig-prename descclassname">byteparsing.parsers.</code><code class="sig-name descname">many_char</code><span class="sig-paren">(</span><em class="sig-param">p: byteparsing.trampoline.Parser</em>, <em class="sig-param">transfer=&lt;function &lt;lambda&gt;&gt;</em><span class="sig-paren">)</span> &#x2192; <a class="reference internal" href="#byteparsing.trampoline.Parser" title="byteparsing.trampoline.Parser">byteparsing.trampoline.Parser</a><a class="headerlink" href="#byteparsing.parsers.many_char" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="byteparsing.parsers.many_char">
+<span class="sig-prename descclassname"><span class="pre">byteparsing.parsers.</span></span><span class="sig-name descname"><span class="pre">many_char</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">p:</span> <span class="pre">~byteparsing.trampoline.Parser</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">transfer=&lt;function</span> <span class="pre">&lt;lambda&gt;&gt;</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#byteparsing.trampoline.Parser" title="byteparsing.trampoline.Parser"><span class="pre">Parser</span></a></span></span><a class="headerlink" href="#byteparsing.parsers.many_char" title="Permalink to this definition"></a></dt>
 <dd><p>Parse <cite>p</cite> zero or more times, returns the string.</p>
 </dd></dl>
 
 <dl class="py function">
-<dt id="byteparsing.parsers.named_sequence">
-<code class="sig-prename descclassname">byteparsing.parsers.</code><code class="sig-name descname">named_sequence</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n"><a class="reference internal" href="#byteparsing.trampoline.Parser" title="byteparsing.trampoline.Parser">byteparsing.trampoline.Parser</a></span></em><span class="sig-paren">)</span> &#x2192; <a class="reference internal" href="#byteparsing.trampoline.Parser" title="byteparsing.trampoline.Parser">byteparsing.trampoline.Parser</a><a class="headerlink" href="#byteparsing.parsers.named_sequence" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="byteparsing.parsers.named_sequence">
+<span class="sig-prename descclassname"><span class="pre">byteparsing.parsers.</span></span><span class="sig-name descname"><span class="pre">named_sequence</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#byteparsing.trampoline.Parser" title="byteparsing.trampoline.Parser"><span class="pre">Parser</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#byteparsing.trampoline.Parser" title="byteparsing.trampoline.Parser"><span class="pre">Parser</span></a></span></span><a class="headerlink" href="#byteparsing.parsers.named_sequence" title="Permalink to this definition"></a></dt>
 <dd><p>Similar to <cite>sequence</cite>, this parses using all of the arguments in order.
 The result is now a dictionary where the elements are assigned using the
 result of each given parser.</p>
 </dd></dl>
 
 <dl class="py function">
-<dt id="byteparsing.parsers.optional">
-<code class="sig-prename descclassname">byteparsing.parsers.</code><code class="sig-name descname">optional</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">p</span><span class="p">:</span> <span class="n"><a class="reference internal" href="#byteparsing.trampoline.Parser" title="byteparsing.trampoline.Parser">byteparsing.trampoline.Parser</a></span></em>, <em class="sig-param"><span class="n">default</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#byteparsing.parsers.optional" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="byteparsing.parsers.optional">
+<span class="sig-prename descclassname"><span class="pre">byteparsing.parsers.</span></span><span class="sig-name descname"><span class="pre">optional</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">p</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#byteparsing.trampoline.Parser" title="byteparsing.trampoline.Parser"><span class="pre">Parser</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">default</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#byteparsing.parsers.optional" title="Permalink to this definition"></a></dt>
 <dd><p>Doesn’t fail if the given parser fails, but returns a default value.</p>
 </dd></dl>
 
 <dl class="py function">
-<dt id="byteparsing.parsers.parse_bytes">
-<code class="sig-prename descclassname">byteparsing.parsers.</code><code class="sig-name descname">parse_bytes</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">p</span><span class="p">:</span> <span class="n"><a class="reference internal" href="#byteparsing.trampoline.Parser" title="byteparsing.trampoline.Parser">byteparsing.trampoline.Parser</a></span></em>, <em class="sig-param"><span class="n">data</span><span class="p">:</span> <span class="n">Union<span class="p">[</span>bytes<span class="p">, </span>bytearray<span class="p">, </span>mmap.mmap<span class="p">]</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#byteparsing.parsers.parse_bytes" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="byteparsing.parsers.parse_bytes">
+<span class="sig-prename descclassname"><span class="pre">byteparsing.parsers.</span></span><span class="sig-name descname"><span class="pre">parse_bytes</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">p</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#byteparsing.trampoline.Parser" title="byteparsing.trampoline.Parser"><span class="pre">Parser</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">bytes</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">bytearray</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">mmap</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#byteparsing.parsers.parse_bytes" title="Permalink to this definition"></a></dt>
 <dd><p>Call parser <cite>p</cite> on <cite>data</cite> and returns result.</p>
 </dd></dl>
 
 <dl class="py function">
-<dt id="byteparsing.parsers.pop">
-<code class="sig-prename descclassname">byteparsing.parsers.</code><code class="sig-name descname">pop</code><span class="sig-paren">(</span><em class="sig-param">transfer=&lt;function &lt;lambda&gt;&gt;</em><span class="sig-paren">)</span><a class="headerlink" href="#byteparsing.parsers.pop" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="byteparsing.parsers.pop">
+<span class="sig-prename descclassname"><span class="pre">byteparsing.parsers.</span></span><span class="sig-name descname"><span class="pre">pop</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">transfer=&lt;function</span> <span class="pre">&lt;lambda&gt;&gt;</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#byteparsing.parsers.pop" title="Permalink to this definition"></a></dt>
 <dd><p>Pops a value off the auxiliary stack. The result may be transformed
 by a <cite>transfer</cite> function, which defaults to the identity function.</p>
 </dd></dl>
 
 <dl class="py function">
-<dt id="byteparsing.parsers.push">
-<code class="sig-prename descclassname">byteparsing.parsers.</code><code class="sig-name descname">push</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">x</span><span class="p">:</span> <span class="n">Any</span></em><span class="sig-paren">)</span><a class="headerlink" href="#byteparsing.parsers.push" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="byteparsing.parsers.push">
+<span class="sig-prename descclassname"><span class="pre">byteparsing.parsers.</span></span><span class="sig-name descname"><span class="pre">push</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#byteparsing.parsers.push" title="Permalink to this definition"></a></dt>
 <dd><p>Pushes a value to the auxiliary stack.</p>
 </dd></dl>
 
 <dl class="py function">
-<dt id="byteparsing.parsers.quoted_string">
-<code class="sig-prename descclassname">byteparsing.parsers.</code><code class="sig-name descname">quoted_string</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">quote</span><span class="o">=</span><span class="default_value">'&quot;'</span></em><span class="sig-paren">)</span><a class="headerlink" href="#byteparsing.parsers.quoted_string" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="byteparsing.parsers.quoted_string">
+<span class="sig-prename descclassname"><span class="pre">byteparsing.parsers.</span></span><span class="sig-name descname"><span class="pre">quoted_string</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">quote</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'&quot;'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#byteparsing.parsers.quoted_string" title="Permalink to this definition"></a></dt>
 <dd><p>Parses a quoted string, no quote escaping implemented yet.</p>
 </dd></dl>
 
 <dl class="py function">
-<dt id="byteparsing.parsers.sep_by">
-<code class="sig-prename descclassname">byteparsing.parsers.</code><code class="sig-name descname">sep_by</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">p</span><span class="p">:</span> <span class="n"><a class="reference internal" href="#byteparsing.trampoline.Parser" title="byteparsing.trampoline.Parser">byteparsing.trampoline.Parser</a></span></em>, <em class="sig-param"><span class="n">sep</span><span class="p">:</span> <span class="n"><a class="reference internal" href="#byteparsing.trampoline.Parser" title="byteparsing.trampoline.Parser">byteparsing.trampoline.Parser</a></span></em><span class="sig-paren">)</span> &#x2192; <a class="reference internal" href="#byteparsing.trampoline.Parser" title="byteparsing.trampoline.Parser">byteparsing.trampoline.Parser</a><a class="headerlink" href="#byteparsing.parsers.sep_by" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="byteparsing.parsers.sep_by">
+<span class="sig-prename descclassname"><span class="pre">byteparsing.parsers.</span></span><span class="sig-name descname"><span class="pre">sep_by</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">p</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#byteparsing.trampoline.Parser" title="byteparsing.trampoline.Parser"><span class="pre">Parser</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">sep</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#byteparsing.trampoline.Parser" title="byteparsing.trampoline.Parser"><span class="pre">Parser</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#byteparsing.trampoline.Parser" title="byteparsing.trampoline.Parser"><span class="pre">Parser</span></a></span></span><a class="headerlink" href="#byteparsing.parsers.sep_by" title="Permalink to this definition"></a></dt>
 <dd><p>Parse <cite>p</cite> separated by <cite>sep</cite>. Returns list of <cite>p</cite>.</p>
 </dd></dl>
 
 <dl class="py function">
-<dt id="byteparsing.parsers.sequence">
-<code class="sig-prename descclassname">byteparsing.parsers.</code><code class="sig-name descname">sequence</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">first</span><span class="p">:</span> <span class="n"><a class="reference internal" href="#byteparsing.trampoline.Parser" title="byteparsing.trampoline.Parser">byteparsing.trampoline.Parser</a></span></em>, <em class="sig-param"><span class="o">*</span><span class="n">rest</span><span class="p">:</span> <span class="n"><a class="reference internal" href="#byteparsing.trampoline.Parser" title="byteparsing.trampoline.Parser">byteparsing.trampoline.Parser</a></span></em><span class="sig-paren">)</span> &#x2192; <a class="reference internal" href="#byteparsing.trampoline.Parser" title="byteparsing.trampoline.Parser">byteparsing.trampoline.Parser</a><a class="headerlink" href="#byteparsing.parsers.sequence" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="byteparsing.parsers.sequence">
+<span class="sig-prename descclassname"><span class="pre">byteparsing.parsers.</span></span><span class="sig-name descname"><span class="pre">sequence</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">first</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#byteparsing.trampoline.Parser" title="byteparsing.trampoline.Parser"><span class="pre">Parser</span></a></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">rest</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#byteparsing.trampoline.Parser" title="byteparsing.trampoline.Parser"><span class="pre">Parser</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#byteparsing.trampoline.Parser" title="byteparsing.trampoline.Parser"><span class="pre">Parser</span></a></span></span><a class="headerlink" href="#byteparsing.parsers.sequence" title="Permalink to this definition"></a></dt>
 <dd><p>Parse <cite>first</cite>, then <cite>sequence(*rest)</cite>. The parser result
 is that of the last parser in the sequence.</p>
 </dd></dl>
 
 <dl class="py function">
-<dt id="byteparsing.parsers.set_aux">
-<code class="sig-prename descclassname">byteparsing.parsers.</code><code class="sig-name descname">set_aux</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">x</span><span class="p">:</span> <span class="n">Any</span></em><span class="sig-paren">)</span><a class="headerlink" href="#byteparsing.parsers.set_aux" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="byteparsing.parsers.set_aux">
+<span class="sig-prename descclassname"><span class="pre">byteparsing.parsers.</span></span><span class="sig-name descname"><span class="pre">set_aux</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#byteparsing.parsers.set_aux" title="Permalink to this definition"></a></dt>
 <dd><p>Replace the entire auxiliary stack. Not commonly used.</p>
 </dd></dl>
 
 <dl class="py function">
-<dt id="byteparsing.parsers.some">
-<code class="sig-prename descclassname">byteparsing.parsers.</code><code class="sig-name descname">some</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">p</span><span class="p">:</span> <span class="n"><a class="reference internal" href="#byteparsing.trampoline.Parser" title="byteparsing.trampoline.Parser">byteparsing.trampoline.Parser</a></span></em><span class="sig-paren">)</span> &#x2192; <a class="reference internal" href="#byteparsing.trampoline.Parser" title="byteparsing.trampoline.Parser">byteparsing.trampoline.Parser</a><a class="headerlink" href="#byteparsing.parsers.some" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="byteparsing.parsers.some">
+<span class="sig-prename descclassname"><span class="pre">byteparsing.parsers.</span></span><span class="sig-name descname"><span class="pre">some</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">p</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#byteparsing.trampoline.Parser" title="byteparsing.trampoline.Parser"><span class="pre">Parser</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#byteparsing.trampoline.Parser" title="byteparsing.trampoline.Parser"><span class="pre">Parser</span></a></span></span><a class="headerlink" href="#byteparsing.parsers.some" title="Permalink to this definition"></a></dt>
 <dd><p>Parse <cite>p</cite> one or more times.</p>
 </dd></dl>
 
 <dl class="py function">
-<dt id="byteparsing.parsers.some_char">
-<code class="sig-prename descclassname">byteparsing.parsers.</code><code class="sig-name descname">some_char</code><span class="sig-paren">(</span><em class="sig-param">p: byteparsing.trampoline.Parser</em>, <em class="sig-param">transfer=&lt;function &lt;lambda&gt;&gt;</em><span class="sig-paren">)</span> &#x2192; <a class="reference internal" href="#byteparsing.trampoline.Parser" title="byteparsing.trampoline.Parser">byteparsing.trampoline.Parser</a><a class="headerlink" href="#byteparsing.parsers.some_char" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="byteparsing.parsers.some_char">
+<span class="sig-prename descclassname"><span class="pre">byteparsing.parsers.</span></span><span class="sig-name descname"><span class="pre">some_char</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">p:</span> <span class="pre">~byteparsing.trampoline.Parser</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">transfer=&lt;function</span> <span class="pre">&lt;lambda&gt;&gt;</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#byteparsing.trampoline.Parser" title="byteparsing.trampoline.Parser"><span class="pre">Parser</span></a></span></span><a class="headerlink" href="#byteparsing.parsers.some_char" title="Permalink to this definition"></a></dt>
 <dd><p>Parses <cite>p</cite> one or more times.</p>
 </dd></dl>
 
 <dl class="py function">
-<dt id="byteparsing.parsers.some_char_0">
-<code class="sig-prename descclassname">byteparsing.parsers.</code><code class="sig-name descname">some_char_0</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">p</span><span class="p">:</span> <span class="n"><a class="reference internal" href="#byteparsing.trampoline.Parser" title="byteparsing.trampoline.Parser">byteparsing.trampoline.Parser</a></span></em><span class="sig-paren">)</span> &#x2192; <a class="reference internal" href="#byteparsing.trampoline.Parser" title="byteparsing.trampoline.Parser">byteparsing.trampoline.Parser</a><a class="headerlink" href="#byteparsing.parsers.some_char_0" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="byteparsing.parsers.some_char_0">
+<span class="sig-prename descclassname"><span class="pre">byteparsing.parsers.</span></span><span class="sig-name descname"><span class="pre">some_char_0</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">p</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#byteparsing.trampoline.Parser" title="byteparsing.trampoline.Parser"><span class="pre">Parser</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#byteparsing.trampoline.Parser" title="byteparsing.trampoline.Parser"><span class="pre">Parser</span></a></span></span><a class="headerlink" href="#byteparsing.parsers.some_char_0" title="Permalink to this definition"></a></dt>
 <dd><p>Parses one or more characters; doesn’t return a value, just
 moves the cursor for later flushing.</p>
 </dd></dl>
 
 <dl class="py function">
-<dt id="byteparsing.parsers.text_literal">
-<code class="sig-prename descclassname">byteparsing.parsers.</code><code class="sig-name descname">text_literal</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">x</span><span class="p">:</span> <span class="n">str</span></em><span class="sig-paren">)</span> &#x2192; <a class="reference internal" href="#byteparsing.trampoline.Parser" title="byteparsing.trampoline.Parser">byteparsing.trampoline.Parser</a><a class="headerlink" href="#byteparsing.parsers.text_literal" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="byteparsing.parsers.text_literal">
+<span class="sig-prename descclassname"><span class="pre">byteparsing.parsers.</span></span><span class="sig-name descname"><span class="pre">text_literal</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#byteparsing.trampoline.Parser" title="byteparsing.trampoline.Parser"><span class="pre">Parser</span></a></span></span><a class="headerlink" href="#byteparsing.parsers.text_literal" title="Permalink to this definition"></a></dt>
 <dd><p>Parses the contents of <cite>x</cite> encoded by the encoding given in the
 cursor.</p>
 </dd></dl>
 
 <dl class="py function">
-<dt id="byteparsing.parsers.text_one_of">
-<code class="sig-prename descclassname">byteparsing.parsers.</code><code class="sig-name descname">text_one_of</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">x</span><span class="p">:</span> <span class="n">str</span></em><span class="sig-paren">)</span> &#x2192; <a class="reference internal" href="#byteparsing.trampoline.Parser" title="byteparsing.trampoline.Parser">byteparsing.trampoline.Parser</a><a class="headerlink" href="#byteparsing.parsers.text_one_of" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="byteparsing.parsers.text_one_of">
+<span class="sig-prename descclassname"><span class="pre">byteparsing.parsers.</span></span><span class="sig-name descname"><span class="pre">text_one_of</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#byteparsing.trampoline.Parser" title="byteparsing.trampoline.Parser"><span class="pre">Parser</span></a></span></span><a class="headerlink" href="#byteparsing.parsers.text_one_of" title="Permalink to this definition"></a></dt>
 <dd><p>Parses any of the characters in <cite>x</cite>.</p>
 </dd></dl>
 
 <dl class="py function">
-<dt id="byteparsing.parsers.tokenize">
-<code class="sig-prename descclassname">byteparsing.parsers.</code><code class="sig-name descname">tokenize</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">p</span><span class="p">:</span> <span class="n"><a class="reference internal" href="#byteparsing.trampoline.Parser" title="byteparsing.trampoline.Parser">byteparsing.trampoline.Parser</a></span></em><span class="sig-paren">)</span> &#x2192; <a class="reference internal" href="#byteparsing.trampoline.Parser" title="byteparsing.trampoline.Parser">byteparsing.trampoline.Parser</a><a class="headerlink" href="#byteparsing.parsers.tokenize" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="byteparsing.parsers.tokenize">
+<span class="sig-prename descclassname"><span class="pre">byteparsing.parsers.</span></span><span class="sig-name descname"><span class="pre">tokenize</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">p</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#byteparsing.trampoline.Parser" title="byteparsing.trampoline.Parser"><span class="pre">Parser</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#byteparsing.trampoline.Parser" title="byteparsing.trampoline.Parser"><span class="pre">Parser</span></a></span></span><a class="headerlink" href="#byteparsing.parsers.tokenize" title="Permalink to this definition"></a></dt>
 <dd><p>Parses <cite>p</cite>, clearing surrounding whitespace.</p>
 </dd></dl>
 
 <dl class="py function">
-<dt id="byteparsing.parsers.using_config">
-<code class="sig-prename descclassname">byteparsing.parsers.</code><code class="sig-name descname">using_config</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">f</span></em><span class="sig-paren">)</span><a class="headerlink" href="#byteparsing.parsers.using_config" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="byteparsing.parsers.using_config">
+<span class="sig-prename descclassname"><span class="pre">byteparsing.parsers.</span></span><span class="sig-name descname"><span class="pre">using_config</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">f</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#byteparsing.parsers.using_config" title="Permalink to this definition"></a></dt>
 <dd><p>Use this decorator to pass the config as a keyword argument to a
 parser generator.</p>
 </dd></dl>
 
 <dl class="py function">
-<dt id="byteparsing.parsers.value">
-<code class="sig-prename descclassname">byteparsing.parsers.</code><code class="sig-name descname">value</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">x</span></em><span class="sig-paren">)</span> &#x2192; <a class="reference internal" href="#byteparsing.trampoline.Parser" title="byteparsing.trampoline.Parser">byteparsing.trampoline.Parser</a><a class="headerlink" href="#byteparsing.parsers.value" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="byteparsing.parsers.value">
+<span class="sig-prename descclassname"><span class="pre">byteparsing.parsers.</span></span><span class="sig-name descname"><span class="pre">value</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#byteparsing.trampoline.Parser" title="byteparsing.trampoline.Parser"><span class="pre">Parser</span></a></span></span><a class="headerlink" href="#byteparsing.parsers.value" title="Permalink to this definition"></a></dt>
 <dd><p>Parses to value <cite>x</cite> without taking input.</p>
 </dd></dl>
 
 <dl class="py function">
-<dt id="byteparsing.parsers.with_config">
-<code class="sig-prename descclassname">byteparsing.parsers.</code><code class="sig-name descname">with_config</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">p</span><span class="p">:</span> <span class="n"><a class="reference internal" href="#byteparsing.trampoline.Parser" title="byteparsing.trampoline.Parser">byteparsing.trampoline.Parser</a></span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span> &#x2192; <a class="reference internal" href="#byteparsing.trampoline.Parser" title="byteparsing.trampoline.Parser">byteparsing.trampoline.Parser</a><a class="headerlink" href="#byteparsing.parsers.with_config" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="byteparsing.parsers.with_config">
+<span class="sig-prename descclassname"><span class="pre">byteparsing.parsers.</span></span><span class="sig-name descname"><span class="pre">with_config</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">p</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#byteparsing.trampoline.Parser" title="byteparsing.trampoline.Parser"><span class="pre">Parser</span></a></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#byteparsing.trampoline.Parser" title="byteparsing.trampoline.Parser"><span class="pre">Parser</span></a></span></span><a class="headerlink" href="#byteparsing.parsers.with_config" title="Permalink to this definition"></a></dt>
 <dd><p>Creates a config object at the bottom of the auxiliary stack.
 The config will be a empty dictionary. The resulting parser should
 be the outer-most parser being used.</p>
 </dd></dl>
 
-</div>
-</div>
-<span class="target" id="module-byteparsing.trampoline"></span><div class="section" id="trampoline">
-<h2>Trampoline<a class="headerlink" href="#trampoline" title="Permalink to this headline">¶</a></h2>
+<span class="target" id="module-byteparsing.trampoline"></span><section id="trampoline">
+<h2>Trampoline<a class="headerlink" href="#trampoline" title="Permalink to this heading"></a></h2>
 <p>The trampoline is a pattern for running recursive algorithms on the heap.
 A trampolined function returns either another <cite>Trampoline</cite> object or
 some result. If we get a <cite>Trampoline</cite> object, the loop continues. This
 technique allows for the expression of tail-recursive functions without
 running into stack overflow errors.</p>
+</section>
 <dl class="py class">
-<dt id="byteparsing.trampoline.Call">
-<em class="property">class </em><code class="sig-prename descclassname">byteparsing.trampoline.</code><code class="sig-name descname">Call</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">p</span><span class="p">:</span> <span class="n">Callable<span class="p">[</span><span class="p">[</span><span class="p">…</span><span class="p">]</span><span class="p">, </span>Union<span class="p">[</span>Tuple<span class="p">[</span>Any<span class="p">, </span><a class="reference internal" href="#byteparsing.cursor.Cursor" title="byteparsing.cursor.Cursor">byteparsing.cursor.Cursor</a><span class="p">, </span>Any<span class="p">]</span><span class="p">, </span><a class="reference internal" href="#byteparsing.trampoline.Trampoline" title="byteparsing.trampoline.Trampoline">byteparsing.trampoline.Trampoline</a><span class="p">]</span><span class="p">]</span></span></em>, <em class="sig-param"><span class="n">cursor</span><span class="p">:</span> <span class="n"><a class="reference internal" href="#byteparsing.cursor.Cursor" title="byteparsing.cursor.Cursor">byteparsing.cursor.Cursor</a></span></em>, <em class="sig-param"><span class="n">aux</span><span class="p">:</span> <span class="n">Any</span></em><span class="sig-paren">)</span><a class="headerlink" href="#byteparsing.trampoline.Call" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="byteparsing.trampoline.Call">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">byteparsing.trampoline.</span></span><span class="sig-name descname"><span class="pre">Call</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">p</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Callable</span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">...</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">Any</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="#byteparsing.cursor.Cursor" title="byteparsing.cursor.Cursor"><span class="pre">Cursor</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="#byteparsing.trampoline.Trampoline" title="byteparsing.trampoline.Trampoline"><span class="pre">Trampoline</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cursor</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#byteparsing.cursor.Cursor" title="byteparsing.cursor.Cursor"><span class="pre">Cursor</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">aux</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#byteparsing.trampoline.Call" title="Permalink to this definition"></a></dt>
 <dd><p>Stores a delayed call to a parser. Part of the parser trampoline.</p>
 </dd></dl>
 
 <dl class="py class">
-<dt id="byteparsing.trampoline.Parser">
-<em class="property">class </em><code class="sig-prename descclassname">byteparsing.trampoline.</code><code class="sig-name descname">Parser</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">func</span><span class="p">:</span> <span class="n">Optional<span class="p">[</span>Callable<span class="p">[</span><span class="p">[</span><span class="p">…</span><span class="p">]</span><span class="p">, </span>Union<span class="p">[</span>Tuple<span class="p">[</span>Any<span class="p">, </span><a class="reference internal" href="#byteparsing.cursor.Cursor" title="byteparsing.cursor.Cursor">byteparsing.cursor.Cursor</a><span class="p">, </span>Any<span class="p">]</span><span class="p">, </span><a class="reference internal" href="#byteparsing.trampoline.Trampoline" title="byteparsing.trampoline.Trampoline">byteparsing.trampoline.Trampoline</a><span class="p">]</span><span class="p">]</span><span class="p">]</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#byteparsing.trampoline.Parser" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="byteparsing.trampoline.Parser">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">byteparsing.trampoline.</span></span><span class="sig-name descname"><span class="pre">Parser</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">func</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">Callable</span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">...</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">Any</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="#byteparsing.cursor.Cursor" title="byteparsing.cursor.Cursor"><span class="pre">Cursor</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="#byteparsing.trampoline.Trampoline" title="byteparsing.trampoline.Trampoline"><span class="pre">Trampoline</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#byteparsing.trampoline.Parser" title="Permalink to this definition"></a></dt>
 <dd><p>Wrapper for parser functions.</p>
 </dd></dl>
 
 <dl class="py class">
-<dt id="byteparsing.trampoline.Trampoline">
-<em class="property">class </em><code class="sig-prename descclassname">byteparsing.trampoline.</code><code class="sig-name descname">Trampoline</code><a class="headerlink" href="#byteparsing.trampoline.Trampoline" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="byteparsing.trampoline.Trampoline">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">byteparsing.trampoline.</span></span><span class="sig-name descname"><span class="pre">Trampoline</span></span><a class="headerlink" href="#byteparsing.trampoline.Trampoline" title="Permalink to this definition"></a></dt>
 <dd><p>Base class implementing the trampoline loop structure.</p>
 <dl class="py method">
-<dt id="byteparsing.trampoline.Trampoline.invoke">
-<code class="sig-name descname">invoke</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#byteparsing.trampoline.Trampoline.invoke" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="byteparsing.trampoline.Trampoline.invoke">
+<span class="sig-name descname"><span class="pre">invoke</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#byteparsing.trampoline.Trampoline.invoke" title="Permalink to this definition"></a></dt>
 <dd><p>Invoke the trampoline.</p>
 </dd></dl>
 
 </dd></dl>
 
 <dl class="py function">
-<dt id="byteparsing.trampoline.bind">
-<code class="sig-prename descclassname">byteparsing.trampoline.</code><code class="sig-name descname">bind</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">p</span><span class="p">:</span> <span class="n"><a class="reference internal" href="#byteparsing.trampoline.Parser" title="byteparsing.trampoline.Parser">byteparsing.trampoline.Parser</a></span></em>, <em class="sig-param"><span class="n">f</span><span class="p">:</span> <span class="n">Callable<span class="p">[</span><span class="p">[</span>Any<span class="p">]</span><span class="p">, </span><a class="reference internal" href="#byteparsing.trampoline.Parser" title="byteparsing.trampoline.Parser">byteparsing.trampoline.Parser</a><span class="p">]</span></span></em><span class="sig-paren">)</span> &#x2192; <a class="reference internal" href="#byteparsing.trampoline.Parser" title="byteparsing.trampoline.Parser">byteparsing.trampoline.Parser</a><a class="headerlink" href="#byteparsing.trampoline.bind" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="byteparsing.trampoline.bind">
+<span class="sig-prename descclassname"><span class="pre">byteparsing.trampoline.</span></span><span class="sig-name descname"><span class="pre">bind</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">p</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#byteparsing.trampoline.Parser" title="byteparsing.trampoline.Parser"><span class="pre">Parser</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">f</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Callable</span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">[</span></span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="#byteparsing.trampoline.Parser" title="byteparsing.trampoline.Parser"><span class="pre">Parser</span></a><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#byteparsing.trampoline.Parser" title="byteparsing.trampoline.Parser"><span class="pre">Parser</span></a></span></span><a class="headerlink" href="#byteparsing.trampoline.bind" title="Permalink to this definition"></a></dt>
 <dd><p>Call parser <cite>p</cite> and feed result to function <cite>f</cite>, which should create
 a new parser. The <cite>Parser</cite> class defines the <cite>&gt;&gt;</cite> operator as an alias for
 <cite>bind</cite>.</p>
@@ -536,8 +680,8 @@ document.</p>
 </dd></dl>
 
 <dl class="py function">
-<dt id="byteparsing.trampoline.parser">
-<code class="sig-prename descclassname">byteparsing.trampoline.</code><code class="sig-name descname">parser</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">f</span><span class="p">:</span> <span class="n">Callable<span class="p">[</span><span class="p">[</span><a class="reference internal" href="#byteparsing.cursor.Cursor" title="byteparsing.cursor.Cursor">byteparsing.cursor.Cursor</a><span class="p">, </span>Any<span class="p">]</span><span class="p">, </span>Union<span class="p">[</span>Tuple<span class="p">[</span>Any<span class="p">, </span><a class="reference internal" href="#byteparsing.cursor.Cursor" title="byteparsing.cursor.Cursor">byteparsing.cursor.Cursor</a><span class="p">, </span>Any<span class="p">]</span><span class="p">, </span><a class="reference internal" href="#byteparsing.trampoline.Trampoline" title="byteparsing.trampoline.Trampoline">byteparsing.trampoline.Trampoline</a><span class="p">]</span><span class="p">]</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#byteparsing.trampoline.parser" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="byteparsing.trampoline.parser">
+<span class="sig-prename descclassname"><span class="pre">byteparsing.trampoline.</span></span><span class="sig-name descname"><span class="pre">parser</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">f</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Callable</span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#byteparsing.cursor.Cursor" title="byteparsing.cursor.Cursor"><span class="pre">Cursor</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">Any</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="#byteparsing.cursor.Cursor" title="byteparsing.cursor.Cursor"><span class="pre">Cursor</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="#byteparsing.trampoline.Trampoline" title="byteparsing.trampoline.Trampoline"><span class="pre">Trampoline</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#byteparsing.trampoline.parser" title="Permalink to this definition"></a></dt>
 <dd><p>The parser decorator creates a parser out of a function with the
 following signature:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="nd">@parser</span>
@@ -551,51 +695,36 @@ auxiliary state.</p>
 <p>This decorator function is an alias for <cite>Parser.__init__</cite>.</p>
 </dd></dl>
 
-</div>
-</div>
+</section>
 
 
+           </div>
           </div>
-          
-        </div>
-      </div>
-      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
-        <div class="sphinxsidebarwrapper"><div class="relations">
-<h3>Related Topics</h3>
-<ul>
-  <li><a href="index.html">Documentation overview</a><ul>
-      <li>Previous: <a href="architecture.html" title="previous chapter">Architecture</a></li>
-  </ul></li>
-</ul>
-</div>
-<div id="searchbox" style="display: none" role="search">
-  <h3 id="searchlabel">Quick search</h3>
-    <div class="searchformwrapper">
-    <form class="search" action="search.html" method="get">
-      <input type="text" name="q" aria-labelledby="searchlabel" />
-      <input type="submit" value="Go" />
-    </form>
-    </div>
-</div>
-<script>$('#searchbox').show(0);</script>
-        </div>
-      </div>
-      <div class="clearer"></div>
-    </div>
-    <div class="footer">
-      &copy;2019, Netherlands eScience Center, University of Groningen.
-      
-      |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 3.4.3</a>
-      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
-      
-      |
-      <a href="_sources/api.rst.txt"
-          rel="nofollow">Page source</a>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="architecture.html" class="btn btn-neutral float-left" title="Architecture" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
     </div>
 
-    
+  <hr/>
 
-    
-  </body>
+  <div role="contentinfo">
+    <p>&#169; Copyright 2019, Netherlands eScience Center, University of Groningen.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
 </html>

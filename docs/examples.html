@@ -1,41 +1,100 @@
-
 <!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
-<html>
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Examples of usage &#8212; byteparsing 0.1.0 documentation</title>
-    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
-    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
-    <link rel="stylesheet" href="_static/theme_overrides.css" type="text/css" />
-    <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
-    <script src="_static/jquery.js"></script>
-    <script src="_static/underscore.js"></script>
-    <script src="_static/doctools.js"></script>
-    <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
-    <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
-    <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true, "ignoreClass": "document", "processClass": "math|output_area"}})</script>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Examples of usage &mdash; byteparsing 0.1.2 documentation</title>
+      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/sphinx_highlight.js"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+        <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+        <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="Advanced example: parsing PLY files" href="ply.html" />
-    <link rel="prev" title="Introduction to Functional Parsing in Python" href="functional.html" />
-   
-  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
-  
-  
-  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+    <link rel="next" title="Parsing PPM files" href="ppm.html" />
+    <link rel="prev" title="Introduction to Functional Parsing in Python" href="functional.html" /> 
+</head>
 
-  </head><body>
-  
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="index.html" class="icon icon-home"> byteparsing
+          </a>
+              <div class="version">
+                0.1.2
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="index.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="install.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cursors.html">Cursors</a></li>
+<li class="toctree-l1"><a class="reference internal" href="parsers.html">Parsers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="functional.html">Introduction to Functional Parsing in Python</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Examples of usage</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#Simple-email-address-parser">Simple email address parser</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#More-advanced-email-address-parsers">More advanced email address parsers</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#More-detailed-fields">More detailed fields</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#Pro-tip:-construct-a-data-class">Pro tip: construct a data class</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#Parse-a-list-of-emails">Parse a list of emails</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#Parse-a-CSV">Parse a CSV</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="ppm.html">Parsing PPM files</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ply.html">Advanced example: parsing PLY files</a></li>
+<li class="toctree-l1"><a class="reference internal" href="architecture.html">Architecture</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api.html">API Documentation</a></li>
+</ul>
 
-    <div class="document">
-      <div class="documentwrapper">
-        <div class="bodywrapper">
-          
+        </div>
+      </div>
+    </nav>
 
-          <div class="body" role="main">
-            
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">byteparsing</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home"></a></li>
+      <li class="breadcrumb-item active">Examples of usage</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/examples.ipynb.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
   
 <style>
 /* CSS for nbsphinx extension */
@@ -146,10 +205,11 @@ div.nboutput.container div.prompt > div {
     }
 }
 
-/* disable scrollbars on prompts */
+/* disable scrollbars and line breaks on prompts */
 div.nbinput.container div.prompt pre,
 div.nboutput.container div.prompt pre {
     overflow: hidden;
+    white-space: pre;
 }
 
 /* input/output area */
@@ -246,11 +306,12 @@ div.nboutput.container div.output_area > div[class^='highlight']{
 }
 
 /* hide copybtn icon on prompts (needed for 'sphinx_copybutton') */
-.prompt a.copybtn {
+.prompt .copybtn {
     display: none;
 }
 
 /* Some additional styling taken form the Jupyter notebook CSS */
+.jp-RenderedHTMLCommon table,
 div.rendered_html table {
   border: none;
   border-collapse: collapse;
@@ -259,10 +320,14 @@ div.rendered_html table {
   font-size: 12px;
   table-layout: fixed;
 }
+.jp-RenderedHTMLCommon thead,
 div.rendered_html thead {
   border-bottom: 1px solid black;
   vertical-align: bottom;
 }
+.jp-RenderedHTMLCommon tr,
+.jp-RenderedHTMLCommon th,
+.jp-RenderedHTMLCommon td,
 div.rendered_html tr,
 div.rendered_html th,
 div.rendered_html td {
@@ -274,31 +339,55 @@ div.rendered_html td {
   max-width: none;
   border: none;
 }
+.jp-RenderedHTMLCommon th,
 div.rendered_html th {
   font-weight: bold;
 }
+.jp-RenderedHTMLCommon tbody tr:nth-child(odd),
 div.rendered_html tbody tr:nth-child(odd) {
   background: #f5f5f5;
 }
+.jp-RenderedHTMLCommon tbody tr:hover,
 div.rendered_html tbody tr:hover {
   background: rgba(66, 165, 245, 0.2);
 }
+
+/* CSS overrides for sphinx_rtd_theme */
+
+/* 24px margin */
+.nbinput.nblast.container,
+.nboutput.nblast.container {
+    margin-bottom: 19px;  /* padding has already 5px */
+}
+
+/* ... except between code cells! */
+.nblast.container + .nbinput.container {
+    margin-top: -19px;
+}
+
+.admonition > p:before {
+    margin-right: 4px;  /* make room for the exclamation icon */
+}
+
+/* Fix math alignment, see https://github.com/rtfd/sphinx_rtd_theme/pull/686 */
+.math {
+    text-align: unset;
+}
 </style>
-<div class="section" id="Examples-of-usage">
-<h1>Examples of usage<a class="headerlink" href="#Examples-of-usage" title="Permalink to this headline">¶</a></h1>
+<section id="Examples-of-usage">
+<h1>Examples of usage<a class="headerlink" href="#Examples-of-usage" title="Permalink to this heading"></a></h1>
 <p>In this section we’ll show several examples of usage of the <code class="docutils literal notranslate"><span class="pre">byteparsing</span></code> package.</p>
 <p>For now, we’ll import all the parsers.</p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="kn">from</span> <span class="nn">byteparsing.parsers</span> <span class="kn">import</span> <span class="o">*</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">byteparsing.parsers</span> <span class="kn">import</span> <span class="o">*</span>
 </pre></div>
 </div>
 </div>
-<div class="section" id="Simple-email-address-parser">
-<h2>Simple email address parser<a class="headerlink" href="#Simple-email-address-parser" title="Permalink to this headline">¶</a></h2>
+<section id="Simple-email-address-parser">
+<h2>Simple email address parser<a class="headerlink" href="#Simple-email-address-parser" title="Permalink to this heading"></a></h2>
 <p>An email address typically contains three pieces of information:</p>
 <ul class="simple">
 <li><p>Username</p></li>
@@ -320,16 +409,15 @@ div.rendered_html tbody tr:hover {
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="c1"># First, we define what charachters are acceptable on an email (email-valid chars)</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># First, we define what charachters are acceptable on an email (email-valid chars)</span>
 <span class="n">email_char</span> <span class="o">=</span> <span class="n">choice</span><span class="p">(</span><span class="n">ascii_alpha_num</span><span class="p">,</span> <span class="n">ascii_underscore</span><span class="p">,</span> <span class="n">text_literal</span><span class="p">(</span><span class="s2">&quot;.&quot;</span><span class="p">),</span> <span class="n">text_literal</span><span class="p">(</span><span class="s2">&quot;-&quot;</span><span class="p">))</span>
 
 <span class="c1"># We abstract the information contained in an email as:</span>
 <span class="c1"># [username]@[host]</span>
 <span class="n">email</span> <span class="o">=</span> <span class="n">named_sequence</span><span class="p">(</span>
             <span class="n">user</span><span class="o">=</span><span class="n">some_char</span><span class="p">(</span><span class="n">email_char</span><span class="p">),</span> <span class="c1"># Step 1</span>
-            <span class="n">_1</span><span class="o">=</span><span class="n">text_literal</span><span class="p">(</span><span class="s2">&quot;@&quot;</span><span class="p">),</span> <span class="c1"># Step 2</span>
-            <span class="n">host</span><span class="o">=</span><span class="n">some_char</span><span class="p">(</span><span class="n">email_char</span><span class="p">)</span> <span class="c1"># Step 3</span>
+            <span class="n">_1</span><span class="o">=</span><span class="n">text_literal</span><span class="p">(</span><span class="s2">&quot;@&quot;</span><span class="p">),</span>       <span class="c1"># Step 2</span>
+            <span class="n">host</span><span class="o">=</span><span class="n">some_char</span><span class="p">(</span><span class="n">email_char</span><span class="p">)</span>  <span class="c1"># Step 3</span>
         <span class="p">)</span>
 
 <span class="c1"># Notice that we ignore the &quot;@&quot; by assigning it to the field &quot;_1&quot;.</span>
@@ -344,8 +432,7 @@ div.rendered_html tbody tr:hover {
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="n">parsed</span> <span class="o">=</span> <span class="n">parse_bytes</span><span class="p">(</span><span class="n">email</span><span class="p">,</span> <span class="sa">b</span><span class="s1">&#39;p.rodriguez-sanchez@esciencecenter.nl&#39;</span><span class="p">)</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">parsed</span> <span class="o">=</span> <span class="n">parse_bytes</span><span class="p">(</span><span class="n">email</span><span class="p">,</span> <span class="sa">b</span><span class="s1">&#39;p.rodriguez-sanchez@esciencecenter.nl&#39;</span><span class="p">)</span>
 
 <span class="nb">print</span><span class="p">(</span><span class="n">parsed</span><span class="p">)</span>
 </pre></div>
@@ -365,41 +452,38 @@ div.rendered_html tbody tr:hover {
 <li><p>The data itself.</p></li>
 </ol>
 <p>The output will be the parsed data.</p>
-</div>
-<div class="section" id="More-advanced-email-address-parsers">
-<h2>More advanced email address parsers<a class="headerlink" href="#More-advanced-email-address-parsers" title="Permalink to this headline">¶</a></h2>
-<div class="section" id="More-detailed-fields">
-<h3>More detailed fields<a class="headerlink" href="#More-detailed-fields" title="Permalink to this headline">¶</a></h3>
+</section>
+<section id="More-advanced-email-address-parsers">
+<h2>More advanced email address parsers<a class="headerlink" href="#More-advanced-email-address-parsers" title="Permalink to this heading"></a></h2>
+<section id="More-detailed-fields">
+<h3>More detailed fields<a class="headerlink" href="#More-detailed-fields" title="Permalink to this heading"></a></h3>
 <p>The information contained in an email address can be further dissected. For instance, the <code class="docutils literal notranslate"><span class="pre">host</span></code> information can be split in <code class="docutils literal notranslate"><span class="pre">server</span></code> and <code class="docutils literal notranslate"><span class="pre">country</span></code> code. That is:</p>
 <p>[username]&#64;[server].[country]</p>
 <p>We can create a more detailed parser that splits strings wherever it finds a dot.</p>
 <p>In order to do this, we first have to redefine the set of acceptable email chars, to not include the dot anymore.</p>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[8]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="n">email_char</span> <span class="o">=</span> <span class="n">choice</span><span class="p">(</span><span class="n">ascii_alpha_num</span><span class="p">,</span> <span class="n">ascii_underscore</span><span class="p">,</span> <span class="n">text_literal</span><span class="p">(</span><span class="s2">&quot;-&quot;</span><span class="p">))</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">email_char</span> <span class="o">=</span> <span class="n">choice</span><span class="p">(</span><span class="n">ascii_alpha_num</span><span class="p">,</span> <span class="n">ascii_underscore</span><span class="p">,</span> <span class="n">text_literal</span><span class="p">(</span><span class="s2">&quot;-&quot;</span><span class="p">))</span>
 </pre></div>
 </div>
 </div>
 <p>Now, we can use the parser below to dissect email components.</p>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[9]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="n">email_component</span> <span class="o">=</span> <span class="n">sep_by</span><span class="p">(</span><span class="n">some_char</span><span class="p">(</span><span class="n">email_char</span><span class="p">,</span> <span class="k">lambda</span> <span class="n">b</span><span class="p">:</span> <span class="n">b</span><span class="o">.</span><span class="n">decode</span><span class="p">()),</span> <span class="n">text_literal</span><span class="p">(</span><span class="s2">&quot;.&quot;</span><span class="p">))</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">email_component</span> <span class="o">=</span> <span class="n">sep_by</span><span class="p">(</span><span class="n">some_char</span><span class="p">(</span><span class="n">email_char</span><span class="p">,</span> <span class="nb">bytes</span><span class="o">.</span><span class="n">decode</span><span class="p">),</span> <span class="n">text_literal</span><span class="p">(</span><span class="s2">&quot;.&quot;</span><span class="p">))</span>
 </pre></div>
 </div>
 </div>
 <p>Let’s build the improved parser.</p>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[10]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="n">better_email</span> <span class="o">=</span> <span class="n">named_sequence</span><span class="p">(</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">better_email</span> <span class="o">=</span> <span class="n">named_sequence</span><span class="p">(</span>
                 <span class="n">user</span><span class="o">=</span><span class="n">email_component</span><span class="p">,</span>
                 <span class="n">_1</span><span class="o">=</span><span class="n">text_literal</span><span class="p">(</span><span class="s2">&quot;@&quot;</span><span class="p">),</span>
                 <span class="n">host</span><span class="o">=</span><span class="n">email_component</span>
@@ -409,22 +493,20 @@ div.rendered_html tbody tr:hover {
 </div>
 <p>And try it:</p>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[11]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="n">my_email</span> <span class="o">=</span> <span class="n">parse_bytes</span><span class="p">(</span><span class="n">better_email</span><span class="p">,</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">my_email</span> <span class="o">=</span> <span class="n">parse_bytes</span><span class="p">(</span><span class="n">better_email</span><span class="p">,</span>
             <span class="sa">b</span><span class="s2">&quot;pablo.rodriguez-sanchez@esciencecenter.nl&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 <p>The output is a dictionary containing the dissected parts of the email.</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[8]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[13]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="nb">print</span><span class="p">(</span><span class="n">my_email</span><span class="p">)</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">my_email</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -436,16 +518,15 @@ div.rendered_html tbody tr:hover {
 {&#39;user&#39;: [&#39;pablo&#39;, &#39;rodriguez-sanchez&#39;], &#39;host&#39;: [&#39;esciencecenter&#39;, &#39;nl&#39;]}
 </pre></div></div>
 </div>
-<div class="section" id="Pro-tip:-construct-a-data-class">
-<h4>Pro tip: construct a data class<a class="headerlink" href="#Pro-tip:-construct-a-data-class" title="Permalink to this headline">¶</a></h4>
+<section id="Pro-tip:-construct-a-data-class">
+<h4>Pro tip: construct a data class<a class="headerlink" href="#Pro-tip:-construct-a-data-class" title="Permalink to this heading"></a></h4>
 <p>We can use the dictionary to create an instance of a data class. As we will see, this will allow for maximum flexibility.</p>
 <p>First, we create a data class representing an email address.</p>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[9]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[14]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="kn">from</span> <span class="nn">dataclasses</span> <span class="kn">import</span> <span class="n">dataclass</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">dataclasses</span> <span class="kn">import</span> <span class="n">dataclass</span>
 
 <span class="nd">@dataclass</span>
 <span class="k">class</span> <span class="nc">Email</span><span class="p">:</span>
@@ -465,11 +546,10 @@ div.rendered_html tbody tr:hover {
 </div>
 <p>The <code class="docutils literal notranslate"><span class="pre">construct</span></code> method pipes the output directly into the class constructor</p>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[10]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[15]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="n">even_better_email</span> <span class="o">=</span> <span class="n">named_sequence</span><span class="p">(</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">even_better_email</span> <span class="o">=</span> <span class="n">named_sequence</span><span class="p">(</span>
                         <span class="n">user</span><span class="o">=</span><span class="n">email_component</span><span class="p">,</span>
                         <span class="n">_1</span><span class="o">=</span><span class="n">text_literal</span><span class="p">(</span><span class="s2">&quot;@&quot;</span><span class="p">),</span>
                         <span class="n">host</span><span class="o">=</span><span class="n">email_component</span>
@@ -479,11 +559,10 @@ div.rendered_html tbody tr:hover {
 </div>
 <p>Let’s try it:</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[11]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[16]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="n">my_email</span> <span class="o">=</span> <span class="n">parse_bytes</span><span class="p">(</span><span class="n">even_better_email</span><span class="p">,</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">my_email</span> <span class="o">=</span> <span class="n">parse_bytes</span><span class="p">(</span><span class="n">even_better_email</span><span class="p">,</span>
             <span class="sa">b</span><span class="s2">&quot;pablo.rodriguez-sanchez@esciencecenter.nl&quot;</span><span class="p">)</span>
 
 <span class="nb">str</span><span class="p">(</span><span class="n">my_email</span><span class="p">)</span>
@@ -491,7 +570,7 @@ div.rendered_html tbody tr:hover {
 </div>
 </div>
 <div class="nboutput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[11]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[16]:
 </pre></div>
 </div>
 <div class="output_area docutils container">
@@ -501,16 +580,15 @@ div.rendered_html tbody tr:hover {
 </div>
 <p>The output is an instance of the class <code class="docutils literal notranslate"><span class="pre">Email</span></code>.</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[12]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[17]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="n">my_email</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">my_email</span>
 </pre></div>
 </div>
 </div>
 <div class="nboutput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[12]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[17]:
 </pre></div>
 </div>
 <div class="output_area docutils container">
@@ -520,16 +598,15 @@ Email(user=[&#39;pablo&#39;, &#39;rodriguez-sanchez&#39;], host=[&#39;esciencece
 </div>
 <p>We can of course use the class’ methods:</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[13]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[18]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="nb">str</span><span class="p">(</span><span class="n">my_email</span><span class="p">)</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">str</span><span class="p">(</span><span class="n">my_email</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 <div class="nboutput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[13]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[18]:
 </pre></div>
 </div>
 <div class="output_area docutils container">
@@ -538,16 +615,15 @@ Email(user=[&#39;pablo&#39;, &#39;rodriguez-sanchez&#39;], host=[&#39;esciencece
 </pre></div></div>
 </div>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[14]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[19]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="n">my_email</span><span class="o">.</span><span class="n">country</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">my_email</span><span class="o">.</span><span class="n">country</span>
 </pre></div>
 </div>
 </div>
 <div class="nboutput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[14]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[19]:
 </pre></div>
 </div>
 <div class="output_area docutils container">
@@ -555,62 +631,67 @@ Email(user=[&#39;pablo&#39;, &#39;rodriguez-sanchez&#39;], host=[&#39;esciencece
 &#39;nl&#39;
 </pre></div></div>
 </div>
-</div>
-</div>
-<div class="section" id="Parse-a-list-of-emails">
-<h3>Parse a list of emails<a class="headerlink" href="#Parse-a-list-of-emails" title="Permalink to this headline">¶</a></h3>
+</section>
+</section>
+<section id="Parse-a-list-of-emails">
+<h3>Parse a list of emails<a class="headerlink" href="#Parse-a-list-of-emails" title="Permalink to this heading"></a></h3>
 <p>Imagine now we want to parse several email addresses from a file containing the information below. Notice that each email address is separated by an end-of-line char.</p>
-<div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[15]:
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[22]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="n">data</span> <span class="o">=</span> <span class="sa">b</span><span class="s2">&quot;j.hidding@esciencecenter.nl</span><span class="se">\n</span><span class="s2">p.rodriguez-sanchez@esciencencenter.nl&quot;</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">data</span> <span class="o">=</span> <span class="sa">b</span><span class="s2">&quot;j.hidding@esciencecenter.nl</span><span class="se">\n</span><span class="s2">p.rodriguez-sanchez@esciencencenter.nl&quot;</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">decode</span><span class="p">())</span>
 </pre></div>
 </div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+j.hidding@esciencecenter.nl
+p.rodriguez-sanchez@esciencencenter.nl
+</pre></div></div>
 </div>
 <p>The following parser will be helpful for dealing with end-of-line chars, because they are encoded differently depending on the OS.</p>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[16]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[23]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="n">eol</span> <span class="o">=</span> <span class="n">choice</span><span class="p">(</span><span class="n">text_literal</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">),</span> <span class="n">text_literal</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n\r</span><span class="s2">&quot;</span><span class="p">))</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">eol</span> <span class="o">=</span> <span class="n">choice</span><span class="p">(</span><span class="n">text_literal</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">),</span> <span class="n">text_literal</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n\r</span><span class="s2">&quot;</span><span class="p">))</span>
 </pre></div>
 </div>
 </div>
 <p>We can create a parser for a list of emails just by:</p>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[17]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[24]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="n">list_of_emails</span> <span class="o">=</span> <span class="n">sep_by</span><span class="p">(</span><span class="n">even_better_email</span><span class="p">,</span> <span class="n">eol</span><span class="p">)</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">list_of_emails</span> <span class="o">=</span> <span class="n">sep_by</span><span class="p">(</span><span class="n">even_better_email</span><span class="p">,</span> <span class="n">eol</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 <p>Let’s try it:</p>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[18]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[25]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="n">our_emails</span> <span class="o">=</span> <span class="n">parse_bytes</span><span class="p">(</span><span class="n">list_of_emails</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">our_emails</span> <span class="o">=</span> <span class="n">parse_bytes</span><span class="p">(</span><span class="n">list_of_emails</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 <p>It returns a list of instances of the class <code class="docutils literal notranslate"><span class="pre">Email</span></code>.</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[19]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[26]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="n">our_emails</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">our_emails</span>
 </pre></div>
 </div>
 </div>
 <div class="nboutput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[19]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[26]:
 </pre></div>
 </div>
 <div class="output_area docutils container">
@@ -621,11 +702,10 @@ Email(user=[&#39;pablo&#39;, &#39;rodriguez-sanchez&#39;], host=[&#39;esciencece
 </div>
 <p>And once again, we can access the class’ methods:</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[20]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[27]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="k">for</span> <span class="n">email</span> <span class="ow">in</span> <span class="n">our_emails</span><span class="p">:</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">for</span> <span class="n">email</span> <span class="ow">in</span> <span class="n">our_emails</span><span class="p">:</span>
     <span class="nb">print</span><span class="p">(</span><span class="n">email</span><span class="p">)</span>
     <span class="nb">print</span><span class="p">(</span><span class="n">email</span><span class="o">.</span><span class="n">country</span><span class="p">)</span>
 </pre></div>
@@ -642,14 +722,14 @@ p.rodriguez-sanchez@esciencencenter.nl
 nl
 </pre></div></div>
 </div>
-</div>
-</div>
-<div class="section" id="Parse-a-CSV">
-<h2>Parse a CSV<a class="headerlink" href="#Parse-a-CSV" title="Permalink to this headline">¶</a></h2>
+</section>
+</section>
+<section id="Parse-a-CSV">
+<h2>Parse a CSV<a class="headerlink" href="#Parse-a-CSV" title="Permalink to this heading"></a></h2>
 <p>Imagine we have stored numerical information on a CSV file. The file looks like this:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="mi">1</span><span class="p">;</span><span class="o">-</span><span class="mi">2</span><span class="p">;</span><span class="mf">3.14</span><span class="p">;</span><span class="o">-</span><span class="mi">4</span>
-<span class="mi">5</span><span class="p">;</span><span class="o">-</span><span class="mf">6.2</span><span class="p">;</span><span class="mi">7</span><span class="p">;</span><span class="o">-</span><span class="mf">8.1</span>
-<span class="mi">9</span><span class="p">;</span><span class="o">-</span><span class="mi">10</span><span class="p">;</span><span class="mi">11</span><span class="p">;</span><span class="o">-</span><span class="mi">12</span>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>1;-2;3.14;-4
+5;-6.2;7;-8.1
+9;-10;11;-12
 </pre></div>
 </div>
 <p>We can first create a parser for a single line.</p>
@@ -659,11 +739,10 @@ nl
 <li><p>Expect 0 or 1 end-of-line chars</p></li>
 </ol>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[21]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[28]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="n">csvline</span> <span class="o">=</span> <span class="n">sequence</span><span class="p">(</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">csvline</span> <span class="o">=</span> <span class="n">sequence</span><span class="p">(</span>
     <span class="n">sep_by</span><span class="p">(</span><span class="n">scientific_number</span><span class="p">,</span> <span class="n">text_literal</span><span class="p">(</span><span class="s2">&quot;;&quot;</span><span class="p">))</span> <span class="o">&gt;&gt;</span> <span class="n">push</span><span class="p">,</span>
     <span class="n">many</span><span class="p">(</span><span class="n">eol</span><span class="p">),</span> <span class="c1"># Just check the eol exists. Don&#39;t store it</span>
     <span class="n">pop</span><span class="p">())</span> <span class="c1"># Return pushed content</span>
@@ -672,17 +751,16 @@ nl
 </div>
 <p>Let’s try it:</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[22]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[29]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="n">data</span> <span class="o">=</span> <span class="sa">b</span><span class="s2">&quot;1;-2;3.14;-4/n&quot;</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">data</span> <span class="o">=</span> <span class="sa">b</span><span class="s2">&quot;1;-2;3.14;-4/n&quot;</span>
 <span class="n">parse_bytes</span><span class="p">(</span><span class="n">csvline</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 <div class="nboutput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[22]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[29]:
 </pre></div>
 </div>
 <div class="output_area docutils container">
@@ -692,28 +770,26 @@ nl
 </div>
 <p>A complete CSV just contains several lines like the one above. Our syntax makes this generalization remarkably simple:</p>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[23]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[30]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="n">csv</span> <span class="o">=</span> <span class="n">some</span><span class="p">(</span><span class="n">csvline</span><span class="p">)</span> <span class="c1"># A csv contains at least one line</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">csv</span> <span class="o">=</span> <span class="n">some</span><span class="p">(</span><span class="n">csvline</span><span class="p">)</span> <span class="c1"># A csv contains at least one line</span>
 </pre></div>
 </div>
 </div>
 <p>Let’s try it:</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[24]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[31]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="n">data</span> <span class="o">=</span> <span class="sa">b</span><span class="s2">&quot;1;-2;3;-4</span><span class="se">\n</span><span class="s2">5;-6.2;7;-8.1</span><span class="se">\n</span><span class="s2">9;-10;11;-12&quot;</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">data</span> <span class="o">=</span> <span class="sa">b</span><span class="s2">&quot;1;-2;3;-4</span><span class="se">\n</span><span class="s2">5;-6.2;7;-8.1</span><span class="se">\n</span><span class="s2">9;-10;11;-12&quot;</span>
 
 <span class="n">parse_bytes</span><span class="p">(</span><span class="n">csv</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 <div class="nboutput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[24]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[31]:
 </pre></div>
 </div>
 <div class="output_area docutils container">
@@ -721,52 +797,38 @@ nl
 [[1, -2, 3, -4], [5, -6.2, 7, -8.1], [9, -10, 11, -12]]
 </pre></div></div>
 </div>
-</div>
-</div>
+</section>
+</section>
 
 
+           </div>
           </div>
-          
-        </div>
-      </div>
-      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
-        <div class="sphinxsidebarwrapper"><div class="relations">
-<h3>Related Topics</h3>
-<ul>
-  <li><a href="index.html">Documentation overview</a><ul>
-      <li>Previous: <a href="functional.html" title="previous chapter">Introduction to Functional Parsing in Python</a></li>
-      <li>Next: <a href="ply.html" title="next chapter">Advanced example: parsing PLY files</a></li>
-  </ul></li>
-</ul>
-</div>
-<div id="searchbox" style="display: none" role="search">
-  <h3 id="searchlabel">Quick search</h3>
-    <div class="searchformwrapper">
-    <form class="search" action="search.html" method="get">
-      <input type="text" name="q" aria-labelledby="searchlabel" />
-      <input type="submit" value="Go" />
-    </form>
-    </div>
-</div>
-<script>$('#searchbox').show(0);</script>
-        </div>
-      </div>
-      <div class="clearer"></div>
-    </div>
-    <div class="footer">
-      &copy;2019, Netherlands eScience Center, University of Groningen.
-      
-      |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 3.4.3</a>
-      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
-      
-      |
-      <a href="_sources/examples.ipynb.txt"
-          rel="nofollow">Page source</a>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="functional.html" class="btn btn-neutral float-left" title="Introduction to Functional Parsing in Python" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="ppm.html" class="btn btn-neutral float-right" title="Parsing PPM files" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
-    
+  <hr/>
 
-    
-  </body>
+  <div role="contentinfo">
+    <p>&#169; Copyright 2019, Netherlands eScience Center, University of Groningen.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
 </html>

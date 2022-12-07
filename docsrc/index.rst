@@ -31,6 +31,7 @@ When **not to use** `byteparsing`:
    parsers
    functional
    examples
+   ppm
    ply
    architecture
    api

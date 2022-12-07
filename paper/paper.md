@@ -365,7 +365,7 @@ To show how we can mix ASCII and binary data, we have an example where we parse 
 ```
 P6   # this marks the file type in the Netpbm family
 640 480
-256
+255
 <<binary rgb values: 3*w*h bytes>>
 ```
 

@@ -380,7 +380,6 @@ Now, the entire parser for a PPM file is one more line.
 ```python
 ppm_image = header >> image_bytes
 ```
-
 ## Memory mapped OpenFOAM file
 
 The final example is to read an OpenFOAM file as a memory mapped array. There are some details that need attention.
@@ -405,10 +404,11 @@ with mmap.mmap(f.fileno(), 0) as mm:
 The content is returned in the form of a nested dictionary. The `"internalField"` item is a name that one often finds in OpenFOAM files. The `result` object is a Numpy `ndarray` created using a `np.frombuffer` call. Any mutations to the Numpy array are directly reflected on the disk. This means that accessing large amounts of data can be extremely efficient in terms of memory footprint.
 
 The final two `del` statements are necessary to ensure that no reference to the memory-mapped data outlives the memory map itself, which is closed as soon as we leave the `with mmap ...` context.
-
-<!-- TODO: add concluding remarks -->
 # Conclusion
 In research software it is unfortunately still quite common to encounter non-standard data formats. For those data formats where a mix of ASCII and binary parsing is needed, Byteparsing can make a useful addition to the existing landscape of parser libraries in Python. Development of a parser using Byteparsing can be relatively quick, as it is easy to build up parsers from smaller testable components.
+
+# Acknowledgements
+This project was supported by funding from the Netherlands eScience Center and NWO as part of the Joint Call for Energy Research, Project Number CSER.JCER.025. We also want to acknowledge Dr. Nicolas Renaud for his support and suggestions.
 
 <!-- Footnotes -->
 [^1]: Notice that we ignore the `"@"` by assigning it to the field `"_1"`.

@@ -33,9 +33,9 @@ byteparsing: a Haskell-flavoured parser for Python
   JH: I've changed the current title slightly, but I don't think we should advertise a Haskell origin. -->
 # Summary
 
-<!-- TODO: write summary -->
+`byteparser` is a Haskell-flavoured functional parser combinator for Python. Originally motivated by the problem of parsing OpenFOAM files, which contain ASCII and binary information, `byteparser` became a flexible tool capable of dealing with generic formats.
 
-In addition to the basic parser architecture, the `byteparsing` package contains a parser for both ASCII and binary OpenFOAM files.
+<!-- In addition to the basic parser architecture, the `byteparser` package contains a parser for both ASCII and binary OpenFOAM files. -->
 
 # Statement of need
 
@@ -387,7 +387,8 @@ ppm_image = header >> image_bytes
 Why not use just `"_"`? Because we need these fields to be unique.
 In case we had more than one ignored value, we recommend using `"_1"`, `"_2"`, and so on for the ignored fields.
 
-<!--
+<!-- This is part of the template
+
 # Mathematics
 
 Single dollars ($) are required for inline mathematics e.g. $f(x) = e^{\pi/x}$

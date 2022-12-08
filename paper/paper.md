@@ -28,9 +28,6 @@ bibliography: paper.bib
 # aas-journal: Astrophysical Journal <- The name of the AAS journal.
 ---
 
-<!-- TODO: consider this title:
-byteparsing: a Haskell-flavoured parser for Python 
-  JH: I've changed the current title slightly, but I don't think we should advertise a Haskell origin. -->
 # Summary
 
 `byteparser` is a Haskell-flavoured functional parser combinator for Python. Originally motivated by the problem of parsing OpenFOAM files, which contain ASCII and binary information, `byteparser` became a flexible tool capable of dealing with generic formats.
@@ -77,7 +74,7 @@ In this type definition we have not yet encoded the possibility that the parser 
 
 Some primitive parsers that we have defined are: `item` for parsing a single byte, `char_pred` for parsing classes of characters, `literal` for parsing string literals and `array` for parsing binary arrays of given type and size.
 
-The magic of functional parser combinators happens when we start to combine small parsers into larger ones. To achieve this we need to define the `bind` operation that chains two parser together. We could chain two parsers as follows:
+The magic of functional parser combinators happens when we start to combine small parsers into larger ones. To achieve this we need to define the `bind` operation that chains two parsers together. We could chain two parsers as follows:
 
 ```python
 def chain(p: Parser[T], q: Parser[U]) -> Parser[tuple[T,U]]:
@@ -98,9 +95,9 @@ def bind(p: Parser[T], f: Callable[[T], Parser[U]]) -> Parser[U]
   return bound
 ```
 
-The problem with using `bind` as central combinator in our scheme is two-fold: it won't perform well and Python doesn't have the nice syntax to work with `bind`. To explain: the `bind` function returns a new function that then calls more functions, so we're eating into stack space. This means we can never use `bind` to build loops. One way around that is to build a trampoline to evaluate function calls step-by-step, enabling a tail-recursion style of programming. In our opinion it is better to work around the problem and define looping constructs using Python primitives such as `for` and `while`.
+The problem with using `bind` as central combinator in our scheme is two-fold: it won't perform well and Python doesn't have the nice syntax to work with `bind`. To explain: the `bind` function returns a new function that then calls more functions, so we're eating into stack space. This means we can never use `bind` to build loops. Our solution around that was to build a trampoline to evaluate function calls step-by-step, enabling a tail-recursion style of programming. In our opinion it is better to work around the problem and define looping constructs using Python primitives such as `for` and `while`.
 
-For the most part, we are forced to define a more opportune set of primitive combinators that we can use in a more pythonic setting. The most important primitives for combining or multiplexing parsers are: `named_sequence` parsing a set of `**kwarg` parsers to a `dict`, `many` for zero or more items, `some` for one or more items, and `choice` for any of a set of parsers. Further on in this paper, we show how these primitives can be used to build a larger parser. That being said, we do define the `bind` function in our parser and also make it usable through the shift-right `>>` operator. There are indeed some cases where this operator lets us write consise and readable code.
+For the most part, we are forced to define a more opportune set of primitive combinators that we can use in a more pythonic setting. The most important primitives for combining or multiplexing parsers are: `named_sequence` parsing a set of `**kwarg` parsers to a `dict`, `many` for zero or more items, `some` for one or more items, and `choice` for any of a set of parsers. Further on in this paper, we show how these primitives can be used to build a larger parser. That being said, we do define the `bind` function in our parser and also make it usable through the shift-right `>>` operator. There are indeed some cases where this operator lets us write concise and readable code.
 
 ## Cursor object
 

@@ -4,7 +4,7 @@ We'll have to fill the following fields in the [submission form](https://joss.th
 
 ## Title
 
-byteparser: a functional parser for binary and ASCII
+byteparsing: a functional parser for binary and ASCII
 
 ## Software's Git repository URL
 

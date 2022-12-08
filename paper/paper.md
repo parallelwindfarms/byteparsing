@@ -1,5 +1,5 @@
 ---
-title: 'byteparser: a functional parser combinator for mixed ASCII/binary data'
+title: 'byteparsing: a functional parser combinator for mixed ASCII/binary data'
 tags:
   - Python
   - parsing
@@ -30,9 +30,9 @@ bibliography: paper.bib
 
 # Summary
 
-`byteparser` is a Haskell-flavoured functional parser combinator for Python. Originally motivated by the problem of parsing OpenFOAM files, which contain ASCII and binary information, `byteparser` became a flexible tool capable of dealing with generic formats.
+`byteparsing` is a Haskell-flavoured functional parser combinator for Python. Originally motivated by the problem of parsing OpenFOAM files, which contain ASCII and binary information, `byteparsing` became a flexible tool capable of dealing with generic formats.
 
-<!-- In addition to the basic parser architecture, the `byteparser` package contains a parser for both ASCII and binary OpenFOAM files. -->
+<!-- In addition to the basic parser architecture, the `byteparsing` package contains a parser for both ASCII and binary OpenFOAM files. -->
 
 # Statement of need
 

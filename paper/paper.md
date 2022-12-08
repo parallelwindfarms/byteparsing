@@ -161,7 +161,7 @@ We also defined some derived parsers that should be useful in most contexts.
 : Matches tabs spaces and newlines.
 
 `eol`
-: Matches either `\n` or `\n\r`.
+: Matches End of Line characters (_i.e.:_ either `\n` or `\n\r`).
 
 `integer`
 : Matches an integer value.
@@ -172,7 +172,7 @@ We also defined some derived parsers that should be useful in most contexts.
 ## Combinators
 
 <!-- This package is strongly based on Haskell's syntax and philosophy. But Python is obviously not Haskell. That is to say, there is no nice syntax for monadic actions. In order to solve this issue, we developed a similar grammar for Python. Below, we present a description of such a grammar. -->
-We already saw that we defined some primitive parsers. The next question is how can we combine them? We already listed the main combinators briefly, here we go into a little more detail.
+The next question is, how can we combine our primitive parsers? We already listed the main combinators briefly, here we go into a little more detail.
 
 `choice(*p)`
 : Tries every parser `p` in sequence until one succeeds. If all fail, `choice` gathers all exceptions and composes an error message from that.
@@ -229,7 +229,7 @@ parse_bytes(point, b"(1, 2)")
 gives `Point(x=1, y=2)` as output.
 
 ### `using_config` and `with_config`
-We may use the auxiliary stack to store a config variable that can be accessed from any parser. To make this use a bit more user friendly, we define two functions: `with_config()` and the `@use_config` decorator. Functions decorated with `@use_config` should have the last argument be the `config` variable. The `with_config` parser sets a config dictionary to be the bottom of the auxiliary stack.
+We may use the auxiliary stack to store a config variable that can be accessed from any parser. To make this use a bit more user-friendly, we define two functions: `with_config()` and the `@use_config` decorator. Functions decorated with `@use_config` should have the last argument be the `config` variable. The `with_config` parser sets a config dictionary to be the bottom of the auxiliary stack.
 
 Example: We have as input a number and a string. The string is returned in upper-case if the number is 1:
 
@@ -253,7 +253,6 @@ assert parse_bytes(
     with_config(sequence(integer >> set_case, get_text())),
     b'1hello') == "HELLO"
 ```
- 
 
 ## Examples of usage
 

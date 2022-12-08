@@ -123,7 +123,7 @@ Another application that we have for the auxiliary state, is to store a configur
 
 ## Memory mapping
 
-The `Cursor` object acts on top of any object in Python that conforms to the buffer interface. This can be a `bytes` or `bytearray` object, but also `mmap`. This means we can parse memory mapped data directly to buffered numpy arrays (using `numpy.frombuffer`). Changes made to such an array are then directly reflected on the filesystem.
+The `Cursor` object acts on top of any object in Python that conforms to the buffer interface. This can be a `bytes` or `bytearray` object, but also `mmap`. This means we can parse memory mapped data directly to buffered `numpy` arrays (using `numpy.frombuffer`). Changes made to such an array are then directly reflected on the file system.
 
 # Parser grammar
 

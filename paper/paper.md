@@ -140,7 +140,7 @@ The boundary between what we consider *primitives* and derived parsers can becom
 `item`
 : Get a single byte from the stream.
 
-`literal(str)`
+`text_literal(str)`
 : Succeeds if the next characters in the stream exactly match `str`.
 
 `char_pred(pred)`
@@ -198,6 +198,9 @@ Some derived combinators help us shape a little language to describe grammars.
 
 `tokenize(p)`
 : Parses `p` followed by optional whitespace. This makes sure we always start at the next token.
+
+`fmap(f)`
+: Takes a function `f`, returns a lambda that maps an argument through `f` to a `value` parser. That sounds complicated, but it allows us to pass a parsed result through `f` using the `>>` operator. For an example, see the PPM parser at the end of this paper.
 
 ### `named_sequence` and `construct`
 

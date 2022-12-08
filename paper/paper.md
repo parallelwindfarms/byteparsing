@@ -30,7 +30,7 @@ bibliography: paper.bib
 
 # Summary
 
-`byteparsing` is a Haskell-flavoured functional parser combinator for Python. Originally motivated by the problem of parsing OpenFOAM files, which contain ASCII and binary information, `byteparsing` became a flexible tool capable of dealing with generic formats.
+Byteparsing is a functional parser combinator for Python, originally motivated by the problem of parsing OpenFOAM files. These files contain both ASCII and binary data, which makes them hard to parse using traditional tools. Byteparsing became a flexible tool capable of dealing with generic formats.
 
 <!-- In addition to the basic parser architecture, the `byteparsing` package contains a parser for both ASCII and binary OpenFOAM files. -->
 
@@ -57,9 +57,9 @@ We were thus forced to write our own parser, with this list of requirements:
 
 # Architecture
 
-## Functional parser combinators
+Writing functional parser combinators is a staple of functional languages like Haskell or Ocaml [@frost_1989;@hutton_1992]. The paper "Monadic Parsing in Haskell" [@hutton_meijer_1998] gives a complete tutorial on how to write a basic recursive descent parser. Most of what Hutton and Meijer teach, carries over nicely to Python, once we take care of a few details. We've replaced some Haskell idioms by features that are considered more 'pythonic'.
 
-Writing functional parser combinators is a staple of functional languages like Haskell. The paper "Monadic Parsing in Haskell" [@hutton_meijer_1998] gives a complete tutorial on how to write a basic recursive descent parser. Most of what Hutton and Meijer teach carries over nicely to Python, once we take care of a few details. We've replaced some Haskell idioms by features that are considered more 'pythonic'.
+## Functional parser combinators
 
 We explain the concept of a functional parser combinator in terms of taking `str` as input for simplicity. Later we will see that we need to make things a bit more complicated.
 
@@ -379,6 +379,8 @@ ppm_image = header >> image_bytes
 ```
 
 <!-- TODO: add concluding remarks -->
+# Conclusion
+In research software it is unfortunately still quite common to encounter non-standard data formats. For those data formats where a mix of ASCII and binary parsing is needed, Byteparsing can make a useful addition to the existing landscape of parser libraries in Python. Development of a parser using Byteparsing can be relatively quick, as it is easy to build up parsers from smaller testable components.
 
 <!-- Footnotes -->
 [^1]: Notice that we ignore the `"@"` by assigning it to the field `"_1"`.

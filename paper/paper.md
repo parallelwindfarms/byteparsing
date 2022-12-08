@@ -117,7 +117,9 @@ T = TypeVar('T')
 Parser = Callable([Cursor, Any], tuple[T, Cursor, Any])
 ```
 
-We define two helper functions to make use of the auxiliary state: `push` and `pop`. These assume that the auxiliary state contains a list of items that we can use as a stack. Another application that we have for the auxiliary state, is to store a configuration dictionary. For instance, we can read from a header wether the rest of a file should be read in ASCII or binary format. That information we store in the config, to be retrieved when needed later on.
+We define two helper functions to make use of the auxiliary state: `push` and `pop`. These assume that the auxiliary state contains a list of items that we can use as a stack.
+
+Another application that we have for the auxiliary state, is to store a configuration dictionary. For instance, we can read from a header wether the rest of a file should be read in ASCII or binary format. That information we store in the config, to be retrieved when needed later on.
 
 ## Memory mapping
 

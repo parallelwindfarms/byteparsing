@@ -4,7 +4,7 @@ We'll have to fill the following fields in the [submission form](https://joss.th
 
 ## Title
 
-byteparsing: a functional parser for binary and ASCII
+byteparsing: a functional parser combinator for mixed ASCII/binary data
 
 ## Software's Git repository URL
 
@@ -24,6 +24,9 @@ New submission
 
 ## Main subject of the paper
 
-Functional parser combinator for Python
-
+Computer Science Applications [Physical Sciences]
 ## Message to editors
+
+Summary:
+
+Byteparsing is a functional parser combinator for Python, initially motivated by the problem of parsing files containing both ASCII and binary data, which makes them hard to parse using traditional tools. Byteparsing became a flexible tool capable of dealing with generic formats.

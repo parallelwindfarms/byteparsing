@@ -30,29 +30,26 @@ bibliography: paper.bib
 
 # Summary
 
-Byteparsing is a functional parser combinator for Python, originally motivated by the problem of parsing OpenFOAM files. These files contain both ASCII and binary data, which makes them hard to parse using traditional tools. Byteparsing became a flexible tool capable of dealing with generic formats.
+Byteparsing is a functional parser combinator for Python, originally motivated by the problem of parsing OpenFOAM files[^1]. These files contain both ASCII and binary data, which makes them hard to parse using traditional tools. Byteparsing became a flexible tool capable of dealing with generic formats.
 
 <!-- In addition to the basic parser architecture, the `byteparsing` package contains a parser for both ASCII and binary OpenFOAM files. -->
 
 # Statement of need
 
-In research there are many software packages that use non-standard data containers for their input and output. This can be a problem when we need to do post-processing, or when we want to embed such a package in a larger data pipeline. In many cases, these non-standard formats have header information in plain text, while the bulk of the data is saved in binary. Chief and motivating example is the OpenFOAM data format. Other more common formats include PLY triangle data or PPM images. For these cases, there are only few accessible options for parsing and manipulating data in Python.
-
-Here are some Python modules for parsing that one could consider:
+In research there are many software packages that use non-standard data containers for their input and output. This can be a problem when we need to do post-processing, or when we want to embed such a package in a larger data pipeline. In many cases, these non-standard formats have header information in plain text, while the bulk of the data is saved in binary. Chief and motivating example is the OpenFOAM data format. Other common formats are PLY triangle data[^2] or PPM images[^3]. For these cases, there are only few accessible options for parsing and manipulating data in Python. For instance:
 
 - `pyparsing` is the _de facto_ standard for text parsing in Python. It seems to have no features for dealing with binary data though.
 - `construct` deals mostly with pure binary data.
 - `Kaitai Struct`, `Antlr` both require a large time investment to learn.
 
-The major downside of the remaining binary parser packages in Python we could find is that they focus mostly either on parsing network traffic or on data structures that can be described in a fixed declarative language.
+The major downside of the remaining binary parser Python packages we could find is that they focus mostly either on parsing network traffic or on data structures that can be described in a fixed declarative language.
 
 We were thus forced to write our own parser, with this list of requirements:
 
 - Easy to program, using concepts similar to those found in other functional parser combinators like `pyparsing`.
 - Composable and testable at all levels of complexity.
-- Deals transparently with Python objects that support the buffer protocol (_e.g._: memory mapped file access is trivially supported).
+- Capable of dealing transparently with Python objects that support the buffer protocol (_i.e.:_: memory mapped file access is trivially supported).
 - Performant enough, considering the use case where we have small ASCII headers and large contiguous blocks of floating point data.
-<!-- - And last but not least, bloggy languange -->
 - Compliant with best practices such as automated unit testing and thorough documentation.
 
 # Architecture
@@ -275,7 +272,7 @@ email_char = choice(
               )
 ```
 
-Now, we abstract the information contained in an email as: `[user]@[host]`[^1]
+Now, we abstract the information contained in an email as: `[user]@[host]`
 
 ```python
 email = named_sequence(
@@ -414,9 +411,9 @@ This project was supported by funding from the Netherlands eScience Center and N
 # References
 
 <!-- Footnotes -->
-[^1]: Notice that we ignore the `"@"` by assigning it to the field `"_1"`.
-Why not use just `"_"`? Because we need these fields to be unique.
-In case we had more than one ignored value, we recommend using `"_1"`, `"_2"`, and so on for the ignored fields.
+[^1]: https://www.openfoam.com/
+[^2]: https://people.math.sc.edu/Burkardt/data/ply/ply.html
+[^3]: https://netpbm.sourceforge.net/
 
 <!-- This is part of the template
 

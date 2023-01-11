@@ -52,9 +52,11 @@ We were thus forced to write our own parser, with this list of requirements:
 - Performant enough, considering the use case where we have small ASCII headers and large contiguous blocks of floating point data.
 - Compliant with best practices such as automated unit testing and thorough documentation.
 
-# A note on architecture
+## A note on architecture
 
-Writing functional parser combinators is a staple of functional languages like Haskell or Ocaml [@frost_1989;@hutton_1992]. The paper "Monadic Parsing in Haskell" [@hutton_meijer_1998] gives a complete tutorial on how to write a basic recursive descent parser. Most of what Hutton and Meijer teach, carries over nicely to Python once we take care of a few details. We've replaced some Haskell idioms by features that are considered more 'pythonic'. An extended description can be found in our documentation[^4].
+Writing functional parser combinators is a staple of functional languages like Haskell or Ocaml [@frost_1989;@hutton_1992]. The paper "Monadic Parsing in Haskell" [@hutton_meijer_1998] gives a complete tutorial on how to write a basic recursive descent parser. Most of what Hutton and Meijer teach, carries over nicely to Python once we take care of a few details. We've replaced some Haskell idioms by features that are considered more 'pythonic'.
+
+An extended description of the architecture can be found in our documentation[^4]. Those readers more interested in starting working right away will probably find our list of examples[^5] very handy.
 
 ## Functional parser combinators
 
@@ -253,33 +255,6 @@ assert parse_bytes(
     with_config(sequence(integer >> set_case, get_text())),
     b'1hello') == "HELLO"
 ```
-
-## Example of usage: Memory mapped OpenFOAM file
-
-The final example is to read an OpenFOAM file as a memory mapped array. There are some details that need attention.
-
-```python
-import mmap
-import numpy as np
-from byteparsing import parse_bytes
-from byteparsing.openfoam import foam_file
-
-f = Path("pipeFlow/1.0/U").open(mode="r+b")
-with mmap.mmap(f.fileno(), 0) as mm:
-  content = parse_bytes(foam_file, mm)
-  result = content["data"]["internalField"]
-
-  <<do work ...>>
-
-  del result
-  del content
-```
-
-The content is returned in the form of a nested dictionary. The `"internalField"` item is a name that one often finds in OpenFOAM files. The `result` object is a Numpy `ndarray` created using a `np.frombuffer` call. Any mutations to the Numpy array are directly reflected on the disk. This means that accessing large amounts of data can be extremely efficient in terms of memory footprint.
-
-The final two `del` statements are necessary to ensure that no reference to the memory-mapped data outlives the memory map itself, which is closed as soon as we leave the `with mmap ...` context.
-
-More examples can be found in our documentation[^5].
 
 # Conclusion
 In research software it is unfortunately still quite common to encounter non-standard data formats. For those data formats where a mix of ASCII and binary parsing is needed, Byteparsing can make a useful addition to the existing landscape of parser libraries in Python. Development of a parser using Byteparsing can be relatively quick, as it is easy to build up parsers from smaller testable components.

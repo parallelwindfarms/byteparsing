@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Installation &mdash; byteparsing 0.1.2 documentation</title>
+  <title>Memory mapped OpenFOAM file &mdash; byteparsing 0.1.2 documentation</title>
       <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
   <!--[if lt IE 9]>
@@ -18,13 +18,11 @@
         <script src="_static/doctools.js"></script>
         <script src="_static/sphinx_highlight.js"></script>
         <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
-        <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
-        <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="Examples of usage" href="examples.html" />
-    <link rel="prev" title="Welcome to byteparsing’s documentation!" href="index.html" /> 
+    <link rel="next" title="Parsing PPM files" href="ppm.html" />
+    <link rel="prev" title="Examples of usage" href="examples.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -48,13 +46,9 @@
               <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="index.html">Introduction</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">Installation</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#Latest-stable-version">Latest stable version</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#Development-version">Development version</a></li>
-</ul>
-</li>
+<li class="toctree-l1"><a class="reference internal" href="install.html">Installation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="examples.html">Examples of usage</a></li>
-<li class="toctree-l1"><a class="reference internal" href="openfoam.html">Memory mapped OpenFOAM file</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Memory mapped OpenFOAM file</a></li>
 <li class="toctree-l1"><a class="reference internal" href="ppm.html">Parsing PPM files</a></li>
 <li class="toctree-l1"><a class="reference internal" href="ply.html">Advanced example: parsing PLY files</a></li>
 <li class="toctree-l1"><a class="reference internal" href="functional.html">Introduction to Functional Parsing in Python</a></li>
@@ -78,9 +72,9 @@
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
       <li><a href="index.html" class="icon icon-home"></a></li>
-      <li class="breadcrumb-item active">Installation</li>
+      <li class="breadcrumb-item active">Memory mapped OpenFOAM file</li>
       <li class="wy-breadcrumbs-aside">
-            <a href="_sources/install.ipynb.txt" rel="nofollow"> View page source</a>
+            <a href="_sources/openfoam.md.txt" rel="nofollow"> View page source</a>
       </li>
   </ul>
   <hr/>
@@ -112,32 +106,35 @@
     text-align: unset;
 }
 </style>
-<section id="Installation">
-<h1>Installation<a class="headerlink" href="#Installation" title="Permalink to this heading"></a></h1>
-<section id="Latest-stable-version">
-<h2>Latest stable version<a class="headerlink" href="#Latest-stable-version" title="Permalink to this heading"></a></h2>
-<p>You can comfortably install the latest stable version using:</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">pip install byteparsing</span>
+<section id="memory-mapped-openfoam-file">
+<h1>Memory mapped OpenFOAM file<a class="headerlink" href="#memory-mapped-openfoam-file" title="Permalink to this heading"></a></h1>
+<p>The final example is to read an OpenFOAM file as a memory mapped array. There are some details that need attention.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">mmap</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">byteparsing</span> <span class="kn">import</span> <span class="n">parse_bytes</span>
+<span class="kn">from</span> <span class="nn">byteparsing.openfoam</span> <span class="kn">import</span> <span class="n">foam_file</span>
+
+<span class="n">f</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="s2">&quot;pipeFlow/1.0/U&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">mode</span><span class="o">=</span><span class="s2">&quot;r+b&quot;</span><span class="p">)</span>
+<span class="k">with</span> <span class="n">mmap</span><span class="o">.</span><span class="n">mmap</span><span class="p">(</span><span class="n">f</span><span class="o">.</span><span class="n">fileno</span><span class="p">(),</span> <span class="mi">0</span><span class="p">)</span> <span class="k">as</span> <span class="n">mm</span><span class="p">:</span>
+  <span class="n">content</span> <span class="o">=</span> <span class="n">parse_bytes</span><span class="p">(</span><span class="n">foam_file</span><span class="p">,</span> <span class="n">mm</span><span class="p">)</span>
+  <span class="n">result</span> <span class="o">=</span> <span class="n">content</span><span class="p">[</span><span class="s2">&quot;data&quot;</span><span class="p">][</span><span class="s2">&quot;internalField&quot;</span><span class="p">]</span>
+
+  <span class="o">&lt;&lt;</span><span class="n">do</span> <span class="n">work</span> <span class="o">...&gt;&gt;</span>
+
+  <span class="k">del</span> <span class="n">result</span>
+  <span class="k">del</span> <span class="n">content</span>
 </pre></div>
 </div>
-</section>
-<section id="Development-version">
-<h2>Development version<a class="headerlink" href="#Development-version" title="Permalink to this heading"></a></h2>
-<p>If you feel adventurous and want to try the very latest version, use this instead:</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">git clone https://github.com/parallelwindfarms/byteparsing.git</span>
-<span class="go">cd byteparsing</span>
-<span class="go">pip install .</span>
-</pre></div>
-</div>
-</section>
+<p>The content is returned in the form of a nested dictionary. The <code class="docutils literal notranslate"><span class="pre">&quot;internalField&quot;</span></code> item is a name that one often finds in OpenFOAM files. The <code class="docutils literal notranslate"><span class="pre">result</span></code> object is a Numpy <code class="docutils literal notranslate"><span class="pre">ndarray</span></code> created using a <code class="docutils literal notranslate"><span class="pre">np.frombuffer</span></code> call. Any mutations to the Numpy array are directly reflected on the disk. This means that accessing large amounts of data can be extremely efficient in terms of memory footprint.</p>
+<p>The final two <code class="docutils literal notranslate"><span class="pre">del</span></code> statements are necessary to ensure that no reference to the memory-mapped data outlives the memory map itself, which is closed as soon as we leave the <code class="docutils literal notranslate"><span class="pre">with</span> <span class="pre">mmap</span> <span class="pre">...</span></code> context.</p>
 </section>
 
 
            </div>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="index.html" class="btn btn-neutral float-left" title="Welcome to byteparsing’s documentation!" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="examples.html" class="btn btn-neutral float-right" title="Examples of usage" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="examples.html" class="btn btn-neutral float-left" title="Examples of usage" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="ppm.html" class="btn btn-neutral float-right" title="Parsing PPM files" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>

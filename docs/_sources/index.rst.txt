@@ -28,6 +28,7 @@ When **not to use** `byteparsing`:
    Introduction <self>
    install
    examples
+   openfoam
    ppm
    ply
    functional

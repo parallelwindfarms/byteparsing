@@ -30,8 +30,8 @@ When **not to use** `byteparsing`:
    examples
    advanced
    functional
-   grammar
    architecture
+   grammar
    api
 
 Indices and tables

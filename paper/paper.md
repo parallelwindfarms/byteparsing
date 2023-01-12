@@ -30,33 +30,36 @@ bibliography: paper.bib
 
 # Summary
 
-Byteparsing is a functional parser combinator for Python, originally motivated by the problem of parsing OpenFOAM files[^1]. These files contain both ASCII and binary data, which makes them hard to parse using traditional tools. Byteparsing became a flexible tool capable of dealing with generic formats.
+Byteparsing is a functional parser combinator for Python. It was originally motivated by the problem of parsing OpenFOAM files. OpenFOAM [^1] is a free, open source computational fluid dynamics software whose input and output files contain both ASCII and binary data. Other common formats combining ASCII and binary are PLY triangle data[^2] or PPM images[^3]. This makes them particularly hard to parse using traditional tools. Byteparsing became a flexible tool capable of dealing with generic formats.
 
 <!-- In addition to the basic parser architecture, the `byteparsing` package contains a parser for both ASCII and binary OpenFOAM files. -->
 
 # Statement of need
 
-In research there are many software packages that use non-standard data containers for their input and output. This can be a problem when we need to do post-processing, or when we want to embed such a package in a larger data pipeline. In many cases, these non-standard formats have header information in plain text, while the bulk of the data is saved in binary. Chief and motivating example is the OpenFOAM data format. Other common formats are PLY triangle data[^2] or PPM images[^3]. For these cases, there are only few accessible options for parsing and manipulating data in Python. For instance:
+There are already a few accessible options for parsing and manipulating data in Python. For instance:
 
 - `pyparsing` is the _de facto_ standard for text parsing in Python. It seems to have no features for dealing with binary data though.
 - `construct` deals mostly with pure binary data.
-- `Kaitai Struct`, `Antlr` both require a large time investment to learn.
+- `Kaitai Struct` and `Antlr` both require a large time investment to learn.
 
 The major downside of the remaining binary parser Python packages we could find is that they focus mostly either on parsing network traffic or on data structures that can be described in a fixed declarative language.
 
-We were thus forced to write our own parser, with this list of requirements:
+Our research problem, namely, manipulating OpenFOAM files from Python, required a parser with the following characteristics:
 
+- Capable of dealing with files combining ASCII and binary.
 - Easy to program, using concepts similar to those found in other functional parser combinators like `pyparsing`.
 - Composable and testable at all levels of complexity.
-- Capable of dealing transparently with Python objects that support the buffer protocol (_i.e.:_: memory mapped file access is trivially supported).
+- Capable of dealing transparently with Python objects that support the buffer protocol (_i.e.:_ memory mapped file access is trivially supported).
 - Performant enough, considering the use case where we have small ASCII headers and large contiguous blocks of floating point data.
-- Compliant with best practices such as automated unit testing and thorough documentation.
+- Compliant with best practices, such as automated unit testing and thorough documentation.
+
+Byteparser is the solution we developed based on this list of requirements.
 
 ## A note on architecture
 
-Writing functional parser combinators is a staple of functional languages like Haskell or Ocaml [@frost_1989;@hutton_1992]. The paper "Monadic Parsing in Haskell" [@hutton_meijer_1998] gives a complete tutorial on how to write a basic recursive descent parser. Most of what Hutton and Meijer teach, carries over nicely to Python once we take care of a few details. We've replaced some Haskell idioms by features that are considered more 'pythonic'.
+Writing functional parser combinators is a staple of functional languages like Haskell or Ocaml [@frost_1989;@hutton_1992]. The paper "Monadic Parsing in Haskell" [@hutton_meijer_1998] gives a complete tutorial on how to write a basic recursive descent parser. Most of what Hutton and Meijer teach carries over nicely to Python once we take care of a few details. We've replaced some Haskell idioms by features that are considered more 'pythonic'.
 
-An extended description of the architecture can be found in our documentation[^4]. Those readers more interested in starting working right away will probably find our list of examples[^5] very handy.
+An extended description of the architecture can be found in the documentation[^4]. Those readers more interested in starting working right away will probably find our list of examples[^5] very handy.
 
 # Conclusion
 In research software it is unfortunately still quite common to encounter non-standard data formats. For those data formats where a mix of ASCII and binary parsing is needed, Byteparsing can make a useful addition to the existing landscape of parser libraries in Python. Development of a parser using Byteparsing can be relatively quick, as it is easy to build up parsers from smaller testable components.

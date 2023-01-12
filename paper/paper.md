@@ -59,7 +59,7 @@ Byteparser is the solution we developed based on this list of requirements.
 
 Writing functional parser combinators is a staple of functional languages like Haskell or Ocaml [@frost_1989;@hutton_1992]. The paper "Monadic Parsing in Haskell" [@hutton_meijer_1998] gives a complete tutorial on how to write a basic recursive descent parser. Most of what Hutton and Meijer teach carries over nicely to Python once we take care of a few details. We've replaced some Haskell idioms by features that are considered more 'pythonic'.
 
-An extended description of the architecture can be found in the documentation[^4]. Those readers more interested in starting working right away will probably find our list of examples[^5] very handy.
+An extended description of the concept of functional parser combinators can be found in the documentation[^4]. Those readers more interested in starting working right away will probably find our lists of examples[^5] and advanced examples[^6] very practical.
 
 # Conclusion
 In research software it is unfortunately still quite common to encounter non-standard data formats. For those data formats where a mix of ASCII and binary parsing is needed, Byteparsing can make a useful addition to the existing landscape of parser libraries in Python. Development of a parser using Byteparsing can be relatively quick, as it is easy to build up parsers from smaller testable components.
@@ -74,7 +74,8 @@ This project was supported by funding from the Netherlands eScience Center and N
 [^2]: https://parallelwindfarms.github.io/byteparsing/ply.html
 [^3]: https://parallelwindfarms.github.io/byteparsing/ppm.html
 [^4]: https://parallelwindfarms.github.io/byteparsing/functional.html
-[^5]: https://parallelwindfarms.github.io/byteparsing/index.html
+[^5]: https://parallelwindfarms.github.io/byteparsing/examples.html
+[^6]: https://parallelwindfarms.github.io/byteparsing/advanced.html
 
 <!-- This is part of the template
 

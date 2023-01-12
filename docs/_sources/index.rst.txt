@@ -28,9 +28,7 @@ When **not to use** `byteparsing`:
    Introduction <self>
    install
    examples
-   openfoam
-   ppm
-   ply
+   advanced
    functional
    cursors
    parsers

@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Advanced example: parsing PLY files &mdash; byteparsing 0.1.2 documentation</title>
+  <title>Advanced examples &mdash; byteparsing 0.1.2 documentation</title>
       <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
   <!--[if lt IE 9]>
@@ -24,7 +24,7 @@
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="Introduction to Functional Parsing in Python" href="functional.html" />
-    <link rel="prev" title="Parsing PPM files" href="ppm.html" /> 
+    <link rel="prev" title="Examples of usage" href="examples.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -50,12 +50,14 @@
 <li class="toctree-l1"><a class="reference internal" href="index.html">Introduction</a></li>
 <li class="toctree-l1"><a class="reference internal" href="install.html">Installation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="examples.html">Examples of usage</a></li>
-<li class="toctree-l1"><a class="reference internal" href="advanced.html">Advanced examples</a></li>
-<li class="toctree-l1"><a class="reference internal" href="openfoam.html">Memory mapped OpenFOAM file</a></li>
-<li class="toctree-l1"><a class="reference internal" href="ppm.html">Parsing PPM files</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">Advanced example: parsing PLY files</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#Header">Header</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#The-Stanford-Bunny">The Stanford Bunny</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Advanced examples</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#Parsing-PPM-files">Parsing PPM files</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#Parsing-PLY-files">Parsing PLY files</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#Header">Header</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#The-Stanford-Bunny">The Stanford Bunny</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#Parsing-Memory-mapped-OpenFOAM-files">Parsing Memory mapped OpenFOAM files</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="functional.html">Introduction to Functional Parsing in Python</a></li>
@@ -79,9 +81,9 @@
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
       <li><a href="index.html" class="icon icon-home"></a></li>
-      <li class="breadcrumb-item active">Advanced example: parsing PLY files</li>
+      <li class="breadcrumb-item active">Advanced examples</li>
       <li class="wy-breadcrumbs-aside">
-            <a href="_sources/ply.ipynb.txt" rel="nofollow"> View page source</a>
+            <a href="_sources/advanced.ipynb.txt" rel="nofollow"> View page source</a>
       </li>
   </ul>
   <hr/>
@@ -368,8 +370,105 @@ div.rendered_html tbody tr:hover {
     text-align: unset;
 }
 </style>
-<section id="Advanced-example:-parsing-PLY-files">
-<h1>Advanced example: parsing PLY files<a class="headerlink" href="#Advanced-example:-parsing-PLY-files" title="Permalink to this heading"></a></h1>
+<section id="Advanced-examples">
+<h1>Advanced examples<a class="headerlink" href="#Advanced-examples" title="Permalink to this heading"></a></h1>
+<p>In this section we’ll show several examples of usage of the <code class="docutils literal notranslate"><span class="pre">byteparsing</span></code> package for dealing with files combining ASCII and binary data.</p>
+<section id="Parsing-PPM-files">
+<h2>Parsing PPM files<a class="headerlink" href="#Parsing-PPM-files" title="Permalink to this heading"></a></h2>
+<p>To show how we can mix ASCII and binary data, we have an example where we parse Portable PixMap files (PPM). These files have a small ASCII header and the image itself in binary. The header looks something like this:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>P6   # this marks the file type in the Netpbm family
+640 480
+256
+&lt;&lt;binary rgb values: 3*w*h bytes&gt;&gt;
+</pre></div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">dataclasses</span> <span class="kn">import</span> <span class="n">dataclass</span>
+<span class="kn">from</span> <span class="nn">byteparsing</span> <span class="kn">import</span> <span class="n">parse_bytes</span>
+<span class="kn">from</span> <span class="nn">byteparsing.parsers</span> <span class="kn">import</span> <span class="p">(</span>
+    <span class="n">text_literal</span><span class="p">,</span> <span class="n">integer</span><span class="p">,</span> <span class="n">eol</span><span class="p">,</span> <span class="n">named_sequence</span><span class="p">,</span> <span class="n">sequence</span><span class="p">,</span> <span class="n">construct</span><span class="p">,</span>
+    <span class="n">tokenize</span><span class="p">,</span> <span class="n">item</span><span class="p">,</span> <span class="n">array</span><span class="p">,</span>  <span class="n">fmap</span><span class="p">,</span> <span class="n">text_end_by</span><span class="p">,</span> <span class="n">optional</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<p>The PPM header format allows for comments in the ASCII header.</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">comment</span> <span class="o">=</span> <span class="n">sequence</span><span class="p">(</span><span class="n">text_literal</span><span class="p">(</span><span class="s2">&quot;#&quot;</span><span class="p">),</span> <span class="n">text_end_by</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<p>We define a class that should contain all the data in the header.</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nd">@dataclass</span>
+<span class="k">class</span> <span class="nc">Header</span><span class="p">:</span>
+    <span class="n">width</span><span class="p">:</span> <span class="nb">int</span>
+    <span class="n">height</span><span class="p">:</span> <span class="nb">int</span>
+    <span class="n">maxint</span><span class="p">:</span> <span class="nb">int</span>
+</pre></div>
+</div>
+</div>
+<p>Then we can construct a parser for this header, using <code class="docutils literal notranslate"><span class="pre">named_sequence</span></code> and <code class="docutils literal notranslate"><span class="pre">construct</span></code>.</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">header</span> <span class="o">=</span> <span class="n">named_sequence</span><span class="p">(</span>
+    <span class="n">_1</span> <span class="o">=</span> <span class="n">tokenize</span><span class="p">(</span><span class="n">text_literal</span><span class="p">(</span><span class="s2">&quot;P6&quot;</span><span class="p">)),</span>
+    <span class="n">_2</span> <span class="o">=</span> <span class="n">optional</span><span class="p">(</span><span class="n">comment</span><span class="p">),</span>
+    <span class="n">width</span> <span class="o">=</span> <span class="n">tokenize</span><span class="p">(</span><span class="n">integer</span><span class="p">),</span>
+    <span class="n">height</span> <span class="o">=</span> <span class="n">tokenize</span><span class="p">(</span><span class="n">integer</span><span class="p">),</span>
+    <span class="n">maxint</span> <span class="o">=</span> <span class="n">tokenize</span><span class="p">(</span><span class="n">integer</span><span class="p">))</span> <span class="o">&gt;&gt;</span> <span class="n">construct</span><span class="p">(</span><span class="n">Header</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<p>We’ll have to pass on the header information to the parser for the binary blob somehow, so we define a function.</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">image_bytes</span><span class="p">(</span><span class="n">header</span><span class="p">:</span> <span class="n">Header</span><span class="p">):</span>
+    <span class="n">shape</span> <span class="o">=</span> <span class="p">(</span><span class="n">header</span><span class="o">.</span><span class="n">height</span><span class="p">,</span> <span class="n">header</span><span class="o">.</span><span class="n">width</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+    <span class="n">size</span> <span class="o">=</span> <span class="n">header</span><span class="o">.</span><span class="n">height</span> <span class="o">*</span> <span class="n">header</span><span class="o">.</span><span class="n">width</span> <span class="o">*</span> <span class="mi">3</span>
+    <span class="k">return</span> <span class="n">array</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">uint8</span><span class="p">,</span> <span class="n">size</span><span class="p">)</span> <span class="o">&gt;&gt;</span> <span class="n">fmap</span><span class="p">(</span><span class="k">lambda</span> <span class="n">a</span><span class="p">:</span> <span class="n">a</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">shape</span><span class="p">))</span>
+
+<span class="n">ppm_image</span> <span class="o">=</span> <span class="n">header</span> <span class="o">&gt;&gt;</span> <span class="n">image_bytes</span>
+</pre></div>
+</div>
+</div>
+<p>Let’s test this on a sample image, and ignore the fact that <code class="docutils literal notranslate"><span class="pre">PIL</span></code> has a perfectly good parser for PPM files itself.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">raw_data</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="s2">&quot;python-logo.ppm&quot;</span><span class="p">,</span> <span class="s2">&quot;rb&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
+<span class="n">image</span> <span class="o">=</span> <span class="n">parse_bytes</span><span class="p">(</span><span class="n">ppm_image</span><span class="p">,</span> <span class="n">raw_data</span><span class="p">)</span>
+
+<span class="kn">from</span> <span class="nn">PIL</span> <span class="kn">import</span> <span class="n">Image</span>
+<span class="n">Image</span><span class="o">.</span><span class="n">frombytes</span><span class="p">(</span><span class="n">mode</span><span class="o">=</span><span class="s2">&quot;RGB&quot;</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="p">(</span><span class="n">image</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">image</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]),</span> <span class="n">data</span><span class="o">=</span><span class="n">image</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<img alt="_images/advanced_12_0.png" src="_images/advanced_12_0.png" />
+</div>
+</div>
+</section>
+<section id="Parsing-PLY-files">
+<h2>Parsing PLY files<a class="headerlink" href="#Parsing-PLY-files" title="Permalink to this heading"></a></h2>
 <p>PLY is a file format storing 3D polygonal data that has support for both ASCII and binary formats. Some references: <a class="reference external" href="https://en.wikipedia.org/wiki/PLY_(file_format)">Wikipedia entry</a> and <a class="reference external" href="http://paulbourke.net/dataformats/ply/">Paul Bourke’s pages</a>. The specification of the PLY format is a bit vague and allows for liberal interpretation and custom user defined fields. We take a look at the example on Paul Bourke’s page:</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>ply
 format ascii 1.0           { ascii/binary, format version number }
@@ -400,7 +499,7 @@ end_header                 { delimits the end of the header }
 </div>
 <p>We see a header that is always ASCII encoded. The header specifies a list of <em>elements</em>, each containing a list of <em>properties</em>. The listed elements determine how to parse the data section of the PLY file. The data section maybe encoded in ASCII or binary.</p>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">annotations</span>
@@ -426,10 +525,10 @@ end_header                 { delimits the end of the header }
 </div>
 </div>
 <section id="Header">
-<h2>Header<a class="headerlink" href="#Header" title="Permalink to this heading"></a></h2>
+<h3>Header<a class="headerlink" href="#Header" title="Permalink to this heading"></a></h3>
 <p>The header starts with a “magic number”, a line containing <code class="docutils literal notranslate"><span class="pre">ply</span></code>.</p>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[9]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[8]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">eol</span> <span class="o">=</span> <span class="n">choice</span><span class="p">(</span><span class="n">text_literal</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">),</span> <span class="n">text_literal</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n\r</span><span class="s2">&quot;</span><span class="p">))</span>
@@ -439,7 +538,7 @@ end_header                 { delimits the end of the header }
 </div>
 <p>The second line indicates which variation of the PLY format this is. We will store header information in data classes and enums.</p>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[14]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[9]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">enum</span> <span class="kn">import</span> <span class="n">Enum</span>
@@ -465,7 +564,7 @@ end_header                 { delimits the end of the header }
 <p>Since each item in the header is seperated by a newline, we need a <code class="docutils literal notranslate"><span class="pre">tokenize</span></code> function that doesn’t skip newlines. From that we can define what we may consider to be a <code class="docutils literal notranslate"><span class="pre">word</span></code> in a PLY header. We <code class="docutils literal notranslate"><span class="pre">flush</span></code> the cursor, expect a <code class="docutils literal notranslate"><span class="pre">ascii_alpha</span></code> character (words don’t start with numbers) and then many characters that are letters, numbers or underscores. At the end we <code class="docutils literal notranslate"><span class="pre">flush</span></code> the cursor again, decoding to a Python string. We see here both <code class="docutils literal notranslate"><span class="pre">many_char</span></code> and <code class="docutils literal notranslate"><span class="pre">many_char_0</span></code> being used:
 <code class="docutils literal notranslate"><span class="pre">many_char</span></code> automatically flushes the cursor before and after which is not what we want when parsing a word. In fact, the only thing <code class="docutils literal notranslate"><span class="pre">many_char_0</span></code> does, is to move the cursor end until the given parser no longer matches the input.</p>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[15]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[10]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">ascii_alpha</span> <span class="o">=</span> <span class="n">char_pred</span><span class="p">(</span><span class="k">lambda</span> <span class="n">c</span><span class="p">:</span> <span class="mi">64</span> <span class="o">&lt;</span> <span class="n">c</span> <span class="o">&lt;</span> <span class="mi">91</span> <span class="ow">or</span> <span class="mi">96</span> <span class="o">&lt;</span> <span class="n">c</span> <span class="o">&lt;</span> <span class="mi">123</span><span class="p">)</span>
@@ -485,7 +584,7 @@ end_header                 { delimits the end of the header }
 </div>
 <p>The format line specifies the used data encoding: one of <code class="docutils literal notranslate"><span class="pre">ascii</span></code>, <code class="docutils literal notranslate"><span class="pre">binary_little_endian</span></code> or <code class="docutils literal notranslate"><span class="pre">binary_big_endian</span></code>, and a version number. The version number is always “1.0”.</p>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[24]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[11]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">ply_format</span> <span class="o">=</span> <span class="n">named_sequence</span><span class="p">(</span>
@@ -497,7 +596,7 @@ end_header                 { delimits the end of the header }
 </div>
 </div>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[25]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[12]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">parse_bytes</span><span class="p">(</span><span class="n">ply_format</span><span class="p">,</span> <span class="sa">b</span><span class="s2">&quot;format binary_little_endian 1.0</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
@@ -505,7 +604,7 @@ end_header                 { delimits the end of the header }
 </div>
 </div>
 <div class="nboutput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[25]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[12]:
 </pre></div>
 </div>
 <div class="output_area docutils container">
@@ -515,7 +614,7 @@ end_header                 { delimits the end of the header }
 </div>
 <p>Comments may be placed in the header by using the word comment at the start of the line. Everything from there until the end of the line should then be ignored.</p>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[26]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[13]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">ply_comment</span> <span class="o">=</span> <span class="n">sequence</span><span class="p">(</span>
@@ -526,7 +625,7 @@ end_header                 { delimits the end of the header }
 </div>
 <p>Now we need a parser for a data type, and given a data type we need to be able to parse that data either in ASCII or binary. There are two classes of types: primitive types and list types.</p>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[27]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[14]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">ply_type_table</span> <span class="o">=</span> <span class="p">{</span>
@@ -578,7 +677,7 @@ end_header                 { delimits the end of the header }
 </div>
 </div>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[28]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[15]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">primitive_type</span> <span class="o">=</span> <span class="n">tokenize</span><span class="p">(</span><span class="n">word</span><span class="p">)</span> <span class="o">&gt;&gt;</span> <span class="n">fmap</span><span class="p">(</span><span class="n">PlyPrimitiveType</span><span class="o">.</span><span class="n">from_string</span><span class="p">)</span>
@@ -593,7 +692,7 @@ end_header                 { delimits the end of the header }
 </div>
 </div>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[29]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[16]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">parse_bytes</span><span class="p">(</span><span class="n">ply_type</span><span class="p">,</span> <span class="sa">b</span><span class="s2">&quot;float float&quot;</span><span class="p">)</span>
@@ -601,7 +700,7 @@ end_header                 { delimits the end of the header }
 </div>
 </div>
 <div class="nboutput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[29]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[16]:
 </pre></div>
 </div>
 <div class="output_area docutils container">
@@ -610,7 +709,7 @@ PlyPrimitiveType(dtype=dtype(&#39;float32&#39;))
 </pre></div></div>
 </div>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[30]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[17]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">pp</span><span class="o">.</span><span class="n">pprint</span><span class="p">(</span><span class="n">parse_bytes</span><span class="p">(</span><span class="n">ply_type</span><span class="p">,</span> <span class="sa">b</span><span class="s2">&quot;list uint8 float&quot;</span><span class="p">))</span>
@@ -622,12 +721,11 @@ PlyPrimitiveType(dtype=dtype(&#39;float32&#39;))
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-PlyListType(size_type=PlyPrimitiveType(dtype=dtype(&#39;uint8&#39;)),
-            value_type=PlyPrimitiveType(dtype=dtype(&#39;float32&#39;)))
+PlyListType(size_type=PlyPrimitiveType(dtype=dtype(&#39;uint8&#39;)), value_type=PlyPrimitiveType(dtype=dtype(&#39;float32&#39;)))
 </pre></div></div>
 </div>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[31]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[18]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nd">@dataclass</span>
@@ -644,7 +742,7 @@ PlyListType(size_type=PlyPrimitiveType(dtype=dtype(&#39;uint8&#39;)),
 </div>
 </div>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[32]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[19]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">parse_bytes</span><span class="p">(</span>
@@ -654,7 +752,7 @@ PlyListType(size_type=PlyPrimitiveType(dtype=dtype(&#39;uint8&#39;)),
 </div>
 </div>
 <div class="nboutput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[32]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[19]:
 </pre></div>
 </div>
 <div class="output_area docutils container">
@@ -663,7 +761,7 @@ PlyProperty(dtype=PlyPrimitiveType(dtype=dtype(&#39;float32&#39;)), name=&#39;x&
 </pre></div></div>
 </div>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[33]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[20]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">end_header</span> <span class="o">=</span> <span class="n">sequence</span><span class="p">(</span><span class="n">text_literal</span><span class="p">(</span><span class="s2">&quot;end_header&quot;</span><span class="p">),</span> <span class="n">eol</span><span class="p">)</span>
@@ -671,7 +769,7 @@ PlyProperty(dtype=PlyPrimitiveType(dtype=dtype(&#39;float32&#39;)), name=&#39;x&
 </div>
 </div>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[34]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[21]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nd">@dataclass</span>
@@ -710,7 +808,7 @@ PlyProperty(dtype=PlyPrimitiveType(dtype=dtype(&#39;float32&#39;)), name=&#39;x&
 </div>
 </div>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[37]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[22]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">pp</span><span class="o">.</span><span class="n">pprint</span><span class="p">(</span>
@@ -726,23 +824,12 @@ PlyProperty(dtype=PlyPrimitiveType(dtype=dtype(&#39;float32&#39;)), name=&#39;x&
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-[ PlyElement(name=&#39;vertex&#39;,
-             size=8,
-             properties=[ PlyProperty(dtype=PlyPrimitiveType(dtype=dtype(&#39;float32&#39;)),
-                                      name=&#39;x&#39;),
-                          PlyProperty(dtype=PlyPrimitiveType(dtype=dtype(&#39;float32&#39;)),
-                                      name=&#39;y&#39;),
-                          PlyProperty(dtype=PlyPrimitiveType(dtype=dtype(&#39;float32&#39;)),
-                                      name=&#39;z&#39;)]),
-  PlyElement(name=&#39;face&#39;,
-             size=6,
-             properties=[ PlyProperty(dtype=PlyListType(size_type=PlyPrimitiveType(dtype=dtype(&#39;uint8&#39;)),
-                                                        value_type=PlyPrimitiveType(dtype=dtype(&#39;int32&#39;))),
-                                      name=&#39;vertex_index&#39;)])]
+[ PlyElement(name=&#39;vertex&#39;, size=8, properties=[PlyProperty(dtype=PlyPrimitiveType(dtype=dtype(&#39;float32&#39;)), name=&#39;x&#39;), PlyProperty(dtype=PlyPrimitiveType(dtype=dtype(&#39;float32&#39;)), name=&#39;y&#39;), PlyProperty(dtype=PlyPrimitiveType(dtype=dtype(&#39;float32&#39;)), name=&#39;z&#39;)]),
+  PlyElement(name=&#39;face&#39;, size=6, properties=[PlyProperty(dtype=PlyListType(size_type=PlyPrimitiveType(dtype=dtype(&#39;uint8&#39;)), value_type=PlyPrimitiveType(dtype=dtype(&#39;int32&#39;))), name=&#39;vertex_index&#39;)])]
 </pre></div></div>
 </div>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[38]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[23]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">pp</span><span class="o">.</span><span class="n">pprint</span><span class="p">(</span><span class="n">parse_bytes</span><span class="p">(</span><span class="n">ply_element</span><span class="p">,</span> <span class="sa">b</span><span class="s2">&quot;element face 6</span><span class="se">\n</span><span class="s2">property list uchar int vertex_index</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">))</span>
@@ -754,15 +841,11 @@ PlyProperty(dtype=PlyPrimitiveType(dtype=dtype(&#39;float32&#39;)), name=&#39;x&
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-PlyElement(name=&#39;face&#39;,
-           size=6,
-           properties=[ PlyProperty(dtype=PlyListType(size_type=PlyPrimitiveType(dtype=dtype(&#39;uint8&#39;)),
-                                                      value_type=PlyPrimitiveType(dtype=dtype(&#39;int32&#39;))),
-                                    name=&#39;vertex_index&#39;)])
+PlyElement(name=&#39;face&#39;, size=6, properties=[PlyProperty(dtype=PlyListType(size_type=PlyPrimitiveType(dtype=dtype(&#39;uint8&#39;)), value_type=PlyPrimitiveType(dtype=dtype(&#39;int32&#39;))), name=&#39;vertex_index&#39;)])
 </pre></div></div>
 </div>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[39]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[24]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nd">@dataclass</span>
@@ -797,7 +880,7 @@ PlyElement(name=&#39;face&#39;,
 </div>
 <p>The following ASCII example is given on Paul Bourke’s page.</p>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[40]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[25]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">ascii_example</span> <span class="o">=</span> <span class="sa">b</span><span class="s2">&quot;&quot;&quot;ply</span>
@@ -830,7 +913,7 @@ PlyElement(name=&#39;face&#39;,
 </div>
 </div>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[41]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[26]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">pp</span><span class="o">.</span><span class="n">pprint</span><span class="p">(</span><span class="n">parse_bytes</span><span class="p">(</span><span class="n">ply_header</span><span class="p">,</span> <span class="n">ascii_example</span><span class="p">))</span>
@@ -842,26 +925,12 @@ PlyElement(name=&#39;face&#39;,
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-PlyHeader(format=&lt;PlyFormat.ASCII: 1&gt;,
-          comment=[&#39;made by Greg Turk&#39;, &#39;this file is a cube&#39;],
-          elements=[ PlyElement(name=&#39;vertex&#39;,
-                                size=8,
-                                properties=[ PlyProperty(dtype=PlyPrimitiveType(dtype=dtype(&#39;float32&#39;)),
-                                                         name=&#39;x&#39;),
-                                             PlyProperty(dtype=PlyPrimitiveType(dtype=dtype(&#39;float32&#39;)),
-                                                         name=&#39;y&#39;),
-                                             PlyProperty(dtype=PlyPrimitiveType(dtype=dtype(&#39;float32&#39;)),
-                                                         name=&#39;z&#39;)]),
-                     PlyElement(name=&#39;face&#39;,
-                                size=6,
-                                properties=[ PlyProperty(dtype=PlyListType(size_type=PlyPrimitiveType(dtype=dtype(&#39;uint8&#39;)),
-                                                                           value_type=PlyPrimitiveType(dtype=dtype(&#39;int32&#39;))),
-                                                         name=&#39;vertex_index&#39;)])])
+PlyHeader(format=&lt;PlyFormat.ASCII: 1&gt;, comment=[&#39;made by Greg Turk&#39;, &#39;this file is a cube&#39;], elements=[PlyElement(name=&#39;vertex&#39;, size=8, properties=[PlyProperty(dtype=PlyPrimitiveType(dtype=dtype(&#39;float32&#39;)), name=&#39;x&#39;), PlyProperty(dtype=PlyPrimitiveType(dtype=dtype(&#39;float32&#39;)), name=&#39;y&#39;), PlyProperty(dtype=PlyPrimitiveType(dtype=dtype(&#39;float32&#39;)), name=&#39;z&#39;)]), PlyElement(name=&#39;face&#39;, size=6, properties=[PlyProperty(dtype=PlyListType(size_type=PlyPrimitiveType(dtype=dtype(&#39;uint8&#39;)), value_type=PlyPrimitiveType(dtype=dtype(&#39;int32&#39;))), name=&#39;vertex_index&#39;)])])
 </pre></div></div>
 </div>
 <p>No for the fun part! The header that we read actually encodes the parser for the rest of the file!</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[42]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[27]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">pp</span><span class="o">.</span><span class="n">pprint</span><span class="p">(</span><span class="n">parse_bytes</span><span class="p">(</span><span class="n">ply_file</span><span class="p">,</span> <span class="n">ascii_example</span><span class="p">))</span>
@@ -887,29 +956,15 @@ PlyHeader(format=&lt;PlyFormat.ASCII: 1&gt;,
                         {&#39;x&#39;: 1.0, &#39;y&#39;: 0.0, &#39;z&#39;: 1.0},
                         {&#39;x&#39;: 1.0, &#39;y&#39;: 1.0, &#39;z&#39;: 1.0},
                         {&#39;x&#39;: 1.0, &#39;y&#39;: 1.0, &#39;z&#39;: 0.0}]},
-  &#39;header&#39;: PlyHeader(format=&lt;PlyFormat.ASCII: 1&gt;,
-                      comment=[&#39;made by Greg Turk&#39;, &#39;this file is a cube&#39;],
-                      elements=[ PlyElement(name=&#39;vertex&#39;,
-                                            size=8,
-                                            properties=[ PlyProperty(dtype=PlyPrimitiveType(dtype=dtype(&#39;float32&#39;)),
-                                                                     name=&#39;x&#39;),
-                                                         PlyProperty(dtype=PlyPrimitiveType(dtype=dtype(&#39;float32&#39;)),
-                                                                     name=&#39;y&#39;),
-                                                         PlyProperty(dtype=PlyPrimitiveType(dtype=dtype(&#39;float32&#39;)),
-                                                                     name=&#39;z&#39;)]),
-                                 PlyElement(name=&#39;face&#39;,
-                                            size=6,
-                                            properties=[ PlyProperty(dtype=PlyListType(size_type=PlyPrimitiveType(dtype=dtype(&#39;uint8&#39;)),
-                                                                                       value_type=PlyPrimitiveType(dtype=dtype(&#39;int32&#39;))),
-                                                                     name=&#39;vertex_index&#39;)])])}
+  &#39;header&#39;: PlyHeader(format=&lt;PlyFormat.ASCII: 1&gt;, comment=[&#39;made by Greg Turk&#39;, &#39;this file is a cube&#39;], elements=[PlyElement(name=&#39;vertex&#39;, size=8, properties=[PlyProperty(dtype=PlyPrimitiveType(dtype=dtype(&#39;float32&#39;)), name=&#39;x&#39;), PlyProperty(dtype=PlyPrimitiveType(dtype=dtype(&#39;float32&#39;)), name=&#39;y&#39;), PlyProperty(dtype=PlyPrimitiveType(dtype=dtype(&#39;float32&#39;)), name=&#39;z&#39;)]), PlyElement(name=&#39;face&#39;, size=6, properties=[PlyProperty(dtype=PlyListType(size_type=PlyPrimitiveType(dtype=dtype(&#39;uint8&#39;)), value_type=PlyPrimitiveType(dtype=dtype(&#39;int32&#39;))), name=&#39;vertex_index&#39;)])])}
 </pre></div></div>
 </div>
 </section>
 <section id="The-Stanford-Bunny">
-<h2>The Stanford Bunny<a class="headerlink" href="#The-Stanford-Bunny" title="Permalink to this heading"></a></h2>
+<h3>The Stanford Bunny<a class="headerlink" href="#The-Stanford-Bunny" title="Permalink to this heading"></a></h3>
 <p>Now that we have the capability to parse binary PLY files, we can load the Stanford Bunny. For visualisation purposes it helps to know that all faces in this file are triangles.</p>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[22]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[28]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="n">Path</span>
@@ -919,7 +974,7 @@ PlyHeader(format=&lt;PlyFormat.ASCII: 1&gt;,
 </div>
 </div>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[23]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[29]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">vertices</span> <span class="o">=</span> <span class="n">bunny</span><span class="p">[</span><span class="s2">&quot;data&quot;</span><span class="p">][</span><span class="s2">&quot;vertex&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">view</span><span class="p">((</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">,</span> <span class="mi">3</span><span class="p">))</span>
@@ -928,7 +983,7 @@ PlyHeader(format=&lt;PlyFormat.ASCII: 1&gt;,
 </div>
 </div>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[24]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[30]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">mpl_toolkits</span> <span class="kn">import</span> <span class="n">mplot3d</span>
@@ -939,7 +994,7 @@ PlyHeader(format=&lt;PlyFormat.ASCII: 1&gt;,
 </div>
 </div>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[25]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[31]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">12</span><span class="p">,</span><span class="mi">12</span><span class="p">))</span>
@@ -954,9 +1009,32 @@ PlyHeader(format=&lt;PlyFormat.ASCII: 1&gt;,
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="_images/ply_34_0.png" src="_images/ply_34_0.png" />
+<img alt="_images/advanced_47_0.png" src="_images/advanced_47_0.png" />
 </div>
 </div>
+</section>
+</section>
+<section id="Parsing-Memory-mapped-OpenFOAM-files">
+<h2>Parsing Memory mapped OpenFOAM files<a class="headerlink" href="#Parsing-Memory-mapped-OpenFOAM-files" title="Permalink to this heading"></a></h2>
+<p>The final example is to read an OpenFOAM file as a memory mapped array. There are some details that need attention.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">mmap</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">byteparsing</span> <span class="kn">import</span> <span class="n">parse_bytes</span>
+<span class="kn">from</span> <span class="nn">byteparsing.openfoam</span> <span class="kn">import</span> <span class="n">foam_file</span>
+
+<span class="n">f</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="s2">&quot;pipeFlow/1.0/U&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">mode</span><span class="o">=</span><span class="s2">&quot;r+b&quot;</span><span class="p">)</span>
+<span class="k">with</span> <span class="n">mmap</span><span class="o">.</span><span class="n">mmap</span><span class="p">(</span><span class="n">f</span><span class="o">.</span><span class="n">fileno</span><span class="p">(),</span> <span class="mi">0</span><span class="p">)</span> <span class="k">as</span> <span class="n">mm</span><span class="p">:</span>
+  <span class="n">content</span> <span class="o">=</span> <span class="n">parse_bytes</span><span class="p">(</span><span class="n">foam_file</span><span class="p">,</span> <span class="n">mm</span><span class="p">)</span>
+  <span class="n">result</span> <span class="o">=</span> <span class="n">content</span><span class="p">[</span><span class="s2">&quot;data&quot;</span><span class="p">][</span><span class="s2">&quot;internalField&quot;</span><span class="p">]</span>
+
+  <span class="o">&lt;&lt;</span><span class="n">do</span> <span class="n">work</span> <span class="o">...&gt;&gt;</span>
+
+  <span class="k">del</span> <span class="n">result</span>
+  <span class="k">del</span> <span class="n">content</span>
+</pre></div>
+</div>
+<p>The content is returned in the form of a nested dictionary. The <code class="docutils literal notranslate"><span class="pre">&quot;internalField&quot;</span></code> item is a name that one often finds in OpenFOAM files. The <code class="docutils literal notranslate"><span class="pre">result</span></code> object is a Numpy <code class="docutils literal notranslate"><span class="pre">ndarray</span></code> created using a <code class="docutils literal notranslate"><span class="pre">np.frombuffer</span></code> call. Any mutations to the Numpy array are directly reflected on the disk. This means that accessing large amounts of data can be extremely efficient in terms of memory footprint.</p>
+<p>The final two <code class="docutils literal notranslate"><span class="pre">del</span></code> statements are necessary to ensure that no reference to the memory-mapped data outlives the memory map itself, which is closed as soon as we leave the <code class="docutils literal notranslate"><span class="pre">with</span> <span class="pre">mmap</span> <span class="pre">...</span></code> context.</p>
 </section>
 </section>
 
@@ -964,7 +1042,7 @@ PlyHeader(format=&lt;PlyFormat.ASCII: 1&gt;,
            </div>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="ppm.html" class="btn btn-neutral float-left" title="Parsing PPM files" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="examples.html" class="btn btn-neutral float-left" title="Examples of usage" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
         <a href="functional.html" class="btn btn-neutral float-right" title="Introduction to Functional Parsing in Python" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 

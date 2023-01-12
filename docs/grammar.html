@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Parser grammar &mdash; byteparsing 0.1.2 documentation</title>
+      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/sphinx_highlight.js"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+        <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+        <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Architecture" href="architecture.html" />
+    <link rel="prev" title="Parsers" href="parsers.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="index.html" class="icon icon-home"> byteparsing
+          </a>
+              <div class="version">
+                0.1.2
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="index.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="install.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="examples.html">Examples of usage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="advanced.html">Advanced examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="functional.html">Introduction to Functional Parsing in Python</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cursors.html">Cursors</a></li>
+<li class="toctree-l1"><a class="reference internal" href="parsers.html">Parsers</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Parser grammar</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#Primitives">Primitives</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#Combinators">Combinators</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#named_sequence-and-construct"><code class="docutils literal notranslate"><span class="pre">named_sequence</span></code> and <code class="docutils literal notranslate"><span class="pre">construct</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#using_config-and-with_config"><code class="docutils literal notranslate"><span class="pre">using_config</span></code> and <code class="docutils literal notranslate"><span class="pre">with_config</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="architecture.html">Architecture</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api.html">API Documentation</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">byteparsing</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home"></a></li>
+      <li class="breadcrumb-item active">Parser grammar</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/grammar.ipynb.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  
+<style>
+/* CSS overrides for sphinx_rtd_theme */
+
+/* 24px margin */
+.nbinput.nblast.container,
+.nboutput.nblast.container {
+    margin-bottom: 19px;  /* padding has already 5px */
+}
+
+/* ... except between code cells! */
+.nblast.container + .nbinput.container {
+    margin-top: -19px;
+}
+
+.admonition > p:before {
+    margin-right: 4px;  /* make room for the exclamation icon */
+}
+
+/* Fix math alignment, see https://github.com/rtfd/sphinx_rtd_theme/pull/686 */
+.math {
+    text-align: unset;
+}
+</style>
+<section id="Parser-grammar">
+<h1>Parser grammar<a class="headerlink" href="#Parser-grammar" title="Permalink to this heading"></a></h1>
+<section id="Primitives">
+<h2>Primitives<a class="headerlink" href="#Primitives" title="Permalink to this heading"></a></h2>
+<p>The boundary between what we consider <em>primitives</em> and derived parsers can become a bit vague, nevertheless here is a selection of the most important primitive parsers.</p>
+<dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">value(x)</span></code></dt><dd><p>Always succeeds, doesn’t consume input, returns <code class="docutils literal notranslate"><span class="pre">x</span></code></p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">fail(msg)</span></code></dt><dd><p>Always fails, raises an exception with <code class="docutils literal notranslate"><span class="pre">msg</span></code> as text.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">item</span></code></dt><dd><p>Get a single byte from the stream.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">text_literal(str)</span></code></dt><dd><p>Succeeds if the next characters in the stream exactly match <code class="docutils literal notranslate"><span class="pre">str</span></code>.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">char_pred(pred)</span></code></dt><dd><p>Advances the end of the cursor if <code class="docutils literal notranslate"><span class="pre">pred</span></code> succeeds.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">text_end_by(char)</span></code></dt><dd><p>Advances the end of the cursor as until <code class="docutils literal notranslate"><span class="pre">char</span></code> is found.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">push(x)</span></code></dt><dd><p>Push a value on the auxiliary stack.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">pop()</span></code></dt><dd><p>Pop a value from the auxiliary stack.</p>
+</dd>
+</dl>
+<p>We also defined some derived parsers that should be useful in most contexts.</p>
+<dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">whitespace</span></code></dt><dd><p>Matches tabs spaces and newlines.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">eol</span></code></dt><dd><p>Matches End of Line characters (<em>i.e.:</em> either <code class="docutils literal notranslate"><span class="pre">\n</span></code> or <code class="docutils literal notranslate"><span class="pre">\n\r</span></code>).</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">integer</span></code></dt><dd><p>Matches an integer value.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">scientific_number</span></code></dt><dd><p>Matches a floating point number, possibly in scientific notation.</p>
+</dd>
+</dl>
+</section>
+<section id="Combinators">
+<h2>Combinators<a class="headerlink" href="#Combinators" title="Permalink to this heading"></a></h2>
+<!-- This package is strongly based on Haskell's syntax and philosophy. But Python is obviously not Haskell. That is to say, there is no nice syntax for monadic actions. In order to solve this issue, we developed a similar grammar for Python. Below, we present a description of such a grammar. --><p>The next question is, how can we combine our primitive parsers? We already listed the main combinators briefly, here we go into a little more detail.</p>
+<dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">choice(*p)</span></code></dt><dd><p>Tries every parser <code class="docutils literal notranslate"><span class="pre">p</span></code> in sequence until one succeeds. If all fail, <code class="docutils literal notranslate"><span class="pre">choice</span></code> gathers all exceptions and composes an error message from that.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">sequence(*p)</span></code></dt><dd><p>Runs every parser <code class="docutils literal notranslate"><span class="pre">p</span></code> in sequence and only returns the result of the last one.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">named_sequence(**p)</span></code></dt><dd><p>Runs every parser <code class="docutils literal notranslate"><span class="pre">p</span></code> in sequence and stores results in a dictionary. Keys that start with an underscore are not stored.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">many(p)</span></code></dt><dd><p>Runs the parser <code class="docutils literal notranslate"><span class="pre">p</span></code> until it fails. Returns a list of parsed items.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">some(p)</span></code></dt><dd><p>Parses <code class="docutils literal notranslate"><span class="pre">p</span></code> at least one time, or fail.</p>
+</dd>
+</dl>
+<p>The <code class="docutils literal notranslate"><span class="pre">many</span></code> and <code class="docutils literal notranslate"><span class="pre">some</span></code> combinators come in several flavours. Both have a variant called <code class="docutils literal notranslate"><span class="pre">many_char</span></code> and <code class="docutils literal notranslate"><span class="pre">some_char</span></code> that return a string instead of a list. One more flavour is <code class="docutils literal notranslate"><span class="pre">many_char_0</span></code> and <code class="docutils literal notranslate"><span class="pre">some_char_0</span></code> that do not flush the cursor.</p>
+<p>Some derived combinators help us shape a little language to describe grammars.</p>
+<dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">optional(p,</span> <span class="pre">default=None)</span></code></dt><dd><p>Parses <code class="docutils literal notranslate"><span class="pre">p</span></code> or gives the default value.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">tokenize(p)</span></code></dt><dd><p>Parses <code class="docutils literal notranslate"><span class="pre">p</span></code> followed by optional whitespace. This makes sure we always start at the next token.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">fmap(f)</span></code></dt><dd><p>Takes a function <code class="docutils literal notranslate"><span class="pre">f</span></code>, returns a lambda that maps an argument through <code class="docutils literal notranslate"><span class="pre">f</span></code> to a <code class="docutils literal notranslate"><span class="pre">value</span></code> parser. That sounds complicated, but it allows us to pass a parsed result through <code class="docutils literal notranslate"><span class="pre">f</span></code> using the <code class="docutils literal notranslate"><span class="pre">&gt;&gt;</span></code> operator. For an example, see the PPM parser at the end of this paper.</p>
+</dd>
+</dl>
+</section>
+<section id="named_sequence-and-construct">
+<h2><code class="docutils literal notranslate"><span class="pre">named_sequence</span></code> and <code class="docutils literal notranslate"><span class="pre">construct</span></code><a class="headerlink" href="#named_sequence-and-construct" title="Permalink to this heading"></a></h2>
+<p>The <code class="docutils literal notranslate"><span class="pre">named_sequence</span></code> combinator forms a particularly useful pair with the <code class="docutils literal notranslate"><span class="pre">construct</span></code> function. Used on its own, the <code class="docutils literal notranslate"><span class="pre">named_sequence</span></code> creates a dictionary. Many times when we’re parsing, we want our results to form some class. The <code class="docutils literal notranslate"><span class="pre">construct</span></code> function takes a dictionary and constructs an object by forwarding the dictionary as keyword arguments.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nd">@dataclass</span>
+<span class="n">Point</span><span class="p">:</span>
+  <span class="n">x</span><span class="p">:</span> <span class="nb">float</span>
+  <span class="n">y</span><span class="p">:</span> <span class="nb">float</span>
+</pre></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">point</span> <span class="o">=</span> <span class="n">named_sequence</span><span class="p">(</span>
+  <span class="n">_1</span><span class="o">=</span><span class="n">tokenize</span><span class="p">(</span><span class="n">char</span><span class="p">(</span><span class="s2">&quot;(&quot;</span><span class="p">)),</span>
+  <span class="n">x</span><span class="o">=</span><span class="n">tokenize</span><span class="p">(</span><span class="n">scientific_number</span><span class="p">),</span>
+  <span class="n">_2</span><span class="o">=</span><span class="n">tokenize</span><span class="p">(</span><span class="n">char</span><span class="p">(</span><span class="s2">&quot;,&quot;</span><span class="p">))</span>
+  <span class="n">y</span><span class="o">=</span><span class="n">tokenize</span><span class="p">(</span><span class="n">scientific_number</span><span class="p">),</span>
+  <span class="n">_3</span><span class="o">=</span><span class="n">tokenize</span><span class="p">(</span><span class="n">char</span><span class="p">(</span><span class="s2">&quot;)&quot;</span><span class="p">))</span>
+  <span class="p">)</span> <span class="o">&gt;&gt;</span> <span class="n">construct</span><span class="p">(</span><span class="n">Point</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>The <code class="docutils literal notranslate"><span class="pre">point</span></code> parser then constructs <code class="docutils literal notranslate"><span class="pre">Point</span></code> objects, such that</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">parse_bytes</span><span class="p">(</span><span class="n">point</span><span class="p">,</span> <span class="sa">b</span><span class="s2">&quot;(1, 2)&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>gives <code class="docutils literal notranslate"><span class="pre">Point(x=1,</span> <span class="pre">y=2)</span></code> as output.</p>
+</section>
+<section id="using_config-and-with_config">
+<h2><code class="docutils literal notranslate"><span class="pre">using_config</span></code> and <code class="docutils literal notranslate"><span class="pre">with_config</span></code><a class="headerlink" href="#using_config-and-with_config" title="Permalink to this heading"></a></h2>
+<p>We may use the auxiliary stack to store a config variable that can be accessed from any parser. To make this use a bit more user-friendly, we define two functions: <code class="docutils literal notranslate"><span class="pre">with_config()</span></code> and the <code class="docutils literal notranslate"><span class="pre">&#64;use_config</span></code> decorator. Functions decorated with <code class="docutils literal notranslate"><span class="pre">&#64;use_config</span></code> should have the last argument be the <code class="docutils literal notranslate"><span class="pre">config</span></code> variable. The <code class="docutils literal notranslate"><span class="pre">with_config</span></code> parser sets a config dictionary to be the bottom of the auxiliary stack.</p>
+<p>Example: We have as input a number and a string. The string is returned in upper-case if the number is 1:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nd">@using_config</span>
+<span class="k">def</span> <span class="nf">set_case</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">config</span><span class="p">):</span>
+    <span class="n">config</span><span class="p">[</span><span class="s2">&quot;uppercase&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">x</span> <span class="o">==</span> <span class="mi">1</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">value</span><span class="p">(</span><span class="kc">None</span><span class="p">)</span>
+
+<span class="nd">@using_config</span>
+<span class="k">def</span> <span class="nf">get_text</span><span class="p">(</span><span class="n">config</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">config</span><span class="p">[</span><span class="s2">&quot;uppercase&quot;</span><span class="p">]:</span>
+        <span class="k">return</span> <span class="n">many_char</span><span class="p">(</span><span class="n">item</span><span class="p">,</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="o">.</span><span class="n">decode</span><span class="p">()</span><span class="o">.</span><span class="n">upper</span><span class="p">())</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">many_char</span><span class="p">(</span><span class="n">item</span><span class="p">,</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="o">.</span><span class="n">decode</span><span class="p">())</span>
+
+<span class="k">assert</span> <span class="n">parse_bytes</span><span class="p">(</span>
+    <span class="n">with_config</span><span class="p">(</span><span class="n">sequence</span><span class="p">(</span><span class="n">integer</span> <span class="o">&gt;&gt;</span> <span class="n">set_case</span><span class="p">,</span> <span class="n">get_text</span><span class="p">())),</span>
+    <span class="sa">b</span><span class="s1">&#39;0hello&#39;</span><span class="p">)</span> <span class="o">==</span> <span class="s2">&quot;hello&quot;</span>
+<span class="k">assert</span> <span class="n">parse_bytes</span><span class="p">(</span>
+    <span class="n">with_config</span><span class="p">(</span><span class="n">sequence</span><span class="p">(</span><span class="n">integer</span> <span class="o">&gt;&gt;</span> <span class="n">set_case</span><span class="p">,</span> <span class="n">get_text</span><span class="p">())),</span>
+    <span class="sa">b</span><span class="s1">&#39;1hello&#39;</span><span class="p">)</span> <span class="o">==</span> <span class="s2">&quot;HELLO&quot;</span>
+</pre></div>
+</div>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="parsers.html" class="btn btn-neutral float-left" title="Parsers" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="architecture.html" class="btn btn-neutral float-right" title="Architecture" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2019, Netherlands eScience Center, University of Groningen.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

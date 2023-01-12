@@ -32,6 +32,7 @@ When **not to use** `byteparsing`:
    functional
    cursors
    parsers
+   grammar
    architecture
    api
 

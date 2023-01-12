@@ -30,9 +30,7 @@ bibliography: paper.bib
 
 # Summary
 
-Byteparsing is a functional parser combinator for Python. It was originally motivated by the problem of parsing OpenFOAM files. OpenFOAM [^1] is a free, open source computational fluid dynamics software whose input and output files contain both ASCII and binary data. Other common formats combining ASCII and binary are PLY triangle data[^2] or PPM images[^3]. This makes them particularly hard to parse using traditional tools. Byteparsing became a flexible tool capable of dealing with generic formats.
-
-<!-- In addition to the basic parser architecture, the `byteparsing` package contains a parser for both ASCII and binary OpenFOAM files. -->
+Byteparsing is a functional parser combinator for Python. It was originally motivated by the problem of parsing OpenFOAM files. OpenFOAM [^1] is a free, open source computational fluid dynamics software whose input and output files contain both ASCII and binary data. Other common formats combining ASCII and binary are PLY triangle data or PPM images[^2]. This makes them particularly hard to parse using traditional tools. Byteparsing became a flexible tool capable of dealing with generic formats.
 
 # Statement of need
 
@@ -59,7 +57,7 @@ Byteparser is the solution we developed based on this list of requirements.
 
 Writing functional parser combinators is a staple of functional languages like Haskell or Ocaml [@frost_1989;@hutton_1992]. The paper "Monadic Parsing in Haskell" [@hutton_meijer_1998] gives a complete tutorial on how to write a basic recursive descent parser. Most of what Hutton and Meijer teach carries over nicely to Python once we take care of a few details. We've replaced some Haskell idioms by features that are considered more 'pythonic'.
 
-An extended description of the concept of functional parser combinators can be found in the documentation[^4]. Those readers more interested in starting working right away will probably find our lists of examples[^5] and advanced examples[^6] very practical.
+An extended description of the concept of functional parser combinators can be found in the documentation[^3]. Those readers more interested in starting working right away will probably find our lists of examples[^4] very practical.
 
 # Conclusion
 In research software it is unfortunately still quite common to encounter non-standard data formats. For those data formats where a mix of ASCII and binary parsing is needed, Byteparsing can make a useful addition to the existing landscape of parser libraries in Python. Development of a parser using Byteparsing can be relatively quick, as it is easy to build up parsers from smaller testable components.
@@ -70,58 +68,7 @@ This project was supported by funding from the Netherlands eScience Center and N
 # References
 
 <!-- Footnotes -->
-[^1]: https://www.openfoam.com/
-[^2]: https://parallelwindfarms.github.io/byteparsing/ply.html
-[^3]: https://parallelwindfarms.github.io/byteparsing/ppm.html
-[^4]: https://parallelwindfarms.github.io/byteparsing/functional.html
-[^5]: https://parallelwindfarms.github.io/byteparsing/examples.html
-[^6]: https://parallelwindfarms.github.io/byteparsing/advanced.html
-
-<!-- This is part of the template
-
-# Mathematics
-
-Single dollars ($) are required for inline mathematics e.g. $f(x) = e^{\pi/x}$
-
-Double dollars make self-standing equations:
-
-$$\Theta(x) = \left\{\begin{array}{l}
-0\textrm{ if } x < 0\cr
-1\textrm{ else}
-\end{array}\right.$$
-
-You can also use plain \LaTeX for equations
-\begin{equation}\label{eq:fourier}
-\hat f(\omega) = \int_{-\infty}^{\infty} f(x) e^{i\omega x} dx
-\end{equation}
-and refer to \autoref{eq:fourier} from text.
-
-# Citations
-
-Citations to entries in paper.bib should be in
-[rMarkdown](http://rmarkdown.rstudio.com/authoring_bibliographies_and_citations.html)
-format.
-
-If you want to cite a software repository URL (e.g. something on GitHub without a preferred
-citation) then you can do it with the example BibTeX entry below for @fidgit.
-
-For a quick reference, the following citation commands can be used:
-
-- `@author:2001`  ->  "Author et al. (2001)"
-- `[@author:2001]` -> "(Author et al., 2001)"
-- `[@author1:2001; @author2:2001]` -> "(Author1 et al., 2001; Author2 et al., 2002)"
-
-# Figures
-
-Figures can be included like this:
-![Caption for example figure.\label{fig:example}](figure.png)
-and referenced from text using \autoref{fig:example}.
-
-Figure sizes can be customized by adding an optional second parameter:
-![Caption for example figure.](figure.png){ width=20% }
-
-# Acknowledgements
-
-We acknowledge contributions from Brigitta Sipocz, Syrtis Major, and Semyeong
-Oh, and support from Kathryn Johnston during the genesis of this project.
--->
+[^1]: [https://www.openfoam.com/](https://www.openfoam.com/)
+[^2]: [https://parallelwindfarms.github.io/byteparsing/advanced.html](https://parallelwindfarms.github.io/byteparsing/advanced.html)
+[^3]: [https://parallelwindfarms.github.io/byteparsing/functional.html](https://parallelwindfarms.github.io/byteparsing/functional.html)
+[^4]: [https://parallelwindfarms.github.io/byteparsing/examples.html](https://parallelwindfarms.github.io/byteparsing/examples.html)

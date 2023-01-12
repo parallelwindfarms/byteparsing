@@ -1,0 +1,444 @@
+{
+ "cells": [
+  {
+   "attachments": {},
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "# Architecture"
+   ]
+  },
+  {
+   "attachments": {},
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "## Cursors\n",
+    "\n",
+    "The most basic element of this package is the `Cursor`.\n",
+    "Roughly, a `Cursor` represents some data + a selection of it.\n",
+    "\n",
+    "Let's build our first `Cursor`:"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 1,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "from byteparsing import Cursor"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 2,
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "Cursor(data=b'Hello world!', begin=0, end=3, encoding='utf-8')\n"
+     ]
+    }
+   ],
+   "source": [
+    "data = b\"Hello world!\"\n",
+    "\n",
+    "c = Cursor(data, begin=0, end=3)\n",
+    "print(c)"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "The `Cursor` is implemented as a `dataclass`.\n",
+    "This means that it contains fields (particularly: `data`, `begin`, `end`, and `encoding`), and also methods.\n",
+    "\n",
+    "For instance, the method `content` returns the subsetted data (_i.e._: the `data` between `begin` and `end`):"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 3,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "b'Hel'"
+      ]
+     },
+     "execution_count": 3,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "c.content # This method is decorated as a property, so parentheses are not needed"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "The method `increment` returns a new cursor where `end` has been increased (by default, to `end + 1`)."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 4,
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "Cursor(data=b'Hello world!', begin=0, end=3, encoding='utf-8')\n",
+      "Cursor(data=b'Hello world!', begin=0, end=4, encoding='utf-8')\n"
+     ]
+    }
+   ],
+   "source": [
+    "c = Cursor(data, begin=0, end=3)\n",
+    "print(c)\n",
+    "ci = c.increment()\n",
+    "print(ci)"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "An interesting property of cursors is that they can be evaluated to a boolean. Particularly, a `Cursor` is `True` if and only if `end` is not at the end of the `data` string."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 5,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "cT = Cursor(data, begin=0, end=0)\n",
+    "cF = Cursor(data, begin=0, end=len(data))\n",
+    "\n",
+    "assert(cT)\n",
+    "assert(not cF)"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "Wait a second. Why would we want a `Cursor` to be `True` or `False`? The reason is that it is very convenient for easily looping _\"to the end of the data\"_.\n",
+    "\n",
+    "See for instance the loop below:"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 6,
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "b'H'\n",
+      "b'He'\n",
+      "b'Hel'\n",
+      "b'Hell'\n",
+      "b'Hello'\n",
+      "b'Hello '\n",
+      "b'Hello w'\n",
+      "b'Hello wo'\n",
+      "b'Hello wor'\n",
+      "b'Hello worl'\n",
+      "b'Hello world'\n",
+      "b'Hello world!'\n"
+     ]
+    }
+   ],
+   "source": [
+    "c = Cursor(data, begin=0, end=0)\n",
+    "while c:\n",
+    "    c = c.increment()\n",
+    "    print(c.content)"
+   ]
+  },
+  {
+   "attachments": {},
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "## Parsers"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 7,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "from byteparsing import Cursor"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 8,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "# Create some data to be parsed\n",
+    "data = b\"Hello world!\"\n",
+    "\n",
+    "# Initialize the Cursor\n",
+    "c = Cursor(data, begin=0, end=0)\n",
+    "\n",
+    "# Use an empty auxiliary variable\n",
+    "a = []\n",
+    "\n",
+    "# Create a parsing function\n",
+    "def read_one(c, a):\n",
+    "    c = c.increment() # Increase end index by one\n",
+    "    x = c.content_str # Read content\n",
+    "    c = c.flush() # Flush (i.e.: move begin to end)\n",
+    "    return x, c, a"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "In the snippet below we see why it is convenient to use the updated `Cursor`."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 9,
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "H\n",
+      "e\n",
+      "l\n",
+      "l\n",
+      "o\n",
+      " \n",
+      "w\n",
+      "o\n",
+      "r\n",
+      "l\n",
+      "d\n",
+      "!\n"
+     ]
+    }
+   ],
+   "source": [
+    "while c:\n",
+    "    x, c, a = read_one(c, a)\n",
+    "    print(x)"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "We can even write a new parsing function, based on the previous one, that parses to the end of the string:"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 10,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "def read_all(c, a):\n",
+    "    x = [] # Initialize as empty list\n",
+    "    while c:\n",
+    "        temp, c, a = read_one(c, a)\n",
+    "        x.append(temp)\n",
+    "    return x, c, a"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "Let's try it:"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 11,
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "['H', 'e', 'l', 'l', 'o', ' ', 'w', 'o', 'r', 'l', 'd', '!']\n",
+      "Cursor(data=b'Hello world!', begin=12, end=12, encoding='utf-8')\n"
+     ]
+    }
+   ],
+   "source": [
+    "# Restart the Cursor\n",
+    "c = Cursor(data, begin=0, end=0)\n",
+    "\n",
+    "x, c, a = read_all(c, a)\n",
+    "print(x)\n",
+    "print(c)"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "Notice that the composition of two parsing functions (say, $f$ and $g$) is slightly more complicated than $f \\circ g$, because the input and the output spaces of parsing functions are slightly different.\n",
+    "\n",
+    "For these and other reasons, it is advisable to manage parsing functions with a more flexible data structure.\n",
+    "\n",
+    "We introduce the Parser (data) class."
+   ]
+  },
+  {
+   "attachments": {},
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "### The Parser class\n",
+    "\n",
+    "This section is work in progress.\n",
+    "\n",
+    "We'll manage parsing functions using a `Parser` class.\n",
+    "`Parser` is a `dataclass` that contains a single field, `func`, representing a parser function.\n",
+    "\n",
+    "Let's build a `Parser` class from the `read_one` parsing function defined in the previous section:"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 12,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "from byteparsing.trampoline import Parser, parser"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 13,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "# Initialize the Cursor\n",
+    "c = Cursor(data, begin=0, end=0)\n",
+    "\n",
+    "# Use an empty auxiliary variable\n",
+    "a = []\n",
+    "\n",
+    "# Create a function\n",
+    "def read_one(c, a):\n",
+    "    c = c.increment() # Increase end index by one\n",
+    "    x = c.content_str # Read content\n",
+    "    c = c.flush() # Flush (i.e.: move begin to end)\n",
+    "    return x, c, a\n",
+    "\n",
+    "read_one_p = Parser(read_one)"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "Note: the lines above are entirely equivalent to:\n",
+    "\n",
+    "```python\n",
+    "@parser\n",
+    "def read_one_p(c, a):\n",
+    "    c = c.increment() # Increase end index by one\n",
+    "    x = c.content_str # Read content\n",
+    "    c = c.flush() # Flush (i.e.: move begin to end)\n",
+    "    return x, c, a\n",
+    "```"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "Parsers are callable, but they don't return anything informative until they are invoked:"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 14,
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "Call(p=<function read_one at 0x7f4dbf560c10>, cursor=Cursor(data=b'Hello world!', begin=0, end=0, encoding='utf-8'), aux=[])\n"
+     ]
+    }
+   ],
+   "source": [
+    "print(read_one_p(c, a)) # Whithout invoking"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 15,
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "H\n",
+      "Cursor(data=b'Hello world!', begin=1, end=1, encoding='utf-8')\n"
+     ]
+    }
+   ],
+   "source": [
+    "x, c, a = read_one_p(c, a).invoke()\n",
+    "print(x)\n",
+    "print(c)"
+   ]
+  }
+ ],
+ "metadata": {
+  "kernelspec": {
+   "display_name": "byteparsing",
+   "language": "python",
+   "name": "python3"
+  },
+  "language_info": {
+   "codemirror_mode": {
+    "name": "ipython",
+    "version": 3
+   },
+   "file_extension": ".py",
+   "mimetype": "text/x-python",
+   "name": "python",
+   "nbconvert_exporter": "python",
+   "pygments_lexer": "ipython3",
+   "version": "3.9.13"
+  },
+  "orig_nbformat": 4,
+  "vscode": {
+   "interpreter": {
+    "hash": "3e598a5da089da4c53124f7e6f7bf0c3ac5c5ab4965502396b4a9dfe31dcfb28"
+   }
+  }
+ },
+ "nbformat": 4,
+ "nbformat_minor": 2
+}

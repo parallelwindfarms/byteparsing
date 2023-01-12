@@ -30,8 +30,6 @@ When **not to use** `byteparsing`:
    examples
    advanced
    functional
-   cursors
-   parsers
    grammar
    architecture
    api

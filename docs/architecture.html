@@ -18,11 +18,13 @@
         <script src="_static/doctools.js"></script>
         <script src="_static/sphinx_highlight.js"></script>
         <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+        <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+        <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="API Documentation" href="api.html" />
-    <link rel="prev" title="Parsers" href="parsers.html" /> 
+    <link rel="prev" title="Parser grammar" href="grammar.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -50,15 +52,13 @@
 <li class="toctree-l1"><a class="reference internal" href="examples.html">Examples of usage</a></li>
 <li class="toctree-l1"><a class="reference internal" href="advanced.html">Advanced examples</a></li>
 <li class="toctree-l1"><a class="reference internal" href="functional.html">Introduction to Functional Parsing in Python</a></li>
-<li class="toctree-l1"><a class="reference internal" href="cursors.html">Cursors</a></li>
-<li class="toctree-l1"><a class="reference internal" href="parsers.html">Parsers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="grammar.html">Parser grammar</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Architecture</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#functional-parsers">Functional parsers</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#trampoline">Trampoline</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#Cursors">Cursors</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#Parsers">Parsers</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#The-Parser-class">The Parser class</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="#cursors">Cursors</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#memory-mapping">Memory mapping</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="api.html">API Documentation</a></li>
@@ -80,7 +80,7 @@
       <li><a href="index.html" class="icon icon-home"></a></li>
       <li class="breadcrumb-item active">Architecture</li>
       <li class="wy-breadcrumbs-aside">
-            <a href="_sources/architecture.md.txt" rel="nofollow"> View page source</a>
+            <a href="_sources/architecture.ipynb.txt" rel="nofollow"> View page source</a>
       </li>
   </ul>
   <hr/>
@@ -90,6 +90,261 @@
              
   
 <style>
+/* CSS for nbsphinx extension */
+
+/* remove conflicting styling from Sphinx themes */
+div.nbinput.container div.prompt *,
+div.nboutput.container div.prompt *,
+div.nbinput.container div.input_area pre,
+div.nboutput.container div.output_area pre,
+div.nbinput.container div.input_area .highlight,
+div.nboutput.container div.output_area .highlight {
+    border: none;
+    padding: 0;
+    margin: 0;
+    box-shadow: none;
+}
+
+div.nbinput.container > div[class*=highlight],
+div.nboutput.container > div[class*=highlight] {
+    margin: 0;
+}
+
+div.nbinput.container div.prompt *,
+div.nboutput.container div.prompt * {
+    background: none;
+}
+
+div.nboutput.container div.output_area .highlight,
+div.nboutput.container div.output_area pre {
+    background: unset;
+}
+
+div.nboutput.container div.output_area div.highlight {
+    color: unset;  /* override Pygments text color */
+}
+
+/* avoid gaps between output lines */
+div.nboutput.container div[class*=highlight] pre {
+    line-height: normal;
+}
+
+/* input/output containers */
+div.nbinput.container,
+div.nboutput.container {
+    display: -webkit-flex;
+    display: flex;
+    align-items: flex-start;
+    margin: 0;
+    width: 100%;
+}
+@media (max-width: 540px) {
+    div.nbinput.container,
+    div.nboutput.container {
+        flex-direction: column;
+    }
+}
+
+/* input container */
+div.nbinput.container {
+    padding-top: 5px;
+}
+
+/* last container */
+div.nblast.container {
+    padding-bottom: 5px;
+}
+
+/* input prompt */
+div.nbinput.container div.prompt pre {
+    color: #307FC1;
+}
+
+/* output prompt */
+div.nboutput.container div.prompt pre {
+    color: #BF5B3D;
+}
+
+/* all prompts */
+div.nbinput.container div.prompt,
+div.nboutput.container div.prompt {
+    width: 4.5ex;
+    padding-top: 5px;
+    position: relative;
+    user-select: none;
+}
+
+div.nbinput.container div.prompt > div,
+div.nboutput.container div.prompt > div {
+    position: absolute;
+    right: 0;
+    margin-right: 0.3ex;
+}
+
+@media (max-width: 540px) {
+    div.nbinput.container div.prompt,
+    div.nboutput.container div.prompt {
+        width: unset;
+        text-align: left;
+        padding: 0.4em;
+    }
+    div.nboutput.container div.prompt.empty {
+        padding: 0;
+    }
+
+    div.nbinput.container div.prompt > div,
+    div.nboutput.container div.prompt > div {
+        position: unset;
+    }
+}
+
+/* disable scrollbars and line breaks on prompts */
+div.nbinput.container div.prompt pre,
+div.nboutput.container div.prompt pre {
+    overflow: hidden;
+    white-space: pre;
+}
+
+/* input/output area */
+div.nbinput.container div.input_area,
+div.nboutput.container div.output_area {
+    -webkit-flex: 1;
+    flex: 1;
+    overflow: auto;
+}
+@media (max-width: 540px) {
+    div.nbinput.container div.input_area,
+    div.nboutput.container div.output_area {
+        width: 100%;
+    }
+}
+
+/* input area */
+div.nbinput.container div.input_area {
+    border: 1px solid #e0e0e0;
+    border-radius: 2px;
+    /*background: #f5f5f5;*/
+}
+
+/* override MathJax center alignment in output cells */
+div.nboutput.container div[class*=MathJax] {
+    text-align: left !important;
+}
+
+/* override sphinx.ext.imgmath center alignment in output cells */
+div.nboutput.container div.math p {
+    text-align: left;
+}
+
+/* standard error */
+div.nboutput.container div.output_area.stderr {
+    background: #fdd;
+}
+
+/* ANSI colors */
+.ansi-black-fg { color: #3E424D; }
+.ansi-black-bg { background-color: #3E424D; }
+.ansi-black-intense-fg { color: #282C36; }
+.ansi-black-intense-bg { background-color: #282C36; }
+.ansi-red-fg { color: #E75C58; }
+.ansi-red-bg { background-color: #E75C58; }
+.ansi-red-intense-fg { color: #B22B31; }
+.ansi-red-intense-bg { background-color: #B22B31; }
+.ansi-green-fg { color: #00A250; }
+.ansi-green-bg { background-color: #00A250; }
+.ansi-green-intense-fg { color: #007427; }
+.ansi-green-intense-bg { background-color: #007427; }
+.ansi-yellow-fg { color: #DDB62B; }
+.ansi-yellow-bg { background-color: #DDB62B; }
+.ansi-yellow-intense-fg { color: #B27D12; }
+.ansi-yellow-intense-bg { background-color: #B27D12; }
+.ansi-blue-fg { color: #208FFB; }
+.ansi-blue-bg { background-color: #208FFB; }
+.ansi-blue-intense-fg { color: #0065CA; }
+.ansi-blue-intense-bg { background-color: #0065CA; }
+.ansi-magenta-fg { color: #D160C4; }
+.ansi-magenta-bg { background-color: #D160C4; }
+.ansi-magenta-intense-fg { color: #A03196; }
+.ansi-magenta-intense-bg { background-color: #A03196; }
+.ansi-cyan-fg { color: #60C6C8; }
+.ansi-cyan-bg { background-color: #60C6C8; }
+.ansi-cyan-intense-fg { color: #258F8F; }
+.ansi-cyan-intense-bg { background-color: #258F8F; }
+.ansi-white-fg { color: #C5C1B4; }
+.ansi-white-bg { background-color: #C5C1B4; }
+.ansi-white-intense-fg { color: #A1A6B2; }
+.ansi-white-intense-bg { background-color: #A1A6B2; }
+
+.ansi-default-inverse-fg { color: #FFFFFF; }
+.ansi-default-inverse-bg { background-color: #000000; }
+
+.ansi-bold { font-weight: bold; }
+.ansi-underline { text-decoration: underline; }
+
+
+div.nbinput.container div.input_area div[class*=highlight] > pre,
+div.nboutput.container div.output_area div[class*=highlight] > pre,
+div.nboutput.container div.output_area div[class*=highlight].math,
+div.nboutput.container div.output_area.rendered_html,
+div.nboutput.container div.output_area > div.output_javascript,
+div.nboutput.container div.output_area:not(.rendered_html) > img{
+    padding: 5px;
+    margin: 0;
+}
+
+/* fix copybtn overflow problem in chromium (needed for 'sphinx_copybutton') */
+div.nbinput.container div.input_area > div[class^='highlight'],
+div.nboutput.container div.output_area > div[class^='highlight']{
+    overflow-y: hidden;
+}
+
+/* hide copybtn icon on prompts (needed for 'sphinx_copybutton') */
+.prompt .copybtn {
+    display: none;
+}
+
+/* Some additional styling taken form the Jupyter notebook CSS */
+.jp-RenderedHTMLCommon table,
+div.rendered_html table {
+  border: none;
+  border-collapse: collapse;
+  border-spacing: 0;
+  color: black;
+  font-size: 12px;
+  table-layout: fixed;
+}
+.jp-RenderedHTMLCommon thead,
+div.rendered_html thead {
+  border-bottom: 1px solid black;
+  vertical-align: bottom;
+}
+.jp-RenderedHTMLCommon tr,
+.jp-RenderedHTMLCommon th,
+.jp-RenderedHTMLCommon td,
+div.rendered_html tr,
+div.rendered_html th,
+div.rendered_html td {
+  text-align: right;
+  vertical-align: middle;
+  padding: 0.5em 0.5em;
+  line-height: normal;
+  white-space: normal;
+  max-width: none;
+  border: none;
+}
+.jp-RenderedHTMLCommon th,
+div.rendered_html th {
+  font-weight: bold;
+}
+.jp-RenderedHTMLCommon tbody tr:nth-child(odd),
+div.rendered_html tbody tr:nth-child(odd) {
+  background: #f5f5f5;
+}
+.jp-RenderedHTMLCommon tbody tr:hover,
+div.rendered_html tbody tr:hover {
+  background: rgba(66, 165, 245, 0.2);
+}
+
 /* CSS overrides for sphinx_rtd_theme */
 
 /* 24px margin */
@@ -112,27 +367,315 @@
     text-align: unset;
 }
 </style>
-<section id="architecture">
-<h1>Architecture<a class="headerlink" href="#architecture" title="Permalink to this heading"></a></h1>
-<section id="functional-parsers">
-<h2>Functional parsers<a class="headerlink" href="#functional-parsers" title="Permalink to this heading"></a></h2>
-<section id="trampoline">
-<h3>Trampoline<a class="headerlink" href="#trampoline" title="Permalink to this heading"></a></h3>
+<section id="Architecture">
+<h1>Architecture<a class="headerlink" href="#Architecture" title="Permalink to this heading"></a></h1>
+<section id="Cursors">
+<h2>Cursors<a class="headerlink" href="#Cursors" title="Permalink to this heading"></a></h2>
+<p>The most basic element of this package is the <code class="docutils literal notranslate"><span class="pre">Cursor</span></code>. Roughly, a <code class="docutils literal notranslate"><span class="pre">Cursor</span></code> represents some data + a selection of it.</p>
+<p>Let’s build our first <code class="docutils literal notranslate"><span class="pre">Cursor</span></code>:</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">byteparsing</span> <span class="kn">import</span> <span class="n">Cursor</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">data</span> <span class="o">=</span> <span class="sa">b</span><span class="s2">&quot;Hello world!&quot;</span>
+
+<span class="n">c</span> <span class="o">=</span> <span class="n">Cursor</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">begin</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">c</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+Cursor(data=b&#39;Hello world!&#39;, begin=0, end=3, encoding=&#39;utf-8&#39;)
+</pre></div></div>
+</div>
+<p>The <code class="docutils literal notranslate"><span class="pre">Cursor</span></code> is implemented as a <code class="docutils literal notranslate"><span class="pre">dataclass</span></code>. This means that it contains fields (particularly: <code class="docutils literal notranslate"><span class="pre">data</span></code>, <code class="docutils literal notranslate"><span class="pre">begin</span></code>, <code class="docutils literal notranslate"><span class="pre">end</span></code>, and <code class="docutils literal notranslate"><span class="pre">encoding</span></code>), and also methods.</p>
+<p>For instance, the method <code class="docutils literal notranslate"><span class="pre">content</span></code> returns the subsetted data (<em>i.e.</em>: the <code class="docutils literal notranslate"><span class="pre">data</span></code> between <code class="docutils literal notranslate"><span class="pre">begin</span></code> and <code class="docutils literal notranslate"><span class="pre">end</span></code>):</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">c</span><span class="o">.</span><span class="n">content</span> <span class="c1"># This method is decorated as a property, so parentheses are not needed</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+b&#39;Hel&#39;
+</pre></div></div>
+</div>
+<p>The method <code class="docutils literal notranslate"><span class="pre">increment</span></code> returns a new cursor where <code class="docutils literal notranslate"><span class="pre">end</span></code> has been increased (by default, to <code class="docutils literal notranslate"><span class="pre">end</span> <span class="pre">+</span> <span class="pre">1</span></code>).</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">c</span> <span class="o">=</span> <span class="n">Cursor</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">begin</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">c</span><span class="p">)</span>
+<span class="n">ci</span> <span class="o">=</span> <span class="n">c</span><span class="o">.</span><span class="n">increment</span><span class="p">()</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">ci</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+Cursor(data=b&#39;Hello world!&#39;, begin=0, end=3, encoding=&#39;utf-8&#39;)
+Cursor(data=b&#39;Hello world!&#39;, begin=0, end=4, encoding=&#39;utf-8&#39;)
+</pre></div></div>
+</div>
+<p>An interesting property of cursors is that they can be evaluated to a boolean. Particularly, a <code class="docutils literal notranslate"><span class="pre">Cursor</span></code> is <code class="docutils literal notranslate"><span class="pre">True</span></code> if and only if <code class="docutils literal notranslate"><span class="pre">end</span></code> is not at the end of the <code class="docutils literal notranslate"><span class="pre">data</span></code> string.</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">cT</span> <span class="o">=</span> <span class="n">Cursor</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">begin</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">cF</span> <span class="o">=</span> <span class="n">Cursor</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">begin</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">))</span>
+
+<span class="k">assert</span><span class="p">(</span><span class="n">cT</span><span class="p">)</span>
+<span class="k">assert</span><span class="p">(</span><span class="ow">not</span> <span class="n">cF</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<p>Wait a second. Why would we want a <code class="docutils literal notranslate"><span class="pre">Cursor</span></code> to be <code class="docutils literal notranslate"><span class="pre">True</span></code> or <code class="docutils literal notranslate"><span class="pre">False</span></code>? The reason is that it is very convenient for easily looping <em>“to the end of the data”</em>.</p>
+<p>See for instance the loop below:</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">c</span> <span class="o">=</span> <span class="n">Cursor</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">begin</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+<span class="k">while</span> <span class="n">c</span><span class="p">:</span>
+    <span class="n">c</span> <span class="o">=</span> <span class="n">c</span><span class="o">.</span><span class="n">increment</span><span class="p">()</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">c</span><span class="o">.</span><span class="n">content</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+b&#39;H&#39;
+b&#39;He&#39;
+b&#39;Hel&#39;
+b&#39;Hell&#39;
+b&#39;Hello&#39;
+b&#39;Hello &#39;
+b&#39;Hello w&#39;
+b&#39;Hello wo&#39;
+b&#39;Hello wor&#39;
+b&#39;Hello worl&#39;
+b&#39;Hello world&#39;
+b&#39;Hello world!&#39;
+</pre></div></div>
+</div>
+</section>
+<section id="Parsers">
+<h2>Parsers<a class="headerlink" href="#Parsers" title="Permalink to this heading"></a></h2>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">byteparsing</span> <span class="kn">import</span> <span class="n">Cursor</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[8]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Create some data to be parsed</span>
+<span class="n">data</span> <span class="o">=</span> <span class="sa">b</span><span class="s2">&quot;Hello world!&quot;</span>
+
+<span class="c1"># Initialize the Cursor</span>
+<span class="n">c</span> <span class="o">=</span> <span class="n">Cursor</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">begin</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+
+<span class="c1"># Use an empty auxiliary variable</span>
+<span class="n">a</span> <span class="o">=</span> <span class="p">[]</span>
+
+<span class="c1"># Create a parsing function</span>
+<span class="k">def</span> <span class="nf">read_one</span><span class="p">(</span><span class="n">c</span><span class="p">,</span> <span class="n">a</span><span class="p">):</span>
+    <span class="n">c</span> <span class="o">=</span> <span class="n">c</span><span class="o">.</span><span class="n">increment</span><span class="p">()</span> <span class="c1"># Increase end index by one</span>
+    <span class="n">x</span> <span class="o">=</span> <span class="n">c</span><span class="o">.</span><span class="n">content_str</span> <span class="c1"># Read content</span>
+    <span class="n">c</span> <span class="o">=</span> <span class="n">c</span><span class="o">.</span><span class="n">flush</span><span class="p">()</span> <span class="c1"># Flush (i.e.: move begin to end)</span>
+    <span class="k">return</span> <span class="n">x</span><span class="p">,</span> <span class="n">c</span><span class="p">,</span> <span class="n">a</span>
+</pre></div>
+</div>
+</div>
+<p>In the snippet below we see why it is convenient to use the updated <code class="docutils literal notranslate"><span class="pre">Cursor</span></code>.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[9]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">while</span> <span class="n">c</span><span class="p">:</span>
+    <span class="n">x</span><span class="p">,</span> <span class="n">c</span><span class="p">,</span> <span class="n">a</span> <span class="o">=</span> <span class="n">read_one</span><span class="p">(</span><span class="n">c</span><span class="p">,</span> <span class="n">a</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+H
+e
+l
+l
+o
+
+w
+o
+r
+l
+d
+!
+</pre></div></div>
+</div>
+<p>We can even write a new parsing function, based on the previous one, that parses to the end of the string:</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[10]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">read_all</span><span class="p">(</span><span class="n">c</span><span class="p">,</span> <span class="n">a</span><span class="p">):</span>
+    <span class="n">x</span> <span class="o">=</span> <span class="p">[]</span> <span class="c1"># Initialize as empty list</span>
+    <span class="k">while</span> <span class="n">c</span><span class="p">:</span>
+        <span class="n">temp</span><span class="p">,</span> <span class="n">c</span><span class="p">,</span> <span class="n">a</span> <span class="o">=</span> <span class="n">read_one</span><span class="p">(</span><span class="n">c</span><span class="p">,</span> <span class="n">a</span><span class="p">)</span>
+        <span class="n">x</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">temp</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">x</span><span class="p">,</span> <span class="n">c</span><span class="p">,</span> <span class="n">a</span>
+</pre></div>
+</div>
+</div>
+<p>Let’s try it:</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[11]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Restart the Cursor</span>
+<span class="n">c</span> <span class="o">=</span> <span class="n">Cursor</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">begin</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+
+<span class="n">x</span><span class="p">,</span> <span class="n">c</span><span class="p">,</span> <span class="n">a</span> <span class="o">=</span> <span class="n">read_all</span><span class="p">(</span><span class="n">c</span><span class="p">,</span> <span class="n">a</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">c</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+[&#39;H&#39;, &#39;e&#39;, &#39;l&#39;, &#39;l&#39;, &#39;o&#39;, &#39; &#39;, &#39;w&#39;, &#39;o&#39;, &#39;r&#39;, &#39;l&#39;, &#39;d&#39;, &#39;!&#39;]
+Cursor(data=b&#39;Hello world!&#39;, begin=12, end=12, encoding=&#39;utf-8&#39;)
+</pre></div></div>
+</div>
+<p>Notice that the composition of two parsing functions (say, <span class="math notranslate nohighlight">\(f\)</span> and <span class="math notranslate nohighlight">\(g\)</span>) is slightly more complicated than <span class="math notranslate nohighlight">\(f \circ g\)</span>, because the input and the output spaces of parsing functions are slightly different.</p>
+<p>For these and other reasons, it is advisable to manage parsing functions with a more flexible data structure.</p>
+<p>We introduce the Parser (data) class.</p>
+<section id="The-Parser-class">
+<h3>The Parser class<a class="headerlink" href="#The-Parser-class" title="Permalink to this heading"></a></h3>
+<p>This section is work in progress.</p>
+<p>We’ll manage parsing functions using a <code class="docutils literal notranslate"><span class="pre">Parser</span></code> class. <code class="docutils literal notranslate"><span class="pre">Parser</span></code> is a <code class="docutils literal notranslate"><span class="pre">dataclass</span></code> that contains a single field, <code class="docutils literal notranslate"><span class="pre">func</span></code>, representing a parser function.</p>
+<p>Let’s build a <code class="docutils literal notranslate"><span class="pre">Parser</span></code> class from the <code class="docutils literal notranslate"><span class="pre">read_one</span></code> parsing function defined in the previous section:</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[12]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">byteparsing.trampoline</span> <span class="kn">import</span> <span class="n">Parser</span><span class="p">,</span> <span class="n">parser</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[13]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Initialize the Cursor</span>
+<span class="n">c</span> <span class="o">=</span> <span class="n">Cursor</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">begin</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+
+<span class="c1"># Use an empty auxiliary variable</span>
+<span class="n">a</span> <span class="o">=</span> <span class="p">[]</span>
+
+<span class="c1"># Create a function</span>
+<span class="k">def</span> <span class="nf">read_one</span><span class="p">(</span><span class="n">c</span><span class="p">,</span> <span class="n">a</span><span class="p">):</span>
+    <span class="n">c</span> <span class="o">=</span> <span class="n">c</span><span class="o">.</span><span class="n">increment</span><span class="p">()</span> <span class="c1"># Increase end index by one</span>
+    <span class="n">x</span> <span class="o">=</span> <span class="n">c</span><span class="o">.</span><span class="n">content_str</span> <span class="c1"># Read content</span>
+    <span class="n">c</span> <span class="o">=</span> <span class="n">c</span><span class="o">.</span><span class="n">flush</span><span class="p">()</span> <span class="c1"># Flush (i.e.: move begin to end)</span>
+    <span class="k">return</span> <span class="n">x</span><span class="p">,</span> <span class="n">c</span><span class="p">,</span> <span class="n">a</span>
+
+<span class="n">read_one_p</span> <span class="o">=</span> <span class="n">Parser</span><span class="p">(</span><span class="n">read_one</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<p>Note: the lines above are entirely equivalent to:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nd">@parser</span>
+<span class="k">def</span> <span class="nf">read_one_p</span><span class="p">(</span><span class="n">c</span><span class="p">,</span> <span class="n">a</span><span class="p">):</span>
+    <span class="n">c</span> <span class="o">=</span> <span class="n">c</span><span class="o">.</span><span class="n">increment</span><span class="p">()</span> <span class="c1"># Increase end index by one</span>
+    <span class="n">x</span> <span class="o">=</span> <span class="n">c</span><span class="o">.</span><span class="n">content_str</span> <span class="c1"># Read content</span>
+    <span class="n">c</span> <span class="o">=</span> <span class="n">c</span><span class="o">.</span><span class="n">flush</span><span class="p">()</span> <span class="c1"># Flush (i.e.: move begin to end)</span>
+    <span class="k">return</span> <span class="n">x</span><span class="p">,</span> <span class="n">c</span><span class="p">,</span> <span class="n">a</span>
+</pre></div>
+</div>
+<p>Parsers are callable, but they don’t return anything informative until they are invoked:</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[14]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">read_one_p</span><span class="p">(</span><span class="n">c</span><span class="p">,</span> <span class="n">a</span><span class="p">))</span> <span class="c1"># Whithout invoking</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+Call(p=&lt;function read_one at 0x7f4dbf560c10&gt;, cursor=Cursor(data=b&#39;Hello world!&#39;, begin=0, end=0, encoding=&#39;utf-8&#39;), aux=[])
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[15]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">x</span><span class="p">,</span> <span class="n">c</span><span class="p">,</span> <span class="n">a</span> <span class="o">=</span> <span class="n">read_one_p</span><span class="p">(</span><span class="n">c</span><span class="p">,</span> <span class="n">a</span><span class="p">)</span><span class="o">.</span><span class="n">invoke</span><span class="p">()</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">c</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+H
+Cursor(data=b&#39;Hello world!&#39;, begin=1, end=1, encoding=&#39;utf-8&#39;)
+</pre></div></div>
+</div>
 </section>
 </section>
-<section id="cursors">
-<h2>Cursors<a class="headerlink" href="#cursors" title="Permalink to this heading"></a></h2>
-</section>
-<section id="memory-mapping">
-<h2>Memory mapping<a class="headerlink" href="#memory-mapping" title="Permalink to this heading"></a></h2>
-<!-- vim: set ft=markdown: --></section>
 </section>
 
 
            </div>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="parsers.html" class="btn btn-neutral float-left" title="Parsers" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="grammar.html" class="btn btn-neutral float-left" title="Parser grammar" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
         <a href="api.html" class="btn btn-neutral float-right" title="API Documentation" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 

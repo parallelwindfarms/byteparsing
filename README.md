@@ -16,6 +16,10 @@ The project setup is documented in [a separate
 document](project_setup.rst).
 See also the [extended tutorial](https://parallelwindfarms.github.io/byteparsing/functional.html).
 
+## Requirements
+
+This package requires Python (>=3.9,<3.11).
+
 ## Installation
 
 ### With pip

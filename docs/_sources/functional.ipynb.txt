@@ -1271,7 +1271,7 @@
    "cell_type": "markdown",
    "metadata": {},
    "source": [
-    "Another use for the auxiliary variable, is to hide some configuration variable: see [Parser grammar: `using_config` and `with_config`](https://parallelwindfarms.github.io/byteparsing/grammar.html#using_config-and-with_config)."
+    "Another use for the auxiliary variable, is to hide some configuration variable: see [Parser grammar: using_config and with_config](https://parallelwindfarms.github.io/byteparsing/grammar.html#using_config-and-with_config)."
    ]
   },
   {

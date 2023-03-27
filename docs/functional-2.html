@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Functional parser combinators &mdash; byteparsing 0.1.2 documentation</title>
+      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/sphinx_highlight.js"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            byteparsing
+          </a>
+              <div class="version">
+                0.1.2
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="index.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="install.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="examples.html">Examples of usage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="advanced.html">Advanced examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="functional.html">Introduction to Functional Parsing in Python</a></li>
+<li class="toctree-l1"><a class="reference internal" href="architecture.html">Architecture</a></li>
+<li class="toctree-l1"><a class="reference internal" href="grammar.html">Parser grammar</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api.html">API Documentation</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">byteparsing</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Functional parser combinators</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/functional-2.md.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  
+<style>
+/* CSS overrides for sphinx_rtd_theme */
+
+/* 24px margin */
+.nbinput.nblast.container,
+.nboutput.nblast.container {
+    margin-bottom: 19px;  /* padding has already 5px */
+}
+
+/* ... except between code cells! */
+.nblast.container + .nbinput.container {
+    margin-top: -19px;
+}
+
+.admonition > p:before {
+    margin-right: 4px;  /* make room for the exclamation icon */
+}
+
+/* Fix math alignment, see https://github.com/rtfd/sphinx_rtd_theme/pull/686 */
+.math {
+    text-align: unset;
+}
+</style>
+<section id="functional-parser-combinators">
+<h1>Functional parser combinators<a class="headerlink" href="#functional-parser-combinators" title="Permalink to this heading"></a></h1>
+<p>We explain the concept of a functional parser combinator in terms of taking <code class="docutils literal notranslate"><span class="pre">str</span></code> as input for simplicity. Later we will see that we need to make things a bit more complicated.</p>
+<p>The core idea of functional parsing is that a parser for some object is a function. This function takes in the input string, and (possibly) returns the parsed object together with the rest of the input. In Python typing parlance this could be written as</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">T</span> <span class="o">=</span> <span class="n">TypeVar</span><span class="p">(</span><span class="s1">&#39;T&#39;</span><span class="p">)</span>
+<span class="n">Parser</span> <span class="o">=</span> <span class="n">Callable</span><span class="p">[[</span><span class="nb">str</span><span class="p">],</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">T</span><span class="p">,</span> <span class="nb">str</span><span class="p">]]</span>
+</pre></div>
+</div>
+<p>In this type definition we have not yet encoded the possibility that the parser may fail. In most functional languages the return type of the parser would be <code class="docutils literal notranslate"><span class="pre">tuple[Optional[T],</span> <span class="pre">str]</span></code>. However, this is where we make our first change: we use <strong>exceptions</strong>. Whenever a parser fails (planned or unplanned), we raise an exception.</p>
+<p>Some primitive parsers that we have defined are: <code class="docutils literal notranslate"><span class="pre">item</span></code> for parsing a single byte, <code class="docutils literal notranslate"><span class="pre">char_pred</span></code> for parsing classes of characters, <code class="docutils literal notranslate"><span class="pre">literal</span></code> for parsing string literals and <code class="docutils literal notranslate"><span class="pre">array</span></code> for parsing binary arrays of given type and size.</p>
+<p>The magic of functional parser combinators happens when we start to combine small parsers into larger ones. To achieve this we need to define the <code class="docutils literal notranslate"><span class="pre">bind</span></code> operation that chains two parsers together. We could chain two parsers as follows:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">chain</span><span class="p">(</span><span class="n">p</span><span class="p">:</span> <span class="n">Parser</span><span class="p">[</span><span class="n">T</span><span class="p">],</span> <span class="n">q</span><span class="p">:</span> <span class="n">Parser</span><span class="p">[</span><span class="n">U</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">Parser</span><span class="p">[</span><span class="nb">tuple</span><span class="p">[</span><span class="n">T</span><span class="p">,</span><span class="n">U</span><span class="p">]]:</span>
+  <span class="k">def</span> <span class="nf">chained</span><span class="p">(</span><span class="n">inp</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="p">[</span><span class="nb">tuple</span><span class="p">[</span><span class="n">T</span><span class="p">,</span><span class="n">U</span><span class="p">],</span><span class="nb">str</span><span class="p">]:</span>
+    <span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">inp</span><span class="p">)</span> <span class="o">=</span> <span class="n">p</span><span class="p">(</span><span class="n">inp</span><span class="p">)</span>
+    <span class="p">(</span><span class="n">b</span><span class="p">,</span> <span class="n">inp</span><span class="p">)</span> <span class="o">=</span> <span class="n">q</span><span class="p">(</span><span class="n">inp</span><span class="p">)</span>
+    <span class="k">return</span> <span class="p">((</span><span class="n">a</span><span class="p">,</span><span class="n">b</span><span class="p">),</span> <span class="n">inp</span><span class="p">)</span>
+  <span class="k">return</span> <span class="n">chained</span>
+</pre></div>
+</div>
+<p>The <code class="docutils literal notranslate"><span class="pre">bind</span></code> operator does a slightly different thing. It takes the output of one parser and then passes it to a function that then creates the next parser. This way we can chain together any two parsers and forward the collected information as we like. The problem is that this idiom from Haskell (also known as a monad), doesn’t translate too well to Python. We can still define the <code class="docutils literal notranslate"><span class="pre">bind</span></code> function:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">bind</span><span class="p">(</span><span class="n">p</span><span class="p">:</span> <span class="n">Parser</span><span class="p">[</span><span class="n">T</span><span class="p">],</span> <span class="n">f</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[[</span><span class="n">T</span><span class="p">],</span> <span class="n">Parser</span><span class="p">[</span><span class="n">U</span><span class="p">]])</span> <span class="o">-&gt;</span> <span class="n">Parser</span><span class="p">[</span><span class="n">U</span><span class="p">]</span>
+  <span class="k">def</span> <span class="nf">bound</span><span class="p">(</span><span class="n">inp</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">U</span><span class="p">,</span> <span class="nb">str</span><span class="p">]</span>
+    <span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">inp</span><span class="p">)</span> <span class="o">=</span> <span class="n">p</span><span class="p">(</span><span class="n">inp</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">f</span><span class="p">(</span><span class="n">a</span><span class="p">)(</span><span class="n">inp</span><span class="p">)</span>
+  <span class="k">return</span> <span class="n">bound</span>
+</pre></div>
+</div>
+<p>The problem with using <code class="docutils literal notranslate"><span class="pre">bind</span></code> as central combinator in our scheme is two-fold: it won’t perform well and Python doesn’t have the nice syntax to work with <code class="docutils literal notranslate"><span class="pre">bind</span></code>. To explain: the <code class="docutils literal notranslate"><span class="pre">bind</span></code> function returns a new function that then calls more functions, so we’re eating into stack space. This means we can never use <code class="docutils literal notranslate"><span class="pre">bind</span></code> to build loops. Our solution around that was to build a trampoline to evaluate function calls step-by-step, enabling a tail-recursion style of programming. In our opinion it is better to work around the problem and define looping constructs using Python primitives such as <code class="docutils literal notranslate"><span class="pre">for</span></code> and <code class="docutils literal notranslate"><span class="pre">while</span></code>.</p>
+<p>For the most part, we are forced to define a more opportune set of primitive combinators that we can use in a more pythonic setting. The most important primitives for combining or multiplexing parsers are: <code class="docutils literal notranslate"><span class="pre">named_sequence</span></code> parsing a set of <code class="docutils literal notranslate"><span class="pre">**kwarg</span></code> parsers to a <code class="docutils literal notranslate"><span class="pre">dict</span></code>, <code class="docutils literal notranslate"><span class="pre">many</span></code> for zero or more items, <code class="docutils literal notranslate"><span class="pre">some</span></code> for one or more items, and <code class="docutils literal notranslate"><span class="pre">choice</span></code> for any of a set of parsers. Further on in this paper, we show how these primitives can be used to build a larger parser. That being said, we do define the <code class="docutils literal notranslate"><span class="pre">bind</span></code> function in our parser and also make it usable through the shift-right <code class="docutils literal notranslate"><span class="pre">&gt;&gt;</span></code> operator. There are indeed some cases where this operator lets us write concise and readable code.</p>
+<section id="cursor-object">
+<h2>Cursor object<a class="headerlink" href="#cursor-object" title="Permalink to this heading"></a></h2>
+<p>Instead of strings, our parser works on top of a <code class="docutils literal notranslate"><span class="pre">Cursor</span></code> object that keeps track of two pointers within a buffer. These two pointers reference the beginning and the (exclusive) end of the currently selected range of data. Having a two-ended cursor object prevents a lot of back-tracking when parsing text that can also be captured by more primitive functions in Python, like standard string conversion routines (<code class="docutils literal notranslate"><span class="pre">float</span></code>, <code class="docutils literal notranslate"><span class="pre">int</span></code>, <code class="docutils literal notranslate"><span class="pre">datetime</span></code> functions), or regex matching. Also, this helps us extract large binary blobs from the buffer more easily.</p>
+<p>Most parsers should, when successful, <em>flush</em> the cursor to a state where the begin and end pointers coincide. Suppose we want to parse a (ASCII) floating point number. We can have a parser that accepts digits, dots, hyphens and the letter <code class="docutils literal notranslate"><span class="pre">E</span></code>. Then the cursor gets to a state where the begin and end pointers straddle the item that we think is a floating point number. We then pass that content through the <code class="docutils literal notranslate"><span class="pre">float</span></code> function, after which we flush the cursor. This releases us from the tedious task of writing an actual floating point number parser. We are just delimiting interesting points in the buffer, a process also referred to as <em>lexing</em>.</p>
+<p>Additionally, the <code class="docutils literal notranslate"><span class="pre">Cursor</span></code> class can be evaluated to a boolean. This boolean is always <code class="docutils literal notranslate"><span class="pre">True</span></code>, unless the buffer is fully consumed (i.e., both pointers coincide at the end of the buffer). This allows us to comfortably loop <em>“to the end of the data”</em> using a <code class="docutils literal notranslate"><span class="pre">while</span></code> statement.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">Cursor</span></code> object has a text encoding set, so that we can interact seamlessly with strings.</p>
+</section>
+<section id="auxiliary-state">
+<h2>Auxiliary state<a class="headerlink" href="#auxiliary-state" title="Permalink to this heading"></a></h2>
+<p>The parsers in our design also carry an auxiliary state variable, that can be used to temporarily store intermediate results. The variable is forwarded through every parser call. The full type of a parser then becomes:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">T</span> <span class="o">=</span> <span class="n">TypeVar</span><span class="p">(</span><span class="s1">&#39;T&#39;</span><span class="p">)</span>
+<span class="n">Parser</span> <span class="o">=</span> <span class="n">Callable</span><span class="p">([</span><span class="n">Cursor</span><span class="p">,</span> <span class="n">Any</span><span class="p">],</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">T</span><span class="p">,</span> <span class="n">Cursor</span><span class="p">,</span> <span class="n">Any</span><span class="p">])</span>
+</pre></div>
+</div>
+<p>We define two helper functions to make use of the auxiliary state: <code class="docutils literal notranslate"><span class="pre">push</span></code> and <code class="docutils literal notranslate"><span class="pre">pop</span></code>. These assume that the auxiliary state contains a list of items that we can use as a stack.</p>
+<p>Another application that we have for the auxiliary state, is to store a configuration dictionary. For instance, we can read from a header wether the rest of a file should be read in ASCII or binary format. That information we store in the config, to be retrieved when needed later on.</p>
+</section>
+<section id="memory-mapping">
+<h2>Memory mapping<a class="headerlink" href="#memory-mapping" title="Permalink to this heading"></a></h2>
+<p>The <code class="docutils literal notranslate"><span class="pre">Cursor</span></code> object acts on top of any object in Python that conforms to the buffer interface. This can be a <code class="docutils literal notranslate"><span class="pre">bytes</span></code> or <code class="docutils literal notranslate"><span class="pre">bytearray</span></code> object, but also <code class="docutils literal notranslate"><span class="pre">mmap</span></code>. This means we can parse memory mapped data directly to buffered <code class="docutils literal notranslate"><span class="pre">numpy</span></code> arrays (using <code class="docutils literal notranslate"><span class="pre">numpy.frombuffer</span></code>). Changes made to such an array are then directly reflected on the file system.</p>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2019, Netherlands eScience Center, University of Groningen.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

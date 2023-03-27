@@ -1,3 +1,5 @@
+poetry.lock
+
 *.py[cod]
 *.egg-info
 *.eggs
@@ -36,3 +38,4 @@ playground
 paper/paper.jats
 paper/paper.pdf
 paper/ideas.md
+

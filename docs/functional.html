@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" >
 <head>
-  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Introduction to Functional Parsing in Python &mdash; byteparsing 0.1.2 documentation</title>
@@ -23,8 +23,8 @@
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="Examples of usage" href="examples.html" />
-    <link rel="prev" title="Parsers" href="parsers.html" /> 
+    <link rel="next" title="Cursors" href="cursors.html" />
+    <link rel="prev" title="Advanced example: parsing PLY files" href="ply.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -32,14 +32,18 @@
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
         <div class="wy-side-nav-search" >
-            <a href="index.html" class="icon icon-home"> byteparsing
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            byteparsing
           </a>
               <div class="version">
                 0.1.2
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
-    <input type="text" name="q" placeholder="Search docs" />
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
     <input type="hidden" name="check_keywords" value="yes" />
     <input type="hidden" name="area" value="default" />
   </form>
@@ -49,8 +53,9 @@
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="index.html">Introduction</a></li>
 <li class="toctree-l1"><a class="reference internal" href="install.html">Installation</a></li>
-<li class="toctree-l1"><a class="reference internal" href="cursors.html">Cursors</a></li>
-<li class="toctree-l1"><a class="reference internal" href="parsers.html">Parsers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="examples.html">Examples of usage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ppm.html">Parsing PPM files</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ply.html">Advanced example: parsing PLY files</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Introduction to Functional Parsing in Python</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#First-parsers">First parsers</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#Failures">Failures</a></li>
@@ -69,9 +74,8 @@
 <li class="toctree-l2"><a class="reference internal" href="#Hide-trace-backs">Hide trace backs</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="examples.html">Examples of usage</a></li>
-<li class="toctree-l1"><a class="reference internal" href="ppm.html">Parsing PPM files</a></li>
-<li class="toctree-l1"><a class="reference internal" href="ply.html">Advanced example: parsing PLY files</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cursors.html">Cursors</a></li>
+<li class="toctree-l1"><a class="reference internal" href="parsers.html">Parsers</a></li>
 <li class="toctree-l1"><a class="reference internal" href="architecture.html">Architecture</a></li>
 <li class="toctree-l1"><a class="reference internal" href="api.html">API Documentation</a></li>
 </ul>
@@ -89,7 +93,7 @@
         <div class="rst-content">
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
-      <li><a href="index.html" class="icon icon-home"></a></li>
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
       <li class="breadcrumb-item active">Introduction to Functional Parsing in Python</li>
       <li class="wy-breadcrumbs-aside">
             <a href="_sources/functional.ipynb.txt" rel="nofollow"> View page source</a>
@@ -386,10 +390,10 @@ div.rendered_html tbody tr:hover {
 </pre></div>
 </div>
 <p>From such an example we can expect to see recursion playing a role in parsing. In BNF this looks like:</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>&lt;expr&gt;   ::<span class="o">=</span> &lt;list&gt; <span class="p">|</span> &lt;symbol&gt;
-&lt;list&gt;   ::<span class="o">=</span> <span class="s1">&#39;[&#39;</span> &lt;seq&gt; <span class="s1">&#39;]&#39;</span>
-&lt;seq&gt;    ::<span class="o">=</span> &lt;expr&gt; <span class="p">|</span> &lt;expr&gt; <span class="s1">&#39;,&#39;</span> &lt;seq&gt;
-&lt;symbol&gt; ::<span class="o">=</span> <span class="s1">&#39;a-z&#39;</span> <span class="p">|</span> &lt;symbol&gt;
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>&lt;expr&gt;<span class="w">   </span>::<span class="o">=</span><span class="w"> </span>&lt;list&gt;<span class="w"> </span><span class="p">|</span><span class="w"> </span>&lt;symbol&gt;
+&lt;list&gt;<span class="w">   </span>::<span class="o">=</span><span class="w"> </span><span class="s1">&#39;[&#39;</span><span class="w"> </span>&lt;seq&gt;<span class="w"> </span><span class="s1">&#39;]&#39;</span>
+&lt;seq&gt;<span class="w">    </span>::<span class="o">=</span><span class="w"> </span>&lt;expr&gt;<span class="w"> </span><span class="p">|</span><span class="w"> </span>&lt;expr&gt;<span class="w"> </span><span class="s1">&#39;,&#39;</span><span class="w"> </span>&lt;seq&gt;
+&lt;symbol&gt;<span class="w"> </span>::<span class="o">=</span><span class="w"> </span><span class="s1">&#39;a-z&#39;</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>&lt;symbol&gt;
 </pre></div>
 </div>
 <p>Note: if you find this notation confusing, you may want to take a look at <a class="reference external" href="https://www.youtube.com/watch?v=dDtZLm7HIJs">this video</a>.</p>
@@ -398,16 +402,16 @@ parsers often have definitions that lie closer to the BNF notation shown above. 
 <blockquote>
 <div><p class="rubric" id="tail-recursion-in-bnf">Tail recursion in BNF</p>
 <p>Let’s expand the definition of <code class="docutils literal notranslate"><span class="pre">&lt;list&gt;</span></code> by replacing <code class="docutils literal notranslate"><span class="pre">&lt;seq&gt;</span></code> with its definition (We’ll use parentheses and ellipses in free but predictable manner).</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>&lt;list&gt; <span class="o">=</span> <span class="s1">&#39;[&#39;</span> <span class="o">(</span>&lt;expr&gt; <span class="p">|</span> &lt;expr&gt; <span class="s1">&#39;,&#39;</span> &lt;seq&gt;<span class="o">)</span> <span class="s1">&#39;]&#39;</span>
-&lt;list&gt; <span class="o">=</span> <span class="s1">&#39;[&#39;</span> <span class="o">((</span>&lt;list&gt; <span class="p">|</span> &lt;symbol&gt;<span class="o">)</span> <span class="p">|</span> <span class="o">(</span>&lt;list&gt; <span class="p">|</span> &lt;symbol&gt;<span class="o">)</span> <span class="s1">&#39;,&#39;</span> &lt;seq&gt;<span class="o">)</span> <span class="s1">&#39;]&#39;</span>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>&lt;list&gt;<span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;[&#39;</span><span class="w"> </span><span class="o">(</span>&lt;expr&gt;<span class="w"> </span><span class="p">|</span><span class="w"> </span>&lt;expr&gt;<span class="w"> </span><span class="s1">&#39;,&#39;</span><span class="w"> </span>&lt;seq&gt;<span class="o">)</span><span class="w"> </span><span class="s1">&#39;]&#39;</span>
+&lt;list&gt;<span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;[&#39;</span><span class="w"> </span><span class="o">((</span>&lt;list&gt;<span class="w"> </span><span class="p">|</span><span class="w"> </span>&lt;symbol&gt;<span class="o">)</span><span class="w"> </span><span class="p">|</span><span class="w"> </span><span class="o">(</span>&lt;list&gt;<span class="w"> </span><span class="p">|</span><span class="w"> </span>&lt;symbol&gt;<span class="o">)</span><span class="w"> </span><span class="s1">&#39;,&#39;</span><span class="w"> </span>&lt;seq&gt;<span class="o">)</span><span class="w"> </span><span class="s1">&#39;]&#39;</span>
 </pre></div>
 </div>
 <p>We may now choose a path in this expression. A possible <code class="docutils literal notranslate"><span class="pre">&lt;list&gt;</span></code> looks like:</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>&lt;list&gt; <span class="o">=</span>? <span class="s1">&#39;[&#39;</span> &lt;list&gt; <span class="s1">&#39;,&#39;</span> &lt;seq&gt; <span class="s1">&#39;]&#39;</span>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>&lt;list&gt;<span class="w"> </span><span class="o">=</span>?<span class="w"> </span><span class="s1">&#39;[&#39;</span><span class="w"> </span>&lt;list&gt;<span class="w"> </span><span class="s1">&#39;,&#39;</span><span class="w"> </span>&lt;seq&gt;<span class="w"> </span><span class="s1">&#39;]&#39;</span>
 </pre></div>
 </div>
 <p>We see <code class="docutils literal notranslate"><span class="pre">&lt;list&gt;</span></code> reappearing in a position that is not at the tail-end of the BNF expression. Contrast this to <code class="docutils literal notranslate"><span class="pre">&lt;symbol&gt;</span></code>:</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>&lt;symbol&gt; <span class="o">=</span> <span class="s1">&#39;a-z&#39;</span> <span class="s1">&#39;a-z&#39;</span> ... <span class="o">(</span><span class="s1">&#39;a-z&#39;</span> <span class="p">|</span> &lt;symbol&gt;<span class="o">)</span>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>&lt;symbol&gt;<span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;a-z&#39;</span><span class="w"> </span><span class="s1">&#39;a-z&#39;</span><span class="w"> </span>...<span class="w"> </span><span class="o">(</span><span class="s1">&#39;a-z&#39;</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>&lt;symbol&gt;<span class="o">)</span>
 </pre></div>
 </div>
 <p>No matter how we expand the expression, the recursion is always at the end. In evaluating a tail-recursion, the recursion can always be converted to a (more efficient) loop.</p>
@@ -427,7 +431,7 @@ parsers often have definitions that lie closer to the BNF notation shown above. 
 <section id="First-parsers">
 <h2>First parsers<a class="headerlink" href="#First-parsers" title="Permalink to this heading"></a></h2>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[13]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Union</span><span class="p">,</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">Any</span><span class="p">,</span> <span class="n">TypeVar</span><span class="p">,</span> <span class="n">Generic</span>
@@ -441,7 +445,7 @@ parsers often have definitions that lie closer to the BNF notation shown above. 
 <h3>Failures<a class="headerlink" href="#Failures" title="Permalink to this heading"></a></h3>
 <p>If the parser fails, a <code class="docutils literal notranslate"><span class="pre">Failure</span></code> is raised.</p>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[14]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">dataclasses</span> <span class="kn">import</span> <span class="n">dataclass</span>
@@ -471,13 +475,13 @@ parsers often have definitions that lie closer to the BNF notation shown above. 
 </div>
 <p>We start with an example of a function that parses a positive integer. Here we use a regular expression to parse the integer itself. From this first parser we’ll expand out to write something that can parse an arbitrarily nested list of integers.</p>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[15]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">re</span>
 
 <span class="k">def</span> <span class="nf">integer</span><span class="p">(</span><span class="n">inp</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">str</span><span class="p">]:</span>
-    <span class="k">if</span> <span class="n">m</span> <span class="o">:=</span> <span class="n">re</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="s2">&quot;[0-9]+&quot;</span><span class="p">,</span> <span class="n">inp</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">m</span> <span class="o">:=</span> <span class="n">re</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="s2">&quot;-?[1-9][0-9]*&quot;</span><span class="p">,</span> <span class="n">inp</span><span class="p">):</span>
         <span class="n">result</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">m</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
         <span class="n">rest</span> <span class="o">=</span> <span class="n">inp</span><span class="p">[</span><span class="n">m</span><span class="o">.</span><span class="n">end</span><span class="p">(</span><span class="mi">0</span><span class="p">):]</span>
         <span class="k">return</span> <span class="p">(</span><span class="n">result</span><span class="p">,</span> <span class="n">rest</span><span class="p">)</span>
@@ -488,7 +492,7 @@ parsers often have definitions that lie closer to the BNF notation shown above. 
 </div>
 <p>Let’s test this:</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[16]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">integer</span><span class="p">(</span><span class="s2">&quot;42&quot;</span><span class="p">)</span>
@@ -496,7 +500,7 @@ parsers often have definitions that lie closer to the BNF notation shown above. 
 </div>
 </div>
 <div class="nboutput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[16]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
 </pre></div>
 </div>
 <div class="output_area docutils container">
@@ -506,7 +510,7 @@ parsers often have definitions that lie closer to the BNF notation shown above. 
 </div>
 <p>Note that the second return value is the part of the input that is remaining after our parser is done.</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[17]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">integer</span><span class="p">(</span><span class="s2">&quot;89, 20, 40&quot;</span><span class="p">)</span>
@@ -514,7 +518,7 @@ parsers often have definitions that lie closer to the BNF notation shown above. 
 </div>
 </div>
 <div class="nboutput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[17]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
 </pre></div>
 </div>
 <div class="output_area docutils container">
@@ -523,7 +527,7 @@ parsers often have definitions that lie closer to the BNF notation shown above. 
 </pre></div></div>
 </div>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[18]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">integer</span><span class="p">(</span><span class="s2">&quot;hello&quot;</span><span class="p">)</span>
@@ -540,7 +544,7 @@ Expected: a number, got: hello
 </div>
 <p>Now say we want to parse <strong>two</strong> integers. We need to be able to parse some whitespace.</p>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[19]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[8]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">whitespace</span><span class="p">(</span><span class="n">inp</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]:</span>
@@ -552,7 +556,7 @@ Expected: a number, got: hello
 </div>
 </div>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[20]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[9]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">whitespace</span><span class="p">(</span><span class="s2">&quot;    abcd&quot;</span><span class="p">)</span>
@@ -560,7 +564,7 @@ Expected: a number, got: hello
 </div>
 </div>
 <div class="nboutput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[20]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[9]:
 </pre></div>
 </div>
 <div class="output_area docutils container">
@@ -569,7 +573,7 @@ Expected: a number, got: hello
 </pre></div></div>
 </div>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[21]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[10]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">whitespace</span><span class="p">(</span><span class="s2">&quot;abcd&quot;</span><span class="p">)</span>
@@ -586,7 +590,7 @@ Expected: whitespace, got: abcd
 </div>
 <p>In many cases whitespace is optional. We can write another parser that catches the exception for us.</p>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[22]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[11]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">optional</span><span class="p">(</span><span class="n">p</span><span class="p">:</span> <span class="n">Parser</span><span class="p">[</span><span class="n">T</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">Parser</span><span class="p">[</span><span class="n">Optional</span><span class="p">[</span><span class="n">T</span><span class="p">]]:</span>
@@ -601,7 +605,7 @@ Expected: whitespace, got: abcd
 </div>
 </div>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[23]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[12]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">optional</span><span class="p">(</span><span class="n">whitespace</span><span class="p">)(</span><span class="s2">&quot;abcd&quot;</span><span class="p">)</span>
@@ -609,7 +613,7 @@ Expected: whitespace, got: abcd
 </div>
 </div>
 <div class="nboutput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[23]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[12]:
 </pre></div>
 </div>
 <div class="output_area docutils container">
@@ -619,7 +623,7 @@ Expected: whitespace, got: abcd
 </div>
 <p>Let us try to parse a pair of integers now.</p>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[24]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[13]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">twice</span><span class="p">(</span><span class="n">p</span><span class="p">:</span> <span class="n">Parser</span><span class="p">[</span><span class="n">T</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">Parser</span><span class="p">[</span><span class="nb">tuple</span><span class="p">[</span><span class="n">T</span><span class="p">,</span> <span class="n">T</span><span class="p">]]:</span>
@@ -633,7 +637,7 @@ Expected: whitespace, got: abcd
 </div>
 </div>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[25]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[14]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">twice</span><span class="p">(</span><span class="n">integer</span><span class="p">)(</span><span class="s2">&quot;1 2 3 4&quot;</span><span class="p">)</span>
@@ -641,7 +645,7 @@ Expected: whitespace, got: abcd
 </div>
 </div>
 <div class="nboutput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[25]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[14]:
 </pre></div>
 </div>
 <div class="output_area docutils container">
@@ -651,7 +655,7 @@ Expected: whitespace, got: abcd
 </div>
 <p>We could also go for a comma separated list of integers. First we need to parse a comma.</p>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[26]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[15]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">char</span><span class="p">(</span><span class="n">allowed</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Parser</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
@@ -664,7 +668,7 @@ Expected: whitespace, got: abcd
 </div>
 </div>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[27]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[16]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">char</span><span class="p">(</span><span class="s2">&quot;abc&quot;</span><span class="p">)(</span><span class="s2">&quot;abbcaabd&quot;</span><span class="p">)</span>
@@ -672,7 +676,7 @@ Expected: whitespace, got: abcd
 </div>
 </div>
 <div class="nboutput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[27]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[16]:
 </pre></div>
 </div>
 <div class="output_area docutils container">
@@ -681,7 +685,7 @@ Expected: whitespace, got: abcd
 </pre></div></div>
 </div>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[28]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[17]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">char</span><span class="p">(</span><span class="s2">&quot;abc&quot;</span><span class="p">)(</span><span class="s2">&quot;d&quot;</span><span class="p">)</span>
@@ -697,7 +701,7 @@ Expected: one of &#34;abc&#34;, got: d
 </pre></div></div>
 </div>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[29]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[18]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">comma</span> <span class="o">=</span> <span class="n">char</span><span class="p">(</span><span class="s2">&quot;,&quot;</span><span class="p">)</span>
@@ -706,7 +710,7 @@ Expected: one of &#34;abc&#34;, got: d
 </div>
 </div>
 <div class="nboutput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[29]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[18]:
 </pre></div>
 </div>
 <div class="output_area docutils container">
@@ -715,7 +719,7 @@ Expected: one of &#34;abc&#34;, got: d
 </pre></div></div>
 </div>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[30]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[19]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">comma</span><span class="p">(</span><span class="s2">&quot;89, 20, 40&quot;</span><span class="p">)</span>
@@ -732,7 +736,7 @@ Expected: one of &#34;,&#34;, got: 89, 20, 40
 </div>
 <p>It will be convenient to have a function that parses a thing and then also consumes the whitespace after it.</p>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[31]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[20]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">tokenize</span><span class="p">(</span><span class="n">p</span><span class="p">:</span> <span class="n">Parser</span><span class="p">[</span><span class="n">T</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">Parser</span><span class="p">[</span><span class="n">T</span><span class="p">]:</span>
@@ -746,7 +750,7 @@ Expected: one of &#34;,&#34;, got: 89, 20, 40
 </div>
 <p>Notice that the definition of <code class="docutils literal notranslate"><span class="pre">tokenize</span></code> no longer contains any raw string processing! Also, see how the whitespace is stripped from our input!</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[32]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[21]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">comma</span> <span class="o">=</span> <span class="n">tokenize</span><span class="p">(</span><span class="n">char</span><span class="p">(</span><span class="s2">&quot;,&quot;</span><span class="p">))</span>
@@ -755,7 +759,7 @@ Expected: one of &#34;,&#34;, got: 89, 20, 40
 </div>
 </div>
 <div class="nboutput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[32]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[21]:
 </pre></div>
 </div>
 <div class="output_area docutils container">
@@ -765,7 +769,7 @@ Expected: one of &#34;,&#34;, got: 89, 20, 40
 </div>
 <p>We now want to parse a list of integers, separated by commas. We can try to do this recursively.</p>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[33]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[22]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">U</span> <span class="o">=</span> <span class="n">TypeVar</span><span class="p">(</span><span class="s2">&quot;U&quot;</span><span class="p">)</span>
@@ -787,7 +791,7 @@ Expected: one of &#34;,&#34;, got: 89, 20, 40
 </div>
 </div>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[34]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[23]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">sep_by</span><span class="p">(</span><span class="n">integer</span><span class="p">,</span> <span class="n">comma</span><span class="p">)(</span><span class="s2">&quot;1, 2, 3, 4, abcde&quot;</span><span class="p">)</span>
@@ -795,7 +799,7 @@ Expected: one of &#34;,&#34;, got: 89, 20, 40
 </div>
 </div>
 <div class="nboutput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[34]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[23]:
 </pre></div>
 </div>
 <div class="output_area docutils container">
@@ -803,9 +807,9 @@ Expected: one of &#34;,&#34;, got: 89, 20, 40
 ([1, 2, 3, 4], &#39;, abcde&#39;)
 </pre></div></div>
 </div>
-<p>This implementation is not so effecient, and because it uses recursion we run the risc of stack overflow. We can write the inner function in an imperative style to be more efficient here. Later on we will see that we can write recursive parsers safely, but even then, seeing that this is Python and not Haskell, it can be advantageous to rewrite some core parsers imperitavely. The important bit is that the framework still stands: the outer world doesn’t see your trash.</p>
+<p>This implementation is not so effecient, and because it uses recursion we run the risc of stack overflow. We can write the inner function in an imperative style to be more efficient here. Later on we will see that we can write recursive parsers safely, but even then, seeing that this is Python and not Haskell, it can be advantageous to rewrite some core parsers imperatively. The important bit is that the framework still stands: the outer world doesn’t see your trash.</p>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[35]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[24]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">sep_by</span><span class="p">(</span><span class="n">p</span><span class="p">:</span> <span class="n">Parser</span><span class="p">[</span><span class="n">T</span><span class="p">],</span> <span class="n">sep</span><span class="p">:</span> <span class="n">Parser</span><span class="p">[</span><span class="n">U</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">Parser</span><span class="p">[</span><span class="nb">list</span><span class="p">[</span><span class="n">T</span><span class="p">]]:</span>
@@ -824,7 +828,7 @@ Expected: one of &#34;,&#34;, got: 89, 20, 40
 </div>
 </div>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[36]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[25]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">sep_by</span><span class="p">(</span><span class="n">integer</span><span class="p">,</span> <span class="n">comma</span><span class="p">)(</span><span class="s2">&quot;1, 2, 3, 4, abcde&quot;</span><span class="p">)</span>
@@ -832,7 +836,7 @@ Expected: one of &#34;,&#34;, got: 89, 20, 40
 </div>
 </div>
 <div class="nboutput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[36]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[25]:
 </pre></div>
 </div>
 <div class="output_area docutils container">
@@ -845,7 +849,7 @@ Expected: one of &#34;,&#34;, got: 89, 20, 40
 <h3>Many and some<a class="headerlink" href="#Many-and-some" title="Permalink to this heading"></a></h3>
 <p><code class="docutils literal notranslate"><span class="pre">many</span></code> and <code class="docutils literal notranslate"><span class="pre">some</span></code> are bread and butter of parser combinators. An important fact to note here is that <code class="docutils literal notranslate"><span class="pre">many</span></code> will always succeed. Having nested <code class="docutils literal notranslate"><span class="pre">many</span></code> parsers may result in infinite loops.</p>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[37]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[26]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">many</span><span class="p">(</span><span class="n">p</span><span class="p">:</span> <span class="n">Parser</span><span class="p">[</span><span class="n">T</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">Parser</span><span class="p">[</span><span class="nb">list</span><span class="p">[</span><span class="n">T</span><span class="p">]]:</span>
@@ -862,7 +866,7 @@ Expected: one of &#34;,&#34;, got: 89, 20, 40
 </div>
 </div>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[38]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[27]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">some</span><span class="p">(</span><span class="n">p</span><span class="p">:</span> <span class="n">Parser</span><span class="p">[</span><span class="n">T</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">Parser</span><span class="p">[</span><span class="nb">list</span><span class="p">[</span><span class="n">T</span><span class="p">]]:</span>
@@ -876,7 +880,7 @@ Expected: one of &#34;,&#34;, got: 89, 20, 40
 </div>
 <p>As an example, we can now write a parser for a list of integers, S-expression style.</p>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[39]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[28]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">list_of</span><span class="p">(</span><span class="n">p</span><span class="p">:</span> <span class="n">Parser</span><span class="p">[</span><span class="n">T</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">Parser</span><span class="p">[</span><span class="nb">list</span><span class="p">[</span><span class="n">T</span><span class="p">]]:</span>
@@ -890,7 +894,7 @@ Expected: one of &#34;,&#34;, got: 89, 20, 40
 </div>
 </div>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[40]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[29]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">list_of</span><span class="p">(</span><span class="n">tokenize</span><span class="p">(</span><span class="n">integer</span><span class="p">))(</span><span class="s2">&quot;(1 2 3)&quot;</span><span class="p">)</span>
@@ -898,7 +902,7 @@ Expected: one of &#34;,&#34;, got: 89, 20, 40
 </div>
 </div>
 <div class="nboutput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[40]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[29]:
 </pre></div>
 </div>
 <div class="output_area docutils container">
@@ -911,7 +915,7 @@ Expected: one of &#34;,&#34;, got: 89, 20, 40
 <h3>Choices<a class="headerlink" href="#Choices" title="Permalink to this heading"></a></h3>
 <p>Another common pattern is when we have several options to parse. For the <code class="docutils literal notranslate"><span class="pre">choice</span></code> parser we need a new type of <code class="docutils literal notranslate"><span class="pre">Failure</span></code>, namely one that outlines the different expectations and why they all failed. The <code class="docutils literal notranslate"><span class="pre">choice</span></code> parser tries each parser in the order they were given; the first parser to succeed gets the go-ahead.</p>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[41]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[30]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">ChoiceFailure</span><span class="p">(</span><span class="n">Expected</span><span class="p">):</span>
@@ -941,7 +945,7 @@ Expected: one of &#34;,&#34;, got: 89, 20, 40
 </div>
 </div>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[42]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[31]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">many</span><span class="p">(</span><span class="n">choice</span><span class="p">(</span><span class="n">char</span><span class="p">(</span><span class="s2">&quot;abc&quot;</span><span class="p">),</span> <span class="n">char</span><span class="p">(</span><span class="s2">&quot;123&quot;</span><span class="p">)))(</span><span class="s2">&quot;12ab3#$*&amp;(*&amp;@&quot;</span><span class="p">)</span>
@@ -949,7 +953,7 @@ Expected: one of &#34;,&#34;, got: 89, 20, 40
 </div>
 </div>
 <div class="nboutput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[42]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[31]:
 </pre></div>
 </div>
 <div class="output_area docutils container">
@@ -958,7 +962,7 @@ Expected: one of &#34;,&#34;, got: 89, 20, 40
 </pre></div></div>
 </div>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[43]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[32]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">some</span><span class="p">(</span><span class="n">choice</span><span class="p">(</span><span class="n">char</span><span class="p">(</span><span class="s2">&quot;abc&quot;</span><span class="p">),</span> <span class="n">char</span><span class="p">(</span><span class="s2">&quot;123&quot;</span><span class="p">),</span> <span class="n">whitespace</span><span class="p">))(</span><span class="s2">&quot;#&amp;*(&amp;@&quot;</span><span class="p">)</span>
@@ -982,7 +986,7 @@ got: #&amp;*(&amp;@
 <h3>Nested structures<a class="headerlink" href="#Nested-structures" title="Permalink to this heading"></a></h3>
 <p>We are now ready to parse a nested list structure. Note that the only reason why we put this parser in a function explicitely is to allow the recursion.</p>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[44]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[33]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">nested_list</span><span class="p">(</span><span class="n">p</span><span class="p">:</span> <span class="n">Parser</span><span class="p">[</span><span class="n">T</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">Parser</span><span class="p">[</span><span class="n">Any</span><span class="p">]:</span>
@@ -993,7 +997,7 @@ got: #&amp;*(&amp;@
 </div>
 </div>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[45]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[34]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">nested_list</span><span class="p">(</span><span class="n">tokenize</span><span class="p">(</span><span class="n">integer</span><span class="p">))(</span><span class="s2">&quot;(1 2 (3 4  )5 (() (6)))&quot;</span><span class="p">)</span>
@@ -1001,7 +1005,7 @@ got: #&amp;*(&amp;@
 </div>
 </div>
 <div class="nboutput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[45]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[34]:
 </pre></div>
 </div>
 <div class="output_area docutils container">
@@ -1016,7 +1020,7 @@ got: #&amp;*(&amp;@
 <h2>Sequencing<a class="headerlink" href="#Sequencing" title="Permalink to this heading"></a></h2>
 <p>We have seen several instances where we had to sequence <code class="docutils literal notranslate"><span class="pre">(x,</span> <span class="pre">inp)</span> <span class="pre">=</span> <span class="pre">parse(inp)</span></code>. It would be nice if we could combine parsers in a smarter way, and have them plug together. In other words: we can make these parsers more composable. Suppose we want a function <code class="docutils literal notranslate"><span class="pre">sequence(*ps)</span></code> that parses each argument in order, and returns the result of the last parser. An imperative solution looks as follows:</p>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[35]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">sequence</span><span class="p">(</span><span class="o">*</span><span class="n">ps</span><span class="p">:</span> <span class="n">Parser</span><span class="p">[</span><span class="n">Any</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">Parser</span><span class="p">[</span><span class="n">Any</span><span class="p">]:</span>
@@ -1030,7 +1034,7 @@ got: #&amp;*(&amp;@
 </div>
 <p>Every intermediate result is thrown away. Now suppose we have two parsers, we need the result of the first one, but only if the second one succeeds. We saw this case before when we were parsing lists. We make things a bit easier by omitting commas, so we’re parsing <code class="docutils literal notranslate"><span class="pre">(1</span> <span class="pre">2</span> <span class="pre">3)</span></code> now.</p>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[60]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[36]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">list_of</span><span class="p">(</span><span class="n">p</span><span class="p">:</span> <span class="n">Parser</span><span class="p">[</span><span class="n">T</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">Parser</span><span class="p">[</span><span class="nb">list</span><span class="p">[</span><span class="n">T</span><span class="p">]]:</span>
@@ -1040,7 +1044,7 @@ got: #&amp;*(&amp;@
 </div>
 <p>How would we implement <code class="docutils literal notranslate"><span class="pre">closed_by()</span></code>?</p>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[61]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[37]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">closed_by</span><span class="p">(</span><span class="n">p1</span><span class="p">:</span> <span class="n">Parser</span><span class="p">[</span><span class="n">T</span><span class="p">],</span> <span class="n">p2</span><span class="p">:</span> <span class="n">Parser</span><span class="p">[</span><span class="n">U</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">Parser</span><span class="p">[</span><span class="n">T</span><span class="p">]:</span>
@@ -1053,7 +1057,7 @@ got: #&amp;*(&amp;@
 </div>
 </div>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[65]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[38]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">value</span><span class="p">(</span><span class="n">x</span><span class="p">:</span> <span class="n">T</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Parser</span><span class="p">[</span><span class="n">T</span><span class="p">]:</span>
@@ -1068,7 +1072,7 @@ got: #&amp;*(&amp;@
 </div>
 </div>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[39]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">sequence_recur</span><span class="p">(</span><span class="n">p</span><span class="p">:</span> <span class="n">Parser</span><span class="p">[</span><span class="n">Any</span><span class="p">],</span> <span class="o">*</span><span class="n">ps</span><span class="p">:</span> <span class="n">Parser</span><span class="p">[</span><span class="n">Any</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">Parser</span><span class="p">[</span><span class="n">Any</span><span class="p">]:</span>
@@ -1083,7 +1087,7 @@ got: #&amp;*(&amp;@
 
 
 <span class="k">def</span> <span class="nf">bind</span><span class="p">(</span><span class="n">p</span><span class="p">:</span> <span class="n">Parser</span><span class="p">[</span><span class="n">T</span><span class="p">],</span> <span class="n">f</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[(</span><span class="n">T</span><span class="p">,),</span> <span class="n">Parser</span><span class="p">[</span><span class="n">U</span><span class="p">]])</span> <span class="o">-&gt;</span> <span class="n">Parser</span><span class="p">[</span><span class="n">U</span><span class="p">]:</span>
-    <span class="k">def</span> <span class="nf">bound</span><span class="p">(</span><span class="n">inp</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">U</span><span class="p">,</span> <span class="nb">str</span><span class="p">]</span>
+    <span class="k">def</span> <span class="nf">bound</span><span class="p">(</span><span class="n">inp</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">U</span><span class="p">,</span> <span class="nb">str</span><span class="p">]:</span>
         <span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">inp</span><span class="p">)</span> <span class="o">=</span> <span class="n">p</span><span class="p">(</span><span class="n">inp</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">f</span><span class="p">(</span><span class="n">x</span><span class="p">)(</span><span class="n">inp</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">bound</span>
@@ -1092,7 +1096,7 @@ got: #&amp;*(&amp;@
 <span class="k">def</span> <span class="nf">sequence_bind</span><span class="p">(</span><span class="n">p</span><span class="p">:</span> <span class="n">Parser</span><span class="p">[</span><span class="n">Any</span><span class="p">],</span> <span class="o">*</span><span class="n">ps</span><span class="p">:</span> <span class="n">Parser</span><span class="p">[</span><span class="n">Any</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">Parser</span><span class="p">[</span><span class="n">Any</span><span class="p">]:</span>
     <span class="k">if</span> <span class="n">ps</span><span class="p">:</span>
         <span class="k">return</span> <span class="n">bind</span><span class="p">(</span><span class="n">p</span><span class="p">,</span> <span class="k">lambda</span> <span class="n">_</span><span class="p">:</span> <span class="n">sequence_bind</span><span class="p">(</span><span class="o">*</span><span class="n">ps</span><span class="p">))</span>
-    <span class="k">else</span>
+    <span class="k">else</span><span class="p">:</span>
         <span class="k">return</span> <span class="n">p</span>
 </pre></div>
 </div>
@@ -1102,7 +1106,7 @@ got: #&amp;*(&amp;@
 <h2>Trampolines<a class="headerlink" href="#Trampolines" title="Permalink to this heading"></a></h2>
 <p>Trampolines can be a bit tricky to understand, so we first explain them using the example of a <code class="docutils literal notranslate"><span class="pre">factorial</span></code> function. The factorial of <span class="math notranslate nohighlight">\(n\)</span>, noted <span class="math notranslate nohighlight">\(n! := n (n - 1)!\)</span>, also <span class="math notranslate nohighlight">\(0! := 1\)</span>.</p>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[46]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[40]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">factorial</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
@@ -1114,7 +1118,7 @@ got: #&amp;*(&amp;@
 </div>
 </div>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[47]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[41]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">factorial</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
@@ -1122,7 +1126,7 @@ got: #&amp;*(&amp;@
 </div>
 </div>
 <div class="nboutput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[47]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[41]:
 </pre></div>
 </div>
 <div class="output_area docutils container">
@@ -1131,7 +1135,7 @@ got: #&amp;*(&amp;@
 </pre></div></div>
 </div>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[48]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[42]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">factorial</span><span class="p">(</span><span class="mi">10000</span><span class="p">)</span>
@@ -1143,12 +1147,12 @@ got: #&amp;*(&amp;@
 </div>
 <div class="output_area stderr docutils container">
 <div class="highlight"><pre>
-RecursionError: maximum recursion depth exceeded in comparison
+RecursionError: maximum recursion depth exceeded
 </pre></div></div>
 </div>
-<p>How can we elude this recursion? We could write a for-loop, but let’s say we want still want to use write a recursion. After all, when we’re writing parsers recursions can become inevitable: see for instance the nested list example. First what we need to change is to make the function <strong>tail-recursive</strong>. This is done by adding an accumulator argument.</p>
+<p>How can we elude this recursion? We could write a for-loop, but let’s say we still want to use recursion. After all, when we’re writing parsers recursions can become inevitable: see for instance the nested list example. First what we need to change is to make the function <strong>tail-recursive</strong>. This is done by adding an accumulator argument.</p>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[49]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[43]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">factorial</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">acc</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
@@ -1163,7 +1167,7 @@ RecursionError: maximum recursion depth exceeded in comparison
 <p>What we do is <strong>delaying the call</strong>.</p>
 <p>We store the function call in an object of class <code class="docutils literal notranslate"><span class="pre">Trampoline</span></code>. We may call the <code class="docutils literal notranslate"><span class="pre">compute()</span></code> method on this class to start a loop. This loop keeps evaluating successive calls, until the result is something else than a <code class="docutils literal notranslate"><span class="pre">Trampoline</span></code> object.</p>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[50]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[44]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">Trampoline</span><span class="p">:</span>
@@ -1188,7 +1192,7 @@ RecursionError: maximum recursion depth exceeded in comparison
 </div>
 </div>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[51]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[45]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">math</span> <span class="kn">import</span> <span class="n">log10</span>
@@ -1197,7 +1201,7 @@ RecursionError: maximum recursion depth exceeded in comparison
 </div>
 </div>
 <div class="nboutput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[51]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[45]:
 </pre></div>
 </div>
 <div class="output_area docutils container">
@@ -1207,7 +1211,7 @@ RecursionError: maximum recursion depth exceeded in comparison
 </div>
 <p>We can make this example a bit more beautiful by providing a decorator.</p>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[52]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[46]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">functools</span> <span class="kn">import</span> <span class="p">(</span><span class="n">wraps</span><span class="p">,</span> <span class="n">partial</span><span class="p">)</span>
@@ -1219,7 +1223,7 @@ RecursionError: maximum recursion depth exceeded in comparison
 </div>
 <p>Now we can keep our old definition!</p>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[53]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[47]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nd">@trampoline</span>
@@ -1232,7 +1236,7 @@ RecursionError: maximum recursion depth exceeded in comparison
 </div>
 </div>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[54]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[48]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">log10</span><span class="p">(</span><span class="n">factorial</span><span class="p">(</span><span class="mi">10000</span><span class="p">)</span><span class="o">.</span><span class="n">compute</span><span class="p">())</span>
@@ -1240,7 +1244,7 @@ RecursionError: maximum recursion depth exceeded in comparison
 </div>
 </div>
 <div class="nboutput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[54]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[48]:
 </pre></div>
 </div>
 <div class="output_area docutils container">
@@ -1258,7 +1262,7 @@ RecursionError: maximum recursion depth exceeded in comparison
 <p>When parsing larger files it can be inefficient to parse a text character by character. Often, we need to pass a certain amount of text to a secondary function that then converts the string into a value for us. Instead of working directly with strings we can use a <code class="docutils literal notranslate"><span class="pre">Cursor</span></code> class.</p>
 <p>In normal parsing mode, we need only to know the position of the cursor within the text; however, on many occasion it is useful to have a cursor object that spans a selection of text being parsed.</p>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[55]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[49]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nd">@dataclass</span>
@@ -1269,24 +1273,24 @@ RecursionError: maximum recursion depth exceeded in comparison
     <span class="n">encoding</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;utf-8&quot;</span>
 
     <span class="k">def</span> <span class="fm">__len__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Length of selection.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Length of selection.&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">end</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">begin</span>
 
     <span class="k">def</span> <span class="fm">__bool__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Returns `True` if there is more input to parse, `False` otherwise.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns `True` if there is more input to parse, `False` otherwise.&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">end</span> <span class="o">&lt;</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">)</span>
 
     <span class="o">...</span>
 </pre></div>
 </div>
 </div>
-<p>For the full definition, see the corresponding API documentation.</p>
+<p>For the full definition, see the <a class="reference external" href="https://parallelwindfarms.github.io/byteparsing/api.html#cursors">corresponding API documentation</a>.</p>
 </section>
 <section id="Auxiliary-state">
 <h3>Auxiliary state<a class="headerlink" href="#Auxiliary-state" title="Permalink to this heading"></a></h3>
 <p>The same way we pass the cursor state through all the parser calls, we can track auxiliary state. The complete function signature of a parser then looks like this:</p>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[56]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[50]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">some_parser</span><span class="p">(</span><span class="n">cursor</span><span class="p">:</span> <span class="n">Cursor</span><span class="p">,</span> <span class="n">aux</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">T</span><span class="p">,</span> <span class="n">Cursor</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
@@ -1296,7 +1300,7 @@ RecursionError: maximum recursion depth exceeded in comparison
 </div>
 <p>In the current set of parsers, this state is used as a stack. The stack is initialized with the empty list, then values can be pushed and popped using the <code class="docutils literal notranslate"><span class="pre">push</span></code> and <code class="docutils literal notranslate"><span class="pre">pop</span></code> parsers. The <code class="docutils literal notranslate"><span class="pre">pop</span></code> parser takes an optional <code class="docutils literal notranslate"><span class="pre">transfer</span></code> argument that maps the content of the popped value.</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[57]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[51]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">byteparsing</span> <span class="kn">import</span> <span class="n">sequence</span><span class="p">,</span> <span class="n">push</span><span class="p">,</span> <span class="n">pop</span>
@@ -1306,7 +1310,7 @@ RecursionError: maximum recursion depth exceeded in comparison
 </div>
 </div>
 <div class="nboutput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[57]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[51]:
 </pre></div>
 </div>
 <div class="output_area docutils container">
@@ -1315,35 +1319,60 @@ RecursionError: maximum recursion depth exceeded in comparison
 </pre></div></div>
 </div>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[58]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[59]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">byteparsing</span> <span class="kn">import</span> <span class="n">many_char_0</span><span class="p">,</span> <span class="n">flush_decode</span><span class="p">,</span> <span class="n">char</span><span class="p">,</span> <span class="n">ascii_alpha</span><span class="p">,</span> <span class="n">flush</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">byteparsing.parsers</span> <span class="kn">import</span> <span class="n">integer</span><span class="p">,</span> <span class="n">tokenize</span>
 
-<span class="n">sequence</span><span class="p">(</span><span class="n">char</span><span class="p">(</span><span class="s2">&quot;(&quot;</span><span class="p">),</span> <span class="n">flush</span><span class="p">(),</span>
-         <span class="n">many_char_0</span><span class="p">(</span><span class="n">ascii_alpha</span><span class="p">),</span>
-         <span class="n">flush_decode</span><span class="p">()</span> <span class="o">&gt;&gt;</span> <span class="n">push</span><span class="p">,</span>
-         <span class="n">char</span><span class="p">(</span><span class="s2">&quot;)&quot;</span><span class="p">),</span>
-         <span class="n">pop</span><span class="p">(</span><span class="nb">str</span><span class="o">.</span><span class="n">upper</span><span class="p">))</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="sa">b</span><span class="s2">&quot;(hello)&quot;</span><span class="p">)</span>
+<span class="n">sequence</span><span class="p">(</span>
+    <span class="n">tokenize</span><span class="p">(</span><span class="n">integer</span><span class="p">),</span>
+    <span class="n">tokenize</span><span class="p">(</span><span class="n">integer</span><span class="p">)</span> <span class="o">&gt;&gt;</span> <span class="n">push</span><span class="p">,</span>
+    <span class="n">tokenize</span><span class="p">(</span><span class="n">integer</span><span class="p">),</span>
+    <span class="n">pop</span><span class="p">())</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="sa">b</span><span class="s2">&quot;1 2 3&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 <div class="nboutput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[58]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[59]:
 </pre></div>
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-&#39;HELLO&#39;
+2
 </pre></div></div>
 </div>
+<p>While powerful as a mechanism for maintaining auxiliary state, in many cases, using a <code class="docutils literal notranslate"><span class="pre">named_sequence</span></code> instead of <code class="docutils literal notranslate"><span class="pre">sequence</span></code> can make your code a lot more readable.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[62]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">byteparsing.parsers</span> <span class="kn">import</span> <span class="n">named_sequence</span>
+
+<span class="n">named_sequence</span><span class="p">(</span>
+    <span class="n">_1</span><span class="o">=</span><span class="n">tokenize</span><span class="p">(</span><span class="n">integer</span><span class="p">),</span>
+    <span class="n">result</span><span class="o">=</span><span class="n">tokenize</span><span class="p">(</span><span class="n">integer</span><span class="p">),</span>
+    <span class="n">_2</span><span class="o">=</span><span class="n">tokenize</span><span class="p">(</span><span class="n">integer</span><span class="p">)</span>
+<span class="p">)</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="sa">b</span><span class="s2">&quot;1 2 3&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[62]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+{&#39;result&#39;: 2}
+</pre></div></div>
+</div>
+<p>Another use for the auxiliary variable, is to hide some configuration variable: see <cite>Parser grammar: ``using_config`</cite> and <code class="docutils literal notranslate"><span class="pre">with_config</span></code> &lt;<a class="reference external" href="https://parallelwindfarms.github.io/byteparsing/grammar.html#using_config-and-with_config">https://parallelwindfarms.github.io/byteparsing/grammar.html#using_config-and-with_config</a>&gt;`__.</p>
 </section>
 </section>
 <section id="Hide-trace-backs">
 <h2>Hide trace backs<a class="headerlink" href="#Hide-trace-backs" title="Permalink to this heading"></a></h2>
 <p>For the purpose of this notebook it was better to hide tracebacks on exceptions. Run this cell first, then the rest.</p>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[59]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[53]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">sys</span>
@@ -1356,22 +1385,6 @@ RecursionError: maximum recursion depth exceeded in comparison
 </pre></div>
 </div>
 </div>
-<div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
-</pre></div>
-</div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>
-</pre></div>
-</div>
-</div>
-<div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
-</pre></div>
-</div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>
-</pre></div>
-</div>
-</div>
 </section>
 </section>
 
@@ -1379,8 +1392,8 @@ RecursionError: maximum recursion depth exceeded in comparison
            </div>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="parsers.html" class="btn btn-neutral float-left" title="Parsers" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="examples.html" class="btn btn-neutral float-right" title="Examples of usage" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="ply.html" class="btn btn-neutral float-left" title="Advanced example: parsing PLY files" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="cursors.html" class="btn btn-neutral float-right" title="Cursors" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>

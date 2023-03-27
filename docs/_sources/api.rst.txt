@@ -10,6 +10,9 @@ API Documentation
 .. automodule:: byteparsing.parsers
    :members:
 
+.. automodule:: byteparsing.array
+   :members:
+
 .. automodule:: byteparsing.trampoline
    :members:
 

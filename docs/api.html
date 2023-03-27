@@ -84,8 +84,6 @@
 <li class="toctree-l3"><a class="reference internal" href="#id1">Parsers</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="#byteparsing.parsers.array"><code class="docutils literal notranslate"><span class="pre">array()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="#byteparsing.parsers.binary_value"><code class="docutils literal notranslate"><span class="pre">binary_value()</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="#byteparsing.parsers.byte_none_of"><code class="docutils literal notranslate"><span class="pre">byte_none_of()</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="#byteparsing.parsers.char"><code class="docutils literal notranslate"><span class="pre">char()</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="#byteparsing.parsers.char_pred"><code class="docutils literal notranslate"><span class="pre">char_pred()</span></code></a></li>
@@ -119,6 +117,8 @@
 <li class="toctree-l2"><a class="reference internal" href="#byteparsing.parsers.using_config"><code class="docutils literal notranslate"><span class="pre">using_config()</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="#byteparsing.parsers.value"><code class="docutils literal notranslate"><span class="pre">value()</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="#byteparsing.parsers.with_config"><code class="docutils literal notranslate"><span class="pre">with_config()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#byteparsing.array.array"><code class="docutils literal notranslate"><span class="pre">array()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#byteparsing.array.binary_value"><code class="docutils literal notranslate"><span class="pre">binary_value()</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="#trampoline">Trampoline</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#byteparsing.trampoline.Call"><code class="docutils literal notranslate"><span class="pre">Call</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="#byteparsing.trampoline.Parser"><code class="docutils literal notranslate"><span class="pre">Parser</span></code></a></li>
@@ -390,19 +390,6 @@ the number is 1:</p>
 </section>
 </section>
 <dl class="py function">
-<dt class="sig sig-object py" id="byteparsing.parsers.array">
-<span class="sig-prename descclassname"><span class="pre">byteparsing.parsers.</span></span><span class="sig-name descname"><span class="pre">array</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dtype</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dtype</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">size</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#byteparsing.trampoline.Parser" title="byteparsing.trampoline.Parser"><span class="pre">Parser</span></a></span></span><a class="headerlink" href="#byteparsing.parsers.array" title="Permalink to this definition"></a></dt>
-<dd><p>Reads the next <cite>sizeof(dtype) * product(shape)</cite> bytes from the
-cursor and interprets them as numeric binary data.</p>
-</dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="byteparsing.parsers.binary_value">
-<span class="sig-prename descclassname"><span class="pre">byteparsing.parsers.</span></span><span class="sig-name descname"><span class="pre">binary_value</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dtype</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dtype</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#byteparsing.parsers.binary_value" title="Permalink to this definition"></a></dt>
-<dd><p>Parses a single binary value of the given <cite>dtype</cite>.</p>
-</dd></dl>
-
-<dl class="py function">
 <dt class="sig sig-object py" id="byteparsing.parsers.byte_none_of">
 <span class="sig-prename descclassname"><span class="pre">byteparsing.parsers.</span></span><span class="sig-name descname"><span class="pre">byte_none_of</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bytes</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#byteparsing.trampoline.Parser" title="byteparsing.trampoline.Parser"><span class="pre">Parser</span></a></span></span><a class="headerlink" href="#byteparsing.parsers.byte_none_of" title="Permalink to this definition"></a></dt>
 <dd><p>Parses none of the characters in <cite>x</cite>.</p>
@@ -633,6 +620,19 @@ parser generator.</p>
 <dd><p>Creates a config object at the bottom of the auxiliary stack.
 The config will be a empty dictionary. The resulting parser should
 be the outer-most parser being used.</p>
+</dd></dl>
+
+<span class="target" id="module-byteparsing.array"></span><dl class="py function">
+<dt class="sig sig-object py" id="byteparsing.array.array">
+<span class="sig-prename descclassname"><span class="pre">byteparsing.array.</span></span><span class="sig-name descname"><span class="pre">array</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dtype</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dtype</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">size</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#byteparsing.trampoline.Parser" title="byteparsing.trampoline.Parser"><span class="pre">Parser</span></a></span></span><a class="headerlink" href="#byteparsing.array.array" title="Permalink to this definition"></a></dt>
+<dd><p>Reads the next <cite>sizeof(dtype) * product(shape)</cite> bytes from the
+cursor and interprets them as numeric binary data.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="byteparsing.array.binary_value">
+<span class="sig-prename descclassname"><span class="pre">byteparsing.array.</span></span><span class="sig-name descname"><span class="pre">binary_value</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dtype</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dtype</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#byteparsing.array.binary_value" title="Permalink to this definition"></a></dt>
+<dd><p>Parses a single binary value of the given <cite>dtype</cite>.</p>
 </dd></dl>
 
 <span class="target" id="module-byteparsing.trampoline"></span><section id="trampoline">

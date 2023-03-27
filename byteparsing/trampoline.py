@@ -98,6 +98,10 @@ class Parser:
     """Wrapper for parser functions."""
     func: Optional[ParserFunctionIssue708]
 
+    def parse(self, b: bytes):
+        result, _, _ = self(Cursor(b), []).invoke()
+        return result
+
     def __call__(self, cursor: Cursor, aux: Any) -> Call:
         assert self.func is not None
         return Call(self.func, cursor, aux)

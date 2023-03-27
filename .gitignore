@@ -1,3 +1,5 @@
+poetry.lock
+
 *.py[cod]
 *.egg-info
 *.eggs

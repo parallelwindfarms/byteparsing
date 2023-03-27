@@ -15,8 +15,11 @@ classifiers = [
         "Natural Language :: English" ]
 
 [tool.poetry.dependencies]
-python = ">=3.9,<3.11"
-numpy = "^1.21.2"
+python = "^3.9.0"
+numpy = { version = "^1.21.0", optional = true }
+
+[tool.poetry.extras]
+numpy = ["numpy"]
 
 [tool.poetry.dev-dependencies]
 pytest = "^6.2.4"

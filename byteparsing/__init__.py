@@ -9,10 +9,13 @@ from .parsers import (
     parse_bytes, sequence, push, pop, char,
     flush, flush_decode,
     many_char, many_char_0, some_char, some_char_0,
-    ascii_alpha
+    ascii_alpha, fail
     )
 
-from .openfoam import foam_file
+try:
+    from .openfoam import foam_file
+except ImportError:
+    foam_file = fail("The OpenFOAM parser needs Numpy.")
 
 logging.getLogger(__name__).addHandler(logging.NullHandler())
 

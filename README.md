@@ -11,14 +11,59 @@ Parser for mixed ASCII/binary data. Features:
 - Works extremely well with memory-mapped Numpy arrays
 - Included parsers:
     - OpenFOAM
+    - Examples: PLY, PPM
 
-The project setup is documented in [a separate
-document](project_setup.rst).
-See also the [extended tutorial](https://parallelwindfarms.github.io/byteparsing/functional.html).
+## Documentation
+Our [documentation](https://parallelwindfarms.github.io/byteparsing) explains the architecture behind `byteparsing` and shows some examples of parsing mixed binary and ASCII data.
+
+## Example: PPM files
+Byteparsing is a functional parser combinator (recursive descent) library. To show how we can mix ASCII and binary data, we have an example where we parse Portable PixMap files (PPM). These files have a small ASCII header and the image itself in binary. The header looks something like this:
+
+```
+P6   # this marks the file type in the Netpbm family
+640 480
+256
+<<binary rgb values: 3*w*h bytes>>
+```
+
+The implementation of the parser:
+
+```python
+import numpy as np
+from dataclasses import dataclass
+from byteparsing import parse_bytes
+from byteparsing.parsers import (
+    text_literal, integer, eol, named_sequence, sequence, construct,
+    tokenize, item, array,  fmap, text_end_by, optional)
+
+comment = sequence(text_literal("#"), text_end_by("\n"))
+
+@dataclass
+class Header:
+    width: int
+    height: int
+    maxint: int
+
+header = named_sequence(
+    _1 = tokenize(text_literal("P6")),
+    _2 = optional(comment),
+    width = tokenize(integer),
+    height = tokenize(integer),
+    maxint = tokenize(integer)) >> construct(Header)
+
+def image_bytes(header: Header):
+    shape = (header.height, header.width, 3)
+    size = header.height * header.width * 3
+    return array(np.uint8, size) >> fmap(lambda a: a.reshape(shape))
+
+ppm_image = header >> image_bytes
+```
+
+For more, check out the [documentation](https://parallelwindfarms.github.io/byteparsing)!
 
 ## Requirements
 
-This package requires Python (>=3.9,<3.11).
+This package requires Python (>=3.9), and optionally Numpy.
 
 ## Installation
 
@@ -30,20 +75,20 @@ To install the latest release of byteparsing, do:
 pip install byteparsing
 ```
 
-### With GitHub
+### Development with Poetry
 
-To install the latest version of byteparsing, do:
+This project uses Poetry to maintain `pyproject.toml`.
 
 ```{.console}
 git clone https://github.com/parallelwindfarms/byteparsing.git
 cd byteparsing
-pip install .
+poetry install
 ```
 
 Run tests (including coverage) with:
 
 ``` {.console}
-python setup.py test
+poetry run pytest
 ```
 
 ### Contributing

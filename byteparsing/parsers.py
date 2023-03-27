@@ -107,7 +107,7 @@ Parsers
 
 import logging
 from typing import Any, Union, List, Optional, Callable
-import numpy as np
+
 import functools
 
 from .cursor import Cursor, Buffer
@@ -454,26 +454,6 @@ def tokenize(p: Parser) -> Parser:
     return sequence(
         p >> push,
         optional(whitespace), pop())
-
-
-def array(dtype: np.dtype, size: int) -> Parser:
-    """Reads the next `sizeof(dtype) * product(shape)` bytes from the
-    cursor and interprets them as numeric binary data."""
-    @parser
-    def array_p(c: Cursor, a: Any):
-        try:
-            result = np.frombuffer(c.data, dtype=dtype, count=size,
-                                   offset=c.end)
-        except ValueError as e:
-            raise Failure(str(e))
-        return result, c.increment(result.nbytes), a
-
-    return array_p
-
-
-def binary_value(dtype: np.dtype):
-    """Parses a single binary value of the given `dtype`."""
-    return array(dtype, 1) >> fmap(lambda x: x[0])
 
 
 def with_config(p: Parser, **kwargs) -> Parser:

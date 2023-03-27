@@ -5,9 +5,9 @@ from .parsers import (
     choice, sequence, named_sequence, flush, flush_decode,
     many, push, pop, fail, value, some,
     char, char_pred, Parser, integer, scientific_number, optional, whitespace,
-    quoted_string, check_size, array, with_config, using_config
+    quoted_string, check_size, with_config, using_config
 )
-
+from .array import array
 # from .failure import Failure
 
 

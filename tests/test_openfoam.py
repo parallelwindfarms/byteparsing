@@ -1,5 +1,5 @@
 import pytest
-import numpy as np
+np = pytest.importorskip("numpy")
 from pathlib import Path
 
 from byteparsing.failure import (

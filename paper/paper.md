@@ -30,7 +30,7 @@ bibliography: paper.bib
 
 # Summary
 
-Byteparsing is a functional parser combinator for Python. It was originally motivated by the problem of parsing OpenFOAM files. OpenFOAM [^1] is a free, open source computational fluid dynamics software whose input and output files contain both ASCII and binary data. Other common formats combining ASCII and binary are PLY triangle data or PPM images[^2]. This makes them particularly hard to parse using traditional tools. Byteparsing became a flexible tool capable of dealing with generic formats.
+Byteparsing is a functional parser combinator for Python. It was originally motivated by the problem of parsing OpenFOAM files. OpenFOAM[^1] is a free, open source computational fluid dynamics software package whose input and output files contain both ASCII and binary data. Other common formats combining ASCII and binary are PLY triangle data or PPM images[^2]. This makes them particularly hard to parse using traditional tools. Byteparsing is a flexible tool capable of dealing with generic formats.
 
 # Statement of need
 
@@ -47,7 +47,7 @@ Our research problem, namely, manipulating OpenFOAM files from Python, required 
 - Capable of dealing with files combining ASCII and binary.
 - Easy to program, using concepts similar to those found in other functional parser combinators like `pyparsing`.
 - Composable and testable at all levels of complexity.
-- Capable of dealing transparently with Python objects that support the buffer protocol (_i.e.:_ memory mapped file access is trivially supported).
+- Capable of dealing transparently with Python objects that support the buffer protocol (i.e., memory mapped file access is trivially supported).
 - Performant enough, considering the use case where we have small ASCII headers and large contiguous blocks of floating point data.
 - Compliant with best practices, such as automated unit testing and thorough documentation.
 

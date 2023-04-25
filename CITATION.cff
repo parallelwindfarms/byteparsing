@@ -1,29 +1,38 @@
-# YAML 1.2
----
-abstract: "Byteparsing is a package for mixed text and binary parsing in Python. The main driver for developing this package was to write a parser for binary OpenFOAM files. The binary file format in OpenFOAM is “special”. It is the same as the ASCII based text format, except where large blocks of floating point data are concerned."
-authors: 
-  -
-    affiliation: "Netherlands eScience Center"
-    family-names: Hidding
+cff-version: "1.2.0"
+authors:
+- family-names: Hidding
+  given-names: Johan
+  orcid: "https://orcid.org/0000-0002-7550-1796"
+- family-names: Rodríguez-Sánchez
+  given-names: Pablo
+  orcid: "https://orcid.org/0000-0002-2855-940X"
+contact:
+- family-names: Hidding
+  given-names: Johan
+  orcid: "https://orcid.org/0000-0002-7550-1796"
+doi: 10.5281/zenodo.7839894
+message: If you use this software, please cite our article in the
+  Journal of Open Source Software.
+preferred-citation:
+  authors:
+  - family-names: Hidding
     given-names: Johan
     orcid: "https://orcid.org/0000-0002-7550-1796"
-  -
-    affiliation: "Netherlands eScience Center"
-    family-names: "Rodríguez-Sánchez"
+  - family-names: Rodríguez-Sánchez
     given-names: Pablo
     orcid: "https://orcid.org/0000-0002-2855-940X"
-cff-version: "1.1.0"
-date-released: 2021-05-03
-doi: "10.5281/zenodo.4734115"
-keywords: 
-  - python
-  - parsing
-  - "parser-combinator"
-  - OpenFOAM
-  - binary
-license: "Apache-2.0"
-message: "If you use this software, please cite it using these metadata."
-repository-code: "https://github.com/parallelwindfarms/byteparsing"
-title: byteparsing
-version: "0.1.0"
-...
+  date-published: 2023-04-25
+  doi: 10.21105/joss.05293
+  issn: 2475-9066
+  issue: 84
+  journal: Journal of Open Source Software
+  publisher:
+    name: Open Journals
+  start: 5293
+  title: "byteparsing: a functional parser combinator for mixed
+    ASCII/binary data"
+  type: article
+  url: "https://joss.theoj.org/papers/10.21105/joss.05293"
+  volume: 8
+title: "byteparsing: a functional parser combinator for mixed
+  ASCII/binary data"

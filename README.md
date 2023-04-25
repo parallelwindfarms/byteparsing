@@ -5,6 +5,7 @@
 [![codecov](https://codecov.io/gh/parallelwindfarms/byteparsing/graph/badge.svg)](https://codecov.io/gh/parallelwindfarms/byteparsing)
 [![fair-software.eu](https://img.shields.io/badge/fair--software.eu-%E2%97%8F%20%20%E2%97%8F%20%20%E2%97%8F%20%20%E2%97%8F%20%20%E2%97%8B-orange)](https://fair-software.eu)
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.4734194.svg)](https://doi.org/10.5281/zenodo.4734194)
+[![DOI](https://joss.theoj.org/papers/10.21105/joss.05293/status.svg)](https://doi.org/10.21105/joss.05293)
 
 Byteparsing is a package for **mixed text and binary** parsing in Python. The main driver for developing this package was to write a parser for binary OpenFOAM files. The binary file format in OpenFOAM is "special". It is the same as the ASCII based text format, except where large blocks of floating point data are concerned.
 
